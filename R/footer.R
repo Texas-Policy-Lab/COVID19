@@ -7,7 +7,7 @@ footer <- function() {
   htmltools::tags$footer(
     htmltools::tags$div(class = "star"
       ,htmltools::tags$object(type="image/svg+xml"
-                              ,data="svg/tpl-star-red.svg")
+                             ,data="svg/tpl_star_red.svg")
     ),
     htmltools::tags$div(class="first-row"
       ,htmltools::tags$div(class = "g-container"
@@ -15,7 +15,7 @@ footer <- function() {
             ,htmltools::tags$div(class = "footer_logo"
                ,htmltools::tags$object(class="footer_logo-tpl"
                                        ,type="image/svg+xml"
-                                       ,data="svg/tpl-text-logo-color.svg")
+                                       ,data="svg/tpl_text_logo_color.svg")
             )
             ,htmltools::tags$div(class="footer_copyright"
                ,htmltools::tags$p(htmltools::tags$strong(
