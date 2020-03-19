@@ -26,7 +26,7 @@ create_confirmed_data <- function(url) {
   
   covid_confirmed <- readr::read_csv(url)
   
-  utils::write.csv(covid_confirmed, "./data/usafacts/covid_confirmed_TEST.csv")
+  utils::write.csv(covid_confirmed, here::here("./data/usafacts/covid_confirmed_TEST.csv"))
   
 }
 
@@ -34,7 +34,7 @@ create_deaths_data <- function(url) {
   
   covid_deaths <- readr::read_csv(url)
   
-  utils::write.csv(covid_deaths, "./data/usafacts/covid_deaths_TEST.csv")
+  utils::write.csv(covid_deaths, here::here("./data/usafacts/covid_deaths_TEST.csv"))
   
 }
 
