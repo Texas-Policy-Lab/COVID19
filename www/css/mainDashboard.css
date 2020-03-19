@@ -1,0 +1,46 @@
+body {
+  font-family: var(--main-fonts);
+  font-size: 16px;
+  line-height: 108%;
+  font-weight: normal;
+  color: var(--main-tpl-blue);
+  height: 95%;
+}
+
+.wrapper {
+  max-height: 90%;
+  min-height: 740;
+}
+
+.content-wrapper {
+  background-color: var(--white);
+  font-weight: normal;
+  max-height: 90%;
+  min-height: 740;
+}
+
+h1, h2, h4, h5, h6, span {
+  font-family: var(--main-fonts);
+}
+
+/* Page title formatting */
+.page-title {
+  color: var(--main-tpl-blue);
+  font-size: 29px;
+  padding: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  border-top-width: 1px solid #bf0a30;
+  line-height: 1.15;
+  font-weight: 300;
+  transition: color .3s cubic-bezier(.55,.085,0,.99);
+}
+
+.content {
+  min-height: 250px;
+  padding: 15px;
+  padding-top: 5px;
+  margin-right: auto;
+  margin-left: auto;
+}

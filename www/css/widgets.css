@@ -1,0 +1,208 @@
+/* ALL WIDGETS */
+/*-----------------------------------------------------------------------*/
+
+/* Border around each widget */
+.form-group.shiny-input-container,
+.action-button {
+  border-radius: 5px;
+  border: 1px solid var(--grey-20-darker);
+  padding: 7px 10px 7px 10px;
+  margin-left: 10px;
+}
+
+/* Widget label formatting */
+h3 {
+  font-weight: bold;
+  font-size: 1em;
+  color: var(--grey-60-darker);
+  margin-top: 0;
+  margin-bottom: 3px;
+}
+
+/* Action Button */
+/*-----------------------------------------------------------------------*/
+.action-button {
+    background-color: #ffffff;
+}
+
+/* Date Ranges */
+/*-----------------------------------------------------------------------*/
+.datepicker {
+  font-family: var(--main-fonts);
+}
+
+.datepicker table tr td span.active.active.focus,
+.datepicker table tr td span.active.active:focus,
+.datepicker table tr td span.active.active:hover,
+.datepicker table tr td span.active.disabled.active.focus,
+.datepicker table tr td span.active.disabled.active:focus,
+.datepicker table tr td span.active.disabled.active:hover,
+.datepicker table tr td span.active.disabled:active.focus,
+.datepicker table tr td span.active.disabled:active:focus,
+.datepicker table tr td span.active.disabled:active:hover,
+.datepicker table tr td span.active.disabled:hover.active.focus, .datepicker table tr td span.active.disabled:hover.active:focus, .datepicker table tr td span.active.disabled:hover.active:hover, .datepicker table tr td span.active.disabled:hover:active.focus, .datepicker table tr td span.active.disabled:hover:active:focus, .datepicker table tr td span.active.disabled:hover:active:hover, .datepicker table tr td span.active:active.focus,
+.datepicker table tr td span.active:active:focus,
+.datepicker table tr td span.active:active:hover,
+.datepicker table tr td span.active:hover.active.focus,
+.datepicker table tr td span.active:hover.active:focus,
+.datepicker table tr td span.active:hover.active:hover,
+.datepicker table tr td span.active:hover:active.focus,
+.datepicker table tr td span.active:hover:active:focus,
+.datepicker table tr td span.active:hover:active:hover,
+.datepicker table tr td span.active.active,
+.datepicker table tr td span.active.disabled.active,
+.datepicker table tr td span.active.disabled:active,
+.datepicker table tr td span.active.disabled:hover.active,
+.datepicker table tr td span.active.disabled:hover:active,
+.datepicker table tr td span.active:active,
+.datepicker table tr td span.active:hover.active,
+.datepicker table tr td span.active:hover:active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active.highlighted.active,
+.datepicker table tr td.active.highlighted:active,
+.datepicker table tr td.active:active,
+.datepicker table tr td.active.active.focus,
+.datepicker table tr td.active.active:focus,
+.datepicker table tr td.active.active:hover,
+.datepicker table tr td.active.highlighted.active.focus,
+.datepicker table tr td.active.highlighted.active:focus,
+.datepicker table tr td.active.highlighted.active:hover,
+.datepicker table tr td.active.highlighted:active.focus,
+.datepicker table tr td.active.highlighted:active:focus,
+.datepicker table tr td.active.highlighted:active:hover,
+.datepicker table tr td.active:active.focus,
+.datepicker table tr td.active:active:focus,
+.datepicker table tr td.active:active:hover {
+    background-color: var(--main-tpl-red);
+    border-color: var(--main-tpl-red);
+    color: var(--white);
+}
+
+/* Sliders */
+/*-----------------------------------------------------------------------*/
+
+.irs-bar {
+  height: 5px;
+  top: 25px;
+  border-top: 1px solid var(--main-tpl-red);
+  border-bottom: 1px solid var(--main-tpl-red);
+  background: var(--main-tpl-red);
+}
+
+.irs-line, .irs-bar-edge {
+  height: 5px;
+}
+
+.irs-slider {
+  top: 17px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--grey-20-darker);
+  background: var(--white);
+  border-radius: 27px;
+  /*-moz-border-radius: 27px; */
+  /* box-shadow: 1px 1px 3px rgba(0,0,0,0.3); */
+  cursor: pointer;
+}
+
+.irs-single, .irs-to, .irs-from {
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.333;
+  text-shadow: none;
+  padding: 1px 3px;
+  background: var(--main-tpl-red);
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  font-family: var(--main-fonts);
+}
+
+.irs-min, .irs-max {
+  color: var(--white);
+  font-size: 10px;
+  line-height: 1.333;
+  text-shadow: none;
+  top: 0;
+  padding: 1px 3px;
+  background: var(--white);
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
+.irs-bar-edge {
+  top: 25px;
+  width: 14px;
+  border: 1px solid var(--main-tpl-red);
+  border-right: 0;
+  background: var(--main-tpl-red);
+  border-radius: 16px 0 0 16px;
+  -moz-border-radius: 16px 0 0 16px;
+}
+
+.irs-grid {
+  position: absolute;
+  display: none;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  font-family: var(--main-fonts);
+}
+
+.irs-slider {
+  width: 15px;
+  height: 15px;
+}
+
+.irs-grid-pol.small {
+  background: var(--white);
+}
+
+/* Radio Button and Checkboxes */
+/*-----------------------------------------------------------------------*/
+
+
+/* Base formatting */
+input[type="radio"],
+input[type="radio"]:checked,
+input[type="checkbox"],
+input[type="checkbox"]:checked {
+
+  /* Remove formatting */
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  /* TPL formatting */
+  border-style: solid;
+  border-width: 2px;
+  height: 13px;
+  width: 13px;
+}
+
+/* Formatting specific to radio button */
+input[type="radio"],
+input[type="radio"]:checked {
+  border-radius: 50%;
+}
+
+/* Formatting specific to unchecked radio and checkbox button */
+input[type="radio"],
+input[type="checkbox"] {
+  background-color: var(--white);
+  border-color: var(--grey-30-darker);
+}
+
+/* Formatting specific to hover over radio/checkbox button */
+input[type="radio"]:hover,
+input[type="checkbox"]:hover {
+  background-color: var(--white);
+  border-color: var(--grey-50-darker);
+}
+
+/* Formatting specific to check radio/checkbox button */
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+  background-color: var(--main-tpl-red);
+  border-color: var(--main-tpl-red);
+}

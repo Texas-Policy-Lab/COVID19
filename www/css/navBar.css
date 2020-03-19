@@ -1,0 +1,51 @@
+/* Header */
+.skin-blue .main-header .logo:hover,
+.skin-blue .main-header .navbar,
+.skin-blue .main-header .logo {
+  background-color: var(--main-tpl-blue);
+}
+
+/* Header title */
+.skin-blue .main-header .logo {
+  color: var(--white);
+  font-family: var(--main-fonts);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Sidebar */
+.skin-blue .main-sidebar,
+.skin-blue .main-sidebar .sidebar .sidebar-menu a {
+  background-color: var(--white);
+  color: var(--grey-60-darker);
+  font-family: var(--main-fonts);
+}
+
+/* Sidebar border */
+.skin-blue .main-sidebar {
+  border-left: 1px solid var(--grey-20-darker);
+  border-right: 1px solid var(--grey-20-darker);
+  border-top: 1px solid var(--white);
+  border-bottom: 1px solid var(--white);
+}
+
+/* Sidebar hover */
+.skin-blue .main-sidebar .sidebar .sidebar-menu a:hover,
+.skin-blue .sidebar-menu li a:hover {
+  background-color: var(--white);
+  color: var(--black);
+  font-family: var(--main-fonts);
+  border-left-color: var(--white);
+  font-weight: normal;
+}
+
+.skin-blue .sidebar-menu li.active a,
+.skin-blue .sidebar-menu li:hover a {
+  color: var(--white);
+  border-left-color: var(--main-tpl-red);
+  font-weight: bold;
+}
+
+#sidebarItemExpanded > ul > li:first-child {
+  padding-top: 10px;
+}

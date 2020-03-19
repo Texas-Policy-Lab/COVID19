@@ -1,0 +1,135 @@
+.container-fluid {
+  padding: 0px;
+}
+
+footer {
+  position: relative;
+  border-top: 1px solid rgba(151,151,151,.51);
+  display: block;
+  background-color: var(--white);
+}
+
+footer .star {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  width: 4.16667%;
+  min-width: 60px;
+  height: 40px;
+  background-color: var(--white);
+}
+
+footer .star object {
+  width: 50%;
+  min-width: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+
+a.btn {
+  border: 1px solid #bf0a30;
+  padding: 12px 22px;
+  display: inline-block;
+  position: relative;
+  font-weight: 600;
+  text-align: center;
+  transition: all .3s cubic-bezier(.55,.085,0,.99);
+  float: right;
+  border-radius: 0%;
+  font-weight: bold;
+}
+
+a.btn:hover {
+  background-color: #bf0a30;
+  color: var(--white);
+}
+
+a {
+  color: var(--main-tpl-blue);
+}
+
+b, strong {
+  font-weight: 700;
+  color: var(--main-tpl-blue);
+}
+
+footer .footer_logo {
+   max-width: 33%;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 6%;
+  padding-right: 4%;
+  left: 50%;
+}
+
+footer .footer_logo-tpl {
+  max-width: 150px;
+  min-width: 150px;
+  float: left;
+  margin-top: 5px;
+  padding-left: 0 px;
+}
+
+footer .footer_copyright {
+  max-width: 33%;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 4%;
+  padding-right: 4%;
+  text-align: center;
+  margin: auto;
+  width: 50%;
+}
+
+footer .footer_contact {
+  max-width: 33%;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 4%;
+  padding-right: 4%;
+  text-align: center;
+  margin: auto;
+  width: 50%;
+  right: 50%;
+}
+
+footer .first-row .g-row {
+  width: 100%;
+}
+
+.g-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.g-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
+}
+
+footer .first-row {
+  display: flex;  
+  flex-wrap: wrap;
+  padding: 25px 0;
+}
+
+footer .footer_contact p {
+  margin: 0px;
+}
+

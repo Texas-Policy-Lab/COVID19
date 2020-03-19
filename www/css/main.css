@@ -1,0 +1,21 @@
+:root {
+
+/* TPL theme colors */
+  --main-tpl-blue: #151348;
+  --main-tpl-red: #e54e4d;
+  --main-tpl-red2: #bf0a30;
+  --main-tpl-purpleblue: #5e5290;
+  --main-fonts: "proxima-nova", "Arial", "sans-serif", "Times New Roman";
+  --sub-fonts: "chaparral-pro", "Times", "serif";
+
+/* Grey scale*/
+  --grey-10-darker: #E6E6E6;
+  --grey-20-darker: #CCCCCC;
+  --grey-30-darker: #B3B3B3;
+  --grey-50-darker: #808080;
+  --grey-60-darker: #666666;
+
+/* Standard colors */
+  --black: #000000;
+  --white: #ffffff;
+}
