@@ -5,18 +5,14 @@ favicon: "images/favicon.png"
 
 ui:
   dashboardtitle:
-    title: "Dashboard XXX"
+    title: "COVID 19"
     wide: 350
   tabs:
     tab1:
-      menu_title: "Tab 1"
-      icon: "home"
-      page_title: "Tab 1"
+      menu_title: "State Level Data"
+      icon: ""
+      page_title: "State Level Data"
     tab2:
-      menu_title: "Tab 2"
-      icon:  "dashboard"
-      page_title: "Tab 2"
-    tab3:
-      menu_title: "Tab 3"
-      icon: "chart-bar"
-      page_title: "Tab 3"
+      menu_title: "County Level Data"
+      icon:  ""
+      page_title: "County Level Data"
