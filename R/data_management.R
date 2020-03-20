@@ -1,7 +1,14 @@
 create_data <- function(...) UseMethod("create_data")
 
-create_data.default <- function(confirmed_df, deaths_df, ...) {
+create_data.default <- function(...) {
 
+  confirmed_df <- usa_facts_data.confirmed() %>% 
+    tidyr::gather(Date, confirmed, -c(countyFIPS, `County Name`, State, stateFIPS))
+  
+  deaths_df <- usa_facts_data.deaths() %>% 
+    dplyr::rename(countyFIPS = countyFIP) %>% 
+    tidyr::gather(Date, deaths, -c(countyFIPS, `County Name`, State, stateFIPS))
+  
   df <- confirmed_df %>%
     dplyr::left_join(deaths_df) %>%
     dplyr::mutate(Date = gsub("X", "", Date)
@@ -52,7 +59,11 @@ create_data.usa <- function(confirmed_df, deaths_df) {
 
 fips_xwalk <- function(geocodes) UseMethod("fips_xwalk")
 
-fips_xwalk.state <- function(geocodes) {
+fips_xwalk.state <- function(geocodes_pth = "./data/census/geocodes.csv") {
+  
+  geocodes <- read.csv(here::here(geocodes_pth),
+                       fileEncoding="latin1",
+                       stringsAsFactors = FALSE)
   
   geocodes %>%
     dplyr::filter(SummaryLevel == 40) %>% 
