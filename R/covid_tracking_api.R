@@ -1,4 +1,7 @@
-
+#' @title Download testing
+#' @description Downloads the testing data from the Covid Tracking Project (https://covidtracking.com/)
+#' @param url the url to get the data from
+#' @export
 testing <- function(url = "https://covidtracking.com/api/states/daily") {
   
   df <- jsonlite::fromJSON(url, simplifyDataFrame = TRUE) %>% 
