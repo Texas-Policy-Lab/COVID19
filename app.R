@@ -15,11 +15,16 @@ deaths <- usa_facts_data.deaths() %>%
   dplyr::rename(countyFIPS = countyFIP) %>% 
   tidyr::gather(Date, deaths, -c(countyFIPS, `County Name`, State, stateFIPS))
 
+geocodes <- read.csv(here::here("./data/census/geocodes.csv"),
+                 fileEncoding="latin1",
+                 stringsAsFactors = FALSE)
+
 county <- create_data.county(confirmed_df = confirmed,
                              deaths_df = deaths)
 
 state <- create_data.state(confirmed_df = confirmed,
-                           deaths_df = deaths)
+                           deaths_df = deaths,
+                           geocodes = geocodes)
 
 usa <- create_data.usa(confirmed_df = confirmed,
                        deaths_df = deaths)
