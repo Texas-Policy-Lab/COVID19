@@ -8,7 +8,6 @@ create_data.default <- function(...) {
     tidyr::gather(Date, confirmed, -c(countyFIPS, `County Name`, State, stateFIPS))
 
   deaths_df <- usa_facts_data.deaths() %>% 
-    dplyr::rename(countyFIPS = countyFIP) %>% 
     tidyr::gather(Date, deaths, -c(countyFIPS, `County Name`, State, stateFIPS))
 
   df <- confirmed_df %>%
@@ -27,8 +26,11 @@ create_data.county <- function(...) {
     dplyr::arrange(Date, State) %>%
     dplyr::left_join(census.county_pop()) %>%
     dplyr::mutate(confirm_per_100k = (confirmed/pop)*100000
-                  ,death_per100k = (deaths/pop)*100000)
+                 ,death_per100k = (deaths/pop)*100000) %>% 
+    dplyr::group_by(stateFIPS, countyFIPS, Date)
 
+  write.csv(county, file.path("data", "county.csv"), row.names = FALSE)
+  
   return(county)
 }
 
@@ -51,6 +53,8 @@ create_data.state <- function(...) {
 
   state[is.na(state)] <- 0
 
+  write.csv(state, file.path("data", "state.csv"), row.names = FALSE)
+  
   return(state)
 }
 
@@ -63,6 +67,9 @@ create_data.usa <- function(...) {
     dplyr::group_by(Date) %>%
     dplyr::summarise(deaths = sum(deaths)
                      ,confirmed = sum(confirmed))
+  
+  write.csv(usa, file.path("data", "usa.csv"), row.names = FALSE)
+  
   return(usa)
 }
 
