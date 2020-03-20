@@ -1,3 +1,5 @@
+#' @title Parse USAFacts
+#' @description Parses USAFacts page and returns two CSV urls (confirmed and deaths)
 parse_site <- function() {
   
   usa_facts_url <-
@@ -18,11 +20,10 @@ parse_site <- function() {
   
 }
 
-## CSV urls
-# covid_confirmed_url <- "https://static.usafacts.org/public/data/covid-19/covid_confirmed_usafacts.csv?_ga=2.78308380.902150832.1584655257-679521212.1584655257"
-# covid_deaths_url <- "https://static.usafacts.org/public/data/covid-19/covid_deaths_usafacts.csv?_ga=2.74786458.902150832.1584655257-679521212.1584655257"
 
 create_confirmed_data <- function(url) {
+  
+  # covid_confirmed_url <- "https://static.usafacts.org/public/data/covid-19/covid_confirmed_usafacts.csv?_ga=2.78308380.902150832.1584655257-679521212.1584655257"
   
   covid_confirmed <- readr::read_csv(url)
   
@@ -32,12 +33,16 @@ create_confirmed_data <- function(url) {
 
 create_deaths_data <- function(url) {
   
+  # covid_deaths_url <- "https://static.usafacts.org/public/data/covid-19/covid_deaths_usafacts.csv?_ga=2.74786458.902150832.1584655257-679521212.1584655257"
+  
   covid_deaths <- readr::read_csv(url)
   
   utils::write.csv(covid_deaths, here::here("./data/usafacts/covid_deaths_TEST.csv"))
   
 }
 
-parse_site()
-create_deaths_data(deaths)
-create_confirmed_data(confirmed)
+## run the following to create CSVs in the data folder
+## this does not clean the CSVs
+# parse_site()
+# create_deaths_data(deaths)
+# create_confirmed_data(confirmed)
