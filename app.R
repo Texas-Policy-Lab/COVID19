@@ -8,17 +8,6 @@ sapply(list.files("R", full.names = TRUE, recursive = TRUE), source, .GlobalEnv)
 
 config <- yaml::read_yaml("./mainDashboard.yaml")
 
-confirmed <- usa_facts_data.confirmed() %>% 
-  tidyr::gather(Date, confirmed, -c(countyFIPS, `County Name`, State, stateFIPS))
-
-deaths <- usa_facts_data.deaths() %>% 
-  dplyr::rename(countyFIPS = countyFIP) %>% 
-  tidyr::gather(Date, deaths, -c(countyFIPS, `County Name`, State, stateFIPS))
-
-geocodes <- read.csv(here::here("./data/census/geocodes.csv"),
-                 fileEncoding="latin1",
-                 stringsAsFactors = FALSE)
-
 county <- create_data.county(confirmed_df = confirmed,
                              deaths_df = deaths)
 
