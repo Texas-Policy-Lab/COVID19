@@ -1,4 +1,5 @@
 #' @title Creates data
+#' @export
 create_data <- function(...) UseMethod("create_data")
 
 create_data.default <- function(...) {
@@ -19,6 +20,7 @@ create_data.default <- function(...) {
 }
 
 #' @title Create county level data
+#' @export
 create_data.county <- function(...) {
 
   county <- create_data.default() %>%
@@ -31,6 +33,7 @@ create_data.county <- function(...) {
 }
 
 #' @title Create state level data
+#' @export
 create_data.state <- function(...) {
 
   state <- create_data.default() %>%
@@ -52,6 +55,7 @@ create_data.state <- function(...) {
 }
 
 #' @title Create usa-level data
+#' @export
 create_data.usa <- function(...) {
 
   usa <- create_data.default() %>%
@@ -66,6 +70,8 @@ create_data.usa <- function(...) {
 #' @export
 fips_xwalk <- function(geocodes) UseMethod("fips_xwalk")
 
+#' @title Creates FIPS crosswalk
+#' @description Creates the FIPS crosswalk between FIPS codes and state names
 #' @param geocodes_pth string. The path to the geocodes data.
 fips_xwalk.state <- function(geocodes_pth = "./data/census/geocodes.csv") {
 
