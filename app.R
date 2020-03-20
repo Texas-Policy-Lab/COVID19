@@ -8,15 +8,11 @@ sapply(list.files("R", full.names = TRUE, recursive = TRUE), source, .GlobalEnv)
 
 config <- yaml::read_yaml("./mainDashboard.yaml")
 
-county <- create_data.county(confirmed_df = confirmed,
-                             deaths_df = deaths)
+county <- create_data.county()
 
-state <- create_data.state(confirmed_df = confirmed,
-                           deaths_df = deaths,
-                           geocodes = geocodes)
+state <- create_data.state()
 
-usa <- create_data.usa(confirmed_df = confirmed,
-                       deaths_df = deaths)
+usa <- create_data.usa()
 
 ui <- tpl_ui(title = config$ui$dashboardtitle$title
             ,tabs = config$ui$tabs
