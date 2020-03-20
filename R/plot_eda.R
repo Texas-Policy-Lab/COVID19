@@ -61,7 +61,6 @@
 #   ggplot(aes(x = Date, y = confirmed, fill = County.Name)) +
 #   geom_col(position = "stack") +
 #   scale_x_date(limits = c(plot_start_date, max_date))
-# 
 # tx_counties <- map_data("county") %>% filter(region == "texas") %>% mutate(subregion = str_to_title(subregion))
 # tx_county_stats <- county %>% 
 #   filter(State == "TX") %>% 
@@ -97,4 +96,4 @@
 #   axis.line = ggplot2::element_blank(),
 #   legend.margin = ggplot2::margin(t = 6L, r = 6L, b = 6L)
 # )
-# 
+#

@@ -1,48 +1,46 @@
-#' @title Parse USAFacts
-#' @description Parses USAFacts page and returns two CSV urls (confirmed and deaths)
-parse_site <- function() {
+usa_facts_data <- function(...) UseMethod("usa_facts_data")
+
+#' @title Get USAFacts
+#' @description Get USAFacts and download the data
+#' @param url string. The url to the usafacts.org data default ("https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/")
+#' @param confirmed string. The name of the confirmed deaths csv file which will be downloaded.
+#' @param deaths string. The name of the confirmed deaths csv file which will be downloaded.
+#' @export
+usa_facts_data.default <- function(url = "https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/",
+                                   csv_name = NULL) {
   
-  usa_facts_url <-
-    "https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/"
-  
-  site <- xml2::read_html(usa_facts_url)
-  
+  site <- xml2::read_html(url)
+
   links <- site %>%
     rvest::html_nodes(".ts-rich-text a") %>%
     rvest::html_attr("href")
-  
+
   csvs <- links[stringr::str_detect(links, ".csv")]
+
+  url <- csvs[stringr::str_detect(csvs, csv_name)]
+
+  df <- readr::read_csv(url)
   
-  confirmed <-
-    csvs[stringr::str_detect(csvs, "covid_confirmed_usafacts.csv")]
-  deaths <-
-    csvs[stringr::str_detect(csvs, "covid_deaths_usafacts.csv")]
+  utils::write.csv(df, here::here("./data/usafacts/", csv_name))
   
+  return(df)
+
 }
 
+#' @title Get USAFacts: confirmed data
+#' @description Calls the usa_facts_data.default functions, downloads and writes data to data/usafacts 
+#' @param csv_name string. Default is "covid_confirmed_usafacts.csv"
+#' @export
+usa_facts_data.confirmed <- function(csv_name = "covid_confirmed_usafacts.csv") {
 
-create_confirmed_data <- function(url) {
-  
-  # covid_confirmed_url <- "https://static.usafacts.org/public/data/covid-19/covid_confirmed_usafacts.csv?_ga=2.78308380.902150832.1584655257-679521212.1584655257"
-  
-  covid_confirmed <- readr::read_csv(url)
-  
-  utils::write.csv(covid_confirmed, here::here("./data/usafacts/covid_confirmed_TEST.csv"))
-  
+  usa_facts_data.default(csv_name = csv_name)
 }
 
-create_deaths_data <- function(url) {
-  
-  # covid_deaths_url <- "https://static.usafacts.org/public/data/covid-19/covid_deaths_usafacts.csv?_ga=2.74786458.902150832.1584655257-679521212.1584655257"
-  
-  covid_deaths <- readr::read_csv(url)
-  
-  utils::write.csv(covid_deaths, here::here("./data/usafacts/covid_deaths_TEST.csv"))
-  
-}
+#' @title Get USAFacts: deaths data
+#' @description Calls the usa_facts_data.default functions, downloads and writes data to data/usafacts 
+#' @param csv_name string. Default is "covid_deaths_usafacts.csv"
+#' @export
+usa_facts_data.deaths <- function(csv_name = "covid_deaths_usafacts.csv") {
 
-## run the following to create CSVs in the data folder
-## this does not clean the CSVs
-# parse_site()
-# create_deaths_data(deaths)
-# create_confirmed_data(confirmed)
+  usa_facts_data.default(csv_name = csv_name)
+}
