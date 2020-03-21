@@ -2,7 +2,7 @@ stateName,country,Date,label
 ,Italy,1/30/2020,First confirmed case
 ,Italy,2/22/2020,"Government announces decree imposing quarantine of more than 50,000 people from 11 different municipalities in Northern Italy"
 ,Italy,3/4/2020,Nationwide shutdown of all schools and universities 
-,Italy,3/8/2020,"Enacts forced quarantine (lockdown)  for region of Lombardy, nearly a quarter of its population (travel restrictions and ban on all public gatherings)"
+,Italy,3/8/2020,"Enacts forced quarantine (lockdown) for region of Lombardy, nearly a quarter of its population (travel restrictions and ban on all public gatherings)"
 ,Italy,3/10/2020,Extends emergency coronavirus measures to entire country and places all 60 million residents on lockdown (travel restrictions and ban on all public gatherings)
 ,Italy,3/17/2020,"Reports 475 deaths, highest single-day death toll for any country since outbreak began"
 ,China,12/10/2019,One of the earliest known coronavirus patients reports feeling ill
@@ -10,9 +10,9 @@ stateName,country,Date,label
 ,China,12/31/2019,Chinese officials inform WHO about cluster of 41 patients with mysterious pneumonia
 ,China,1/7/2020,Novel coronavirus identified
 ,China,1/11/2020,First death reported
-,China,1/23/2020,Wuhan and three other cities placed under quarantine
-,China,1/24/2020,Hubei province placed under quarantine; lockdown extended to cover 36 million people and new hospital in Wuhan begins to be built
-,China,1/30/2020,WHO declares global public health emergency
+,China,1/23/2020,Wuhan and three other chinese cities placed under quarantine
+,China,1/24/2020,Hubei province placed under quarantine (36 million people) and new hospital in Wuhan begins to be built
+,,1/30/2020,WHO declares global public health emergency
 ,China,2/9/2020,Death toll surpasses that of 2002-2003 SARS epidemic with 811 deaths recorded
 ,US,1/21/2020,"First US case confirmed in Snohomish County, Washington"
 ,US,1/31/2020,Trump bans foreign nationals from entering the US if they were in China within the prior two weeks
