@@ -1,0 +1,37 @@
+stateName,county,Date,label
+,Italy,1/30/2020,First confirmed case
+,Italy,2/22/2020,"Government announces decree imposing quarantine of more than 50,000 people from 11 different municipalities in Northern Italy"
+,Italy,3/4/2020,Nationwide shutdown of all schools and universities 
+,Italy,3/8/2020,"Enacts forced quarantine (lockdown)  for region of Lombardy, nearly a quarter of its population (travel restrictions and ban on all public gatherings)"
+,Italy,3/10/2020,Extends emergency coronavirus measures to entire country and places all 60 million residents on lockdown (travel restrictions and ban on all public gatherings)
+,Italy,3/17/2020,"Reports 475 deaths, highest single-day death toll for any country since outbreak began"
+,China,12/10/2019,One of the earliest known coronavirus patients reports feeling ill
+,China,12/27/2019,Wuhan health officials are told about the new coronavirus 
+,China,12/31/2019,Chinese officials inform WHO about cluster of 41 patients with mysterious pneumonia
+,China,1/7/2020,Novel coronavirus identified
+,China,1/11/2020,First death reported
+,China,1/23/2020,Wuhan and three other cities placed under quarantine
+,China,1/24/2020,Hubei province placed under quarantine; lockdown extended to cover 36 million people and new hospital in Wuhan begins to be built
+,China,1/30/2020,WHO declares global public health emergency
+,China,2/9/2020,Death toll surpasses that of 2002-2003 SARS epidemic with 811 deaths recorded
+,US,1/21/2020,"First US case confirmed in Snohomish County, Washington"
+,US,1/31/2020,Trump bans foreign nationals from entering the US if they were in China within the prior two weeks
+,US,2/29/2020,First death reported
+,US,3/11/2020,Trump bans all travel from 26 European countries
+,US,3/13/2020,US national emergency is declared
+,US,3/19/2020,Nearly all US states declare state of emergency 
+California,US,2/10/2020,Santa Clara County declares state of emergency
+California,US,2/25/2020,San Francisco declares city emergency
+California,US,3/4/2020,First death in California reported
+California,US,3/4/2020,California declares state emergency
+California,US,3/12/2020,California recommends canceling gatherings over 250 people (not mandated)
+California,US,3/15/2020,California announces all bars and wineries are to close
+California,US,3/19/2020,California orders “shelter-in-place” mandate
+New York,US,3/7/2020,New York declares state of emergency
+New York,US,3/12/2020,New York bans gatherings of more than 500 people
+New York,US,3/14/2020,First death in New York reported
+New York,US,3/20/2020,New York orders mandate akin to “shelter-in-place”
+Texas,US,3/13/2020,Texas declares state of emergency
+Texas,US,3/16/2020,First death in Texas reported
+Washington,US,1/21/2020,"First US case confirmed in Snohomish County, Washington"
+Washington,US,2/29/2020,First death in Washington reported
