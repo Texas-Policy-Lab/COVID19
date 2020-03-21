@@ -3,7 +3,7 @@
 #' @param url the url to get the data from
 #' @export
 testing <- function(url = "https://covidtracking.com/api/states/daily") {
-  
+
   df <- jsonlite::fromJSON(url, simplifyDataFrame = TRUE) %>% 
     dplyr::rename(State = state,
                   total_tests = total) %>% 

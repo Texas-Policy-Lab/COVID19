@@ -14,6 +14,8 @@ state <- create_data.state()
 
 usa <- create_data.usa()
 
+world <- create_data.world()
+
 ui <- tpl_ui(title = config$ui$dashboardtitle$title
             ,tabs = config$ui$tabs
             ,js_pth = list.files(config$js, full.names = TRUE)
