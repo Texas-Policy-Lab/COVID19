@@ -47,8 +47,8 @@ create_data.state <- function(...) {
     dplyr::left_join(census.state_pop()) %>%
     dplyr::left_join(testing()) %>%
     dplyr::mutate(confirm_per_100k = (confirmed/pop)*100000
-                  ,deaths_per100k = (deaths/pop)*100000
-                  ,tests_per_100k = (total_tests/pop)*100000
+                 ,deaths_per100k = (deaths/pop)*100000
+                 ,tests_per_100k = (total_tests/pop)*100000
     )
 
   state[is.na(state)] <- 0
