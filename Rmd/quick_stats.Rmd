@@ -44,7 +44,7 @@ world_data_source <- "Johns Hopkins Center for Systems Science and Engineering  
 
 #### Timelines
 
-The following graphs show the timelines of when different countries tried different interventions over time. One [article](https://theconversation.com/how-to-flatten-the-curve-of-coronavirus-a-mathematician-explains-133514) suggests that the number of people with COVID-19 is doubling every 6 days. China is one of a few countries who has been successful in "flattening the curve". On January 23rd, 2020 they implemented one of the most extreme interventions - quarantine in Wuhan and three other cities. On January 24th, 2020 the Chinese government expanded the quarantine to the entire Hubei province. It wasn't until XXX days after the quarantine was implemented that scientists agreed China had successfully flattened the curve.
+The following graphs show the timelines of when different countries tried different interventions over time. One article suggests that the number of people with COVID-19 is doubling every 6 days.[10] China is one of a few countries who has been successful in "flattening the curve". On January 23rd, 2020 they implemented one of the most extreme interventions - quarantine in Wuhan and three other cities. On January 24th, 2020 the Chinese government expanded the quarantine to the entire Hubei province. It wasn't until XXX days after the quarantine was implemented that scientists agreed China had successfully flattened the curve.
 
 ##### United States
 
@@ -139,8 +139,10 @@ In the US, differences in testing and restrictive measures taken by individual s
 [6 Wall Street Journal: New York State Has First Coronavirus Deaths](https://www.wsj.com/articles/new-york-state-has-first-coronavirus-death-11584198758)
  
 [7 Chron: Matagorda County reports first coronavirus-related death in Texas](https://www.chron.com/news/houston-texas/houston/article/matagorda-county-first-coronavirus-death-15136253.php)
- 
+
 [8 NPR: U.S. Coronavirus Testing Starts To Ramp Up But Still Lags](https://www.npr.org/sections/health-shots/2020/03/18/817768723/u-s-coronavirus-testing-starts-to-ramp-up-but-still-lags)
  
 [9 Our World in Data: How many tests for COVID-19 are being performed around the world?](https://ourworldindata.org/covid-testing)
+
+[10 The Conversation](https://theconversation.com/how-to-flatten-the-curve-of-coronavirus-a-mathematician-explains-133514)
 
