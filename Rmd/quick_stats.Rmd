@@ -44,7 +44,7 @@ world_data_source <- "Johns Hopkins Center for Systems Science and Engineering  
 
 #### Timelines
 
-The following graphs show the timelines of when different countries tried different interventions over time. One [article](https://theconversation.com/how-to-flatten-the-curve-of-coronavirus-a-mathematician-explains-133514) suggests that the number of people with COVID-19 is doubling every 6 days. China is one of a few countries who has been successful in "flattening the curve". On January 23rd, 2020 they implemented one of the most extreme interventions - quarantine in Wuhan and three other cities. On January 24th, 2020 the Chinese government expanded the quarantine to the entire Hubei province. It wasn't until 
+The following graphs show the timelines of when different countries tried different interventions over time. One [article](https://theconversation.com/how-to-flatten-the-curve-of-coronavirus-a-mathematician-explains-133514) suggests that the number of people with COVID-19 is doubling every 6 days. China is one of a few countries who has been successful in "flattening the curve". On January 23rd, 2020 they implemented one of the most extreme interventions - quarantine in Wuhan and three other cities. On January 24th, 2020 the Chinese government expanded the quarantine to the entire Hubei province. It wasn't until XXX days after the quarantine was implemented that scientists agreed China had successfully flattened the curve.
 
 ##### United States
 
