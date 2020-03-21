@@ -108,21 +108,23 @@ create_data.usa <- function(write = FALSE, ...) {
 
 #' @title Create data nation-level data
 #' @export
-create_data.world <- function(write = FALSE,...) {
+create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...) {
 
   world <- csse_data.confirmed() %>%
     dplyr::left_join(csse_data.deaths()) %>%
     dplyr::ungroup() %>% 
     dplyr::rename(country = Country.Region) %>% 
     dplyr::mutate(Date = gsub("X", "", Date)
-                  ,Date = gsub("[.]", "/", Date)
-                  ,Date = lubridate::mdy(Date)) %>% 
+                 ,Date = gsub("[.]", "/", Date)
+                 ,Date = lubridate::mdy(Date)) %>% 
     dplyr::arrange(Date, country) %>% 
     dplyr::group_by(country) %>% 
     dplyr::mutate(confirmed_lag = dplyr::lag(confirmed)
                  ,deaths_lag = dplyr::lag(deaths)
                  ,pct_chg_confirmed = ((confirmed - confirmed_lag)/confirmed)*100
-                 ,pct_chg_deaths = ((deaths - deaths_lag)/deaths)*100)
+                 ,pct_chg_deaths = ((deaths - deaths_lag)/deaths)*100
+                 ,ndayssince100 = Date - day100) %>%
+    dplyr::left_join(timeline())
 
   if(write) {
     write.csv(world, file.path("data", "world.csv"), row.names = FALSE)
@@ -149,4 +151,14 @@ fips_xwalk.state <- function(geocodes_pth = "./data/census/geocodes.csv") {
     dplyr::filter(SummaryLevel == 40) %>% 
     dplyr::select(stateFIPS, label) %>% 
     dplyr::rename(stateName = label)
+}
+
+timeline <- function(pth = here::here("./data/covid_timeline.csv")) {
+
+  readr::read_csv(pth) %>% 
+    dplyr::mutate(Date = lubridate::mdy(Date),
+                  label = paste(lubridate::month(Date, label = TRUE, abbr = TRUE),
+                                " ", lubridate::day(Date), ", ", lubridate::year(Date), ": ", label, sep = ""),
+                  label = stringi::stri_enc_toutf8(label))
+
 }
