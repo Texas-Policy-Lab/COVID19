@@ -72,8 +72,8 @@ create_data.state <- function(write = FALSE, ...) {
                  ,pct_chg_confirmed = ((confirmed - confirmed_lag)/confirmed)*100
                  ,pct_chg_deaths = ((deaths - deaths_lag)/deaths)*100
                  ,pct_chg_tests = ((total_tests - tests_lag)/total_tests)*100
-                 ,pct_chg_tests = ((positive - positive_lag)/positive)*100
-                 ,pct_chg_tests = ((negative - negative_lag)/negative)*100
+                 ,pct_chg_postive = ((positive - positive_lag)/positive)*100
+                 ,pct_chg_negative = ((negative - negative_lag)/negative)*100
     )
 
   # state[is.na(state)] <- 0
@@ -93,7 +93,13 @@ create_data.usa <- function(write = FALSE, ...) {
     dplyr::arrange(Date, State) %>%
     dplyr::group_by(Date) %>%
     dplyr::summarise(deaths = sum(deaths)
-                     ,confirmed = sum(confirmed))
+                    ,confirmed = sum(confirmed)) %>% 
+    dplyr::arrange(Date) %>% 
+    dplyr::mutate(confirmed_lag = dplyr::lag(confirmed)
+                 ,deaths_lag = dplyr::lag(deaths)
+                 ,pct_chg_confirmed = ((confirmed - confirmed_lag)/confirmed)*100
+                 ,pct_chg_deaths = ((deaths - deaths_lag)/deaths)*100)
+    
   if(write) {
     write.csv(usa, file.path("data", "usa.csv"), row.names = FALSE)
   }
@@ -107,10 +113,16 @@ create_data.world <- function(write = FALSE,...) {
   world <- csse_data.confirmed() %>%
     dplyr::left_join(csse_data.deaths()) %>%
     dplyr::ungroup() %>% 
-    dplyr::rename(county = Country.Region) %>% 
+    dplyr::rename(country = Country.Region) %>% 
     dplyr::mutate(Date = gsub("X", "", Date)
                   ,Date = gsub("[.]", "/", Date)
-                  ,Date = lubridate::mdy(Date))
+                  ,Date = lubridate::mdy(Date)) %>% 
+    dplyr::arrange(Date, country) %>% 
+    dplyr::group_by(country) %>% 
+    dplyr::mutate(confirmed_lag = dplyr::lag(confirmed)
+                 ,deaths_lag = dplyr::lag(deaths)
+                 ,pct_chg_confirmed = ((confirmed - confirmed_lag)/confirmed)*100
+                 ,pct_chg_deaths = ((deaths - deaths_lag)/deaths)*100)
 
   if(write) {
     write.csv(world, file.path("data", "world.csv"), row.names = FALSE)
