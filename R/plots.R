@@ -1,4 +1,4 @@
-line_chart <- function(...) UseMethod ("graph")
+line_chart <- function(...) UseMethod ("line_chart")
 
 #' @param df dataframe. The dataframe use
 #' @param x string. The name of the x variable.
@@ -74,7 +74,6 @@ line_chart.default <- function(df = NULL,
   gg <- gg +
     geom_point() +
     geom_line() +
-    # scale_color_manual(values = as.vector(tpltheme::palette_tpl_main)) +
     labs(title = title,
          x = x_lab,
          y = y_lab,
@@ -129,18 +128,6 @@ line_chart.china <- function(china,
                            x_lab = x_lab, y_lab = y_lab, legend_lab = legend_lab,
                            annotation_text_size = annotation_text_size,
                            label = label)
-  
- 
-  # gg <- gg +
-  #   annotate(geom="text", x = quarantineWuhan$Date, y = quarantineWuhan$confirmed, 
-  #            label="Wuhan and three other cities placed under quarantine", size = annotation_text_size) +
-  #   annotate(geom="point", x = quarantineWuhan$Date, y = quarantineWuhan$confirmed,
-  #            size=1, shape=21, fill="transparent") +
-  #   annotate(geom="text", x = quarantineHubei$Date, y = quarantineHubei$confirmed, 
-  #            label="Wuhan and three other cities placed under quarantine", size = annotation_text_size) +
-  #   annotate(geom="point", x = quarantineHubei$Date, y = quarantineHubei$confirmed,
-  #            size=1, shape=21, fill="transparent")
-  # 
   return(gg)
 }
 
@@ -175,16 +162,165 @@ pandemic_declared <- function(gg, df,
   return(gg)
 }
 
-text_format <- function(gg, hjust = 0, nudge_x = 8, box_padding = .5) {
+text_format <- function(gg,
+                        size = NULL, 
+                        hjust = NULL, 
+                        nudge_x = NULL,
+                        box_padding = NULL,
+                        point.padding = NULL,
+                        direction = NULL) {
   
-  gg <- gg +
-    geom_text_repel(size = 3,
+  gg +
+    ggrepel::geom_text_repel(size = size,
                     hjust = hjust,
                     nudge_x = nudge_x,
                     box.padding = box_padding,
                     na.rm = TRUE,
-                    point.padding = .2,
-                    direction = "y")
+                    point.padding = point.padding,
+                    direction = direction)
+}
+
+timeline <- function(...) UseMethod ("timeline")
+
+timeline.default <- function(df,
+                             countryName = NULL,
+                             stateName = NULL,
+                             color = "#e54e4d",
+                             y_lab = "Confirmed cases",
+                             x_lab = "Date",
+                             title = NULL,
+                             size = 3, 
+                             hjust = 0, 
+                             nudge_x = 8,
+                             box_padding = .5,
+                             point.padding = .2,
+                             direction = "y",
+                             str_width = 65,
+                             usafacts_source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)",
+                             census_source = "Population data: 2018 American Community Survey 5-year Estimates",
+                             covid_tracking_source = "Testing data: The Covid Tracking Project (https://covidtracking.com/)",
+                             world_data_source ="Johns Hopkins Center for Systems Science and Engineering  (https://github.com/CSSEGISandData/COVID-19)") {
+
+  if(!is.null(countryName)) {
+    df <- df %>% 
+      dplyr::filter(country == countryName)
   
-  return(gg)
+  }
+
+  if(!is.null(stateName)) {
+    df <- df %>% 
+      dplyr::filter(stateName == stateName)
+    
+  }
+
+  gg <- ggplot2::ggplot(df,
+                        ggplot2::aes(x = Date,
+                                     y = confirmed,
+                                     label = stringr::str_wrap(label,
+                                                               width = str_width))) + 
+    ggplot2::geom_point(color = color) +
+    ggplot2::geom_line() +
+    ggplot2::labs(y = y_lab,
+                  x = x_lab,
+                  caption = paste("Source:", world_data_source),
+                  title = title)
+
+  gg <- text_format(gg = gg,
+                    size = size, 
+                    hjust = hjust, 
+                    nudge_x = nudge_x,
+                    box_padding = box_padding,
+                    point.padding = point.padding,
+                    direction = direction)
+
+  gg <- pandemic_declared(gg = gg, df = df)
+
+  print(gg)
+}
+
+timeline.china <- function(df, 
+                           countryName = "China",
+                           title = "Confirmed cases in China over time") {
+  timeline(df = df,
+           country = countryName,
+           title = title)
+}
+
+timeline.italy <- function(df, 
+                           countryName = "Italy",
+                           title = "Confirmed cases in Italy over time",
+                           str_width = 100,
+                           hjust = 1,
+                           nudge_x = 20,
+                           box_padding = 1) {
+
+  timeline(df = df,
+           country = countryName,
+           title = title,
+           str_width = str_width,
+           hjust = hjust,
+           nudge_x = nudge_x,
+           box_padding = box_padding)
+}
+
+timeline.us <- function(df, 
+                        countryName = "US",
+                        title = "Confirmed cases in the United States over time",
+                        hjust = 1,
+                        nudge_x = 20) {
+  
+  timeline(df = df,
+           country = countryName,
+           title = title,
+           hjust = hjust,
+           nudge_x = nudge_x)
+}
+
+timeline.tx <- function(df, 
+                        stateName = "Texas",
+                        title = "Confirmed cases in the state of Texas over time",
+                        hjust = 1,
+                        nudge_x = 20,
+                        box_padding = 1) {
+  
+  timeline(df = df,
+           state = stateName,
+           title = title,
+           hjust = hjust,
+           nudge_x = nudge_x,
+           box_padding = box_padding)
+}
+
+timeline.ca <- function(df, 
+                        countryName = "California",
+                        title = "Confirmed cases in the state of California over time",
+                        str_width = 100,
+                        hjust = 1,
+                        nudge_x = 20,
+                        box_padding = 1) {
+  
+  timeline(df = df,
+           country = countryName,
+           title = title,
+           str_width = str_width,
+           hjust = hjust,
+           nudge_x = nudge_x,
+           box_padding = box_padding)
+}
+
+timeline.ny <- function(df, 
+                        countryName = "New York",
+                        title = "Confirmed cases in the state of New York over time",
+                        str_width = 100,
+                        hjust = 1,
+                        nudge_x = 20,
+                        box_padding = 1) {
+  
+  timeline(df = df,
+           country = countryName,
+           title = title,
+           str_width = str_width,
+           hjust = hjust,
+           nudge_x = nudge_x,
+           box_padding = box_padding)
 }
