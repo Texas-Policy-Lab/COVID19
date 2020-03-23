@@ -75,7 +75,7 @@ create_data.state <- function(write = FALSE, ...) {
                  ,pct_chg_postive = ((positive - positive_lag)/positive)*100
                  ,pct_chg_negative = ((negative - negative_lag)/negative)*100
     ) %>% 
-    dplyr::left_join(timeline())
+    dplyr::left_join(timeline_data())
 
   # state[is.na(state)] <- 0
 
@@ -125,7 +125,7 @@ create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
                  ,pct_chg_confirmed = ((confirmed - confirmed_lag)/confirmed)*100
                  ,pct_chg_deaths = ((deaths - deaths_lag)/deaths)*100
                  ,ndayssince100 = Date - day100) %>%
-    dplyr::left_join(timeline())
+    dplyr::left_join(timeline_data())
 
   if(write) {
     write.csv(world, file.path("data", "world.csv"), row.names = FALSE)
@@ -154,7 +154,7 @@ fips_xwalk.state <- function(geocodes_pth = "./data/census/geocodes.csv") {
     dplyr::rename(stateName = label)
 }
 
-timeline <- function(pth = here::here("./data/covid_timeline.csv")) {
+timeline_data <- function(pth = here::here("./data/covid_timeline.csv")) {
 
   readr::read_csv(pth) %>% 
     dplyr::mutate(Date = lubridate::mdy(Date),
