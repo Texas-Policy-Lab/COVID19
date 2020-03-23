@@ -74,7 +74,8 @@ create_data.state <- function(write = FALSE, ...) {
                  ,pct_chg_tests = ((total_tests - tests_lag)/total_tests)*100
                  ,pct_chg_postive = ((positive - positive_lag)/positive)*100
                  ,pct_chg_negative = ((negative - negative_lag)/negative)*100
-    )
+    ) %>% 
+    dplyr::left_join(timeline())
 
   # state[is.na(state)] <- 0
 
