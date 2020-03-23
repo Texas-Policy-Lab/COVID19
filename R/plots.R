@@ -144,17 +144,34 @@ line_chart.china <- function(china,
   return(gg)
 }
 
-pandemic_declared <- function(gg, df) {
+pandemic_declared <- function(gg, df, 
+                              text1 = "WHO announces that the new coronavirus disease will be called 'COVID-19'",
+                              text2 = "WHO declares outbreak a pandemic",
+                              text3 = "Federal plan leaked which warns the new coronavirus pandemic may last up to 18 months or longer and come in multiple waves") {
+
   
   pandemic <- df %>%
-    dplyr::filter(Date == as.Date("2020-01-30"))
+    dplyr::filter(Date == as.Date("2020-03-11"))
   
   gg <- gg + 
-
-    geom_vline(xintercept = pandemic$Date, linetype="dashed", 
+    geom_vline(xintercept = pandemic$Date, linetype="dashed",
                color = "grey", size = 1) +
       annotate(geom = "text", x = pandemic$Date, y = max(df$confirmed) - 1000,
                label = "WHO declares pandemic", size = 3)
+  
+  
+  # pandemic <- data.frame(Date = as.Date(c("2020-02-11", "2020-03-11", "2020-03-17")),
+  #                        # labels = c("A", "B", "C"),
+  #                        labelText = c(text1,
+  #                                      text2,
+  #                                      text3))
+  # gg <- gg + 
+  #   geom_vline(aes(xintercept = Date, color = labelText),
+  #              data = pandemic, linetype = "dashed", size = 1, show.legend = TRUE) +
+  #   scale_color_manual("", values = c(text1 = "#151248",
+  #                                     text2 = "#605F5E",
+  #                                     text3 = "#5393EA"))
+
   return(gg)
 }
 
