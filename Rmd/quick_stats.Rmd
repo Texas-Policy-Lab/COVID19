@@ -44,12 +44,11 @@ world_data_source <- "Johns Hopkins Center for Systems Science and Engineering  
 
 #### Timelines
 
-The following graphs show the timelines of when different countries tried different interventions over time. One article suggests that the number of people with COVID-19 is doubling every 6 days.[10] China is one of a few countries who has been successful in "flattening the curve". On January 23rd, 2020 they implemented one of the most extreme interventions - quarantine in Wuhan and three other cities. On January 24th, 2020 the Chinese government expanded the quarantine to the entire Hubei province. It wasn't until XXX days after the quarantine was implemented that scientists agreed China had successfully flattened the curve.
+The following graphs show the timelines of when different countries tried different interventions over time. China is one of a few countries who has been successful in "flattening the curve". On January 23rd, 2020 they implemented one of the most extreme interventions - quarantine in Wuhan and three other cities. On January 24th, 2020 the Chinese government expanded the quarantine to the entire Hubei province. China saw the first decreases in daily infection rates approximately 26 days after implementing the quarantines in the Hubei province.
 
 ##### United States
 
 ```{r}
-
 us <- world %>% dplyr::filter(country == "US" & is.na(stateName))
 
 gg <- ggplot(us, aes(x = Date, y = confirmed, label = str_wrap(label, width = 65))) + 
@@ -57,7 +56,8 @@ gg <- ggplot(us, aes(x = Date, y = confirmed, label = str_wrap(label, width = 65
   geom_line() +
   labs(y = "Confirmed cases",
        x = "Date",
-       caption = paste("Source:", world_data_source))
+       caption = paste("Source:", world_data_source),
+       title = "Confirmed cases in the United States over time")
 
 gg <- text_format(gg, hjust = 1, nudge_x = 20)
 gg <- pandemic_declared(gg, df = us)
@@ -68,7 +68,6 @@ print(gg)
 ##### China
 
 ```{r}
-
 china <- world %>% dplyr::filter(country == "China")
 
 gg <- ggplot(china, aes(x = Date, y = confirmed, label = str_wrap(label, width = 65))) + 
@@ -76,7 +75,8 @@ gg <- ggplot(china, aes(x = Date, y = confirmed, label = str_wrap(label, width =
   geom_line() +
   labs(y = "Confirmed cases",
        x = "Date",
-       caption = paste("Source:", world_data_source))
+       caption = paste("Source:", world_data_source),
+       title = "Confirmed cases in China over time")
 
 gg <- text_format(gg)
 gg <- pandemic_declared(gg, df = china)
@@ -86,7 +86,6 @@ print(gg)
 ##### Italy
 
 ```{r}
-
 italy <- world %>% dplyr::filter(country == "Italy")
 
 gg <- ggplot(italy, aes(x = Date, y = confirmed, label = str_wrap(label, width = 100))) +
@@ -94,27 +93,177 @@ gg <- ggplot(italy, aes(x = Date, y = confirmed, label = str_wrap(label, width =
   geom_line() +
   labs(y = "Confirmed cases",
        x = "Date",
-       caption = paste("Source:", world_data_source))
+       caption = paste("Source:", world_data_source),
+       title = "Confirmed cases in Italy over time")
 
 gg <- text_format(gg, hjust = 1, nudge_x = 20, box_padding = 1)
-gg <- pandemic_declared(gg, df = world)
+gg <- pandemic_declared(gg, df = italy)
 print(gg)
 ```
 
 ### State Level
 
+#### Confirmed cases
+
+The total number of confirmed cases in Texas is `r state  %>% dplyr::filter(State == "TX")  %>% dplyr::summarise(max = max(confirmed)) %>% dplyr::pull(max)`. That number has increased over the last several weeks, however it is likely that this number is underreported due to a lack of testing in the state of Texas.
+
+```{r}
+states <- state %>% 
+  dplyr::filter(State %in% c("TX", "CA", "WA", "FL", "NY"))
+
+gg <- ggplot(states,
+             aes(x = Date, y = confirmed, color = stateName)) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual("States", values = as.vector(tpltheme::tpl_palettes$categorical)) +
+  labs(y = "Confirmed cases",
+       x = "Date",
+       caption = paste("Source:", usafacts_source),
+       title = "Confirmed cases over time") +
+  ylim(0, NA)
+
+print(gg)
+```
+
+#### Deaths
+
+The total number of deaths in Texas is `r states  %>% dplyr::filter(State == "TX")  %>% dplyr::summarise(max = max(deaths)) %>% dplyr::pull(max)`.
+
 ```{r}
 
+gg <- ggplot(states,
+             aes(x = Date, y = deaths, color = stateName)) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual("States", values = as.vector(tpltheme::tpl_palettes$categorical)) +
+  labs(y = "Deaths",
+       x = "Date",
+       caption = paste("Source:", usafacts_source),
+       title = "Confirmed deaths over time") +
+  ylim(0, NA)
 
-# line_chart.state.confirmed_cases(df = state %>%
-#                              dplyr::filter(State %in% c("TX", "WA", "CA", "NY")))
+print(gg)
+```
+
+#### Testing
+
+The total number of tests in Texas is `r states  %>% dplyr::filter(State == "TX")  %>% dplyr::summarise(max = max(total_tests, na.rm = TRUE)) %>% dplyr::pull(max)`. On Monday March 16th, Governor Greg Abbott suggested that the testing capacity in Texas would ramp up substantially over the following week (March 16th thru March 22nd) to over 10,000 tests. However, testing has fallen short of this initial estimate. The governor promised that by the end of the week (March 22nd) "everyone who needs a COVID-19 test will be able to get a COVID-19 test", however this doesn't seem to be the case. Texas appears to be substantially lagging in ramping up it's testing capacity, which Governor Andrew Cuomo said was the first line of defense again COVID-19 (The Daily March 18th, 2020).
+
+```{r}
+
+gg <- ggplot(states,
+             aes(x = Date, y = total_tests, color = stateName)) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual("States", values = as.vector(tpltheme::tpl_palettes$categorical)) +
+  labs(y = "Total # of tests",
+       x = "Date",
+       caption = paste("Source:", covid_tracking_source),
+       title = "Total # of tests over time") +
+  ylim(0, NA)
+
+print(gg)
+```
 
 
+#### Timelines
+
+##### Texas
+
+```{r}
+tx <- state %>% dplyr::filter(stateName == "Texas")
+
+gg <- ggplot(tx, aes(x = Date, y = confirmed, label = str_wrap(label, width = 100))) +
+  geom_point(color = "#e54e4d") +
+  geom_line() +
+  labs(y = "Confirmed cases",
+       x = "Date",
+       caption = paste("Source:", world_data_source),
+       title = "Total # of tests in TX over time") + 
+  ylim(0, NA)
+
+gg <- text_format(gg, hjust = 1, nudge_x = 20, box_padding = 1)
+gg <- pandemic_declared(gg, df = tx, text1 = "A", text2 = "B", text3 = "C")
+print(gg)
+```
+
+
+##### California
+
+```{r}
+ca <- state %>% dplyr::filter(stateName == "California")
+
+gg <- ggplot(ca, aes(x = Date, y = confirmed, label = str_wrap(label, width = 100))) +
+  geom_point(color = "#e54e4d") +
+  geom_line() +
+  labs(y = "Confirmed cases",
+       x = "Date",
+       caption = paste("Source:", world_data_source),
+       title = "Total # of tests in California over time")
+
+gg <- text_format(gg, hjust = 1, nudge_x = 20, box_padding = 1)
+gg <- pandemic_declared(gg, df = ca)
+print(gg)
+```
+
+##### New York
+
+```{r}
+ny <- state %>% dplyr::filter(stateName == "New York")
+
+gg <- ggplot(ny, aes(x = Date, y = confirmed, label = str_wrap(label, width = 100))) +
+  geom_point(color = "#e54e4d") +
+  geom_line() +
+  labs(y = "Confirmed cases",
+       x = "Date",
+       caption = paste("Source:", world_data_source),
+       title = "Total # of tests in New York over time")
+
+gg <- text_format(gg, hjust = 1, nudge_x = 20, box_padding = .5)
+gg <- pandemic_declared(gg, df = ny, text1 = "A", text2 = "B", text3 = "C")
+print(gg)
 ```
 
 ### County Level
 
+#### Confirmed cases
+
 ```{r}
+
+tx <- county %>% 
+  dplyr::filter(State == "TX") %>%
+  dplyr::filter(`County Name` %in% c("Harris County", "Travis County", "Dallas County"))
+
+gg <- ggplot(tx,
+             aes(x = Date, y = confirmed, color = `County Name`)) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual("States", values = as.vector(tpltheme::tpl_palettes$categorical)) +
+  labs(y = "Total # confirmed cases",
+       x = "Date",
+       caption = paste("Source:", usafacts_source),
+       title = "Total # confirmed cases over time") +
+  ylim(0, NA)
+
+print(gg)
+
+```
+
+
+```{r}
+map_county <- map_data('county') %>% 
+  dplyr::filter(region == "texas") %>% 
+  dplyr::left_join(county %>% 
+    dplyr::filter(State == "TX") %>% 
+    dplyr::mutate(subregion = tolower(gsub(" County", "", `County Name`))) %>% 
+    dplyr::arrange(desc(Date)) %>% 
+      dplyr::group_by(`County Name`) %>% 
+      dplyr::slice(1)
+  )
+
+ggplot(map_county, aes(x = long, y = lat, group = group, fill = confirmed)) + 
+  geom_polygon() +
+  coord_map()
 
 ```
 
@@ -144,5 +293,6 @@ In the US, differences in testing and restrictive measures taken by individual s
  
 [9 Our World in Data: How many tests for COVID-19 are being performed around the world?](https://ourworldindata.org/covid-testing)
 
-[10 The Conversation](https://theconversation.com/how-to-flatten-the-curve-of-coronavirus-a-mathematician-explains-133514)
+[11 Texas Tribune: Texas Gov. Greg Abbott says to expect "exponential" increase in positive coronavirus cases](https://www.texastribune.org/2020/03/16/texas-coronavirus-cases-will-increase-exponentially-gov-greg-abbott/)
 
+[12 The Daily Podcast: Gov. Andrew Cuomo: 'It's Making Sure We Live Through This'](https://www.nytimes.com/2020/03/18/podcasts/the-daily/cuomo-new-york-coronavirus.html)
