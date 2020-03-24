@@ -20,4 +20,11 @@ ui:
       menu_title: "County Level Data"
       icon: "star"
       page_title: "County Level Data"
-
+    tab4:
+      menu_title: "Terminology"
+      icon: "book"
+      page_title: "Epidemiology Terminology"
+    tab5:
+      menu_title: "Sources"
+      icon: "link"
+      page_title: "Sources"
