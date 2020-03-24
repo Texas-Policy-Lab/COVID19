@@ -256,9 +256,8 @@ state_stats.default <- function(df,
   y <- df[[y]]
   color <- df[[color]]
   
-  ggplot(df, aes(x = x, y = y, color = color)) +
-    geom_line() +
-    geom_point() +
+  ggplot(data = df, aes(x = x,  color = color)) +
+    geom_point(aes(y = y)) +
     scale_color_manual(legend_lab,
                        values = as.vector(tpltheme::tpl_palettes$categorical)) + 
     labs(x = x_lab,
@@ -273,7 +272,13 @@ state_stats.confirmed <- function(df) {
               color = "stateName",
               df = df)
 
-  do.call(state_stats, cls)
+  gg <- do.call(state_stats, cls)
+
+  gg <- gg + 
+    geom_line(aes(y = confirmed))
+  
+  print(gg)
+  
 }
 
 state_stats.deaths <- function(df) {
@@ -283,15 +288,28 @@ state_stats.deaths <- function(df) {
               color = "stateName",
               df = df)
   
-  do.call(state_stats, cls)
+  gg <- do.call(state_stats, cls)
+  
+  gg <- gg + 
+    geom_line(aes(y = deaths))
+    
+  print(gg)
 }
 
 state_stats.tests <- function(df) {
-  
+
   cls <- list(y_lab = "# tests",
               y = "total_tests",
               color = "stateName",
               df = df)
-  
-  do.call(state_stats, cls)
+
+  gg <- do.call(state_stats, cls)
+
+  gg <- gg + 
+    geom_line(aes(y = total_tests, linetype = "Total")) +
+    geom_line(aes(y = positive, linetype = "Positive"), alpha = .5) +
+    geom_line(aes(y = negative, linetype = "Negative"), alpha = .5) +
+    scale_linetype_manual("Test type",values=c("Total"="solid","Positive"="dotted", "Negative" = "dashed"))
+
+  print(gg)
 }
