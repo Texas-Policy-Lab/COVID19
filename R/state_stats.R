@@ -1,7 +1,7 @@
 state_stats.ui <- function() {
 
   shiny::fluidRow(
-    shiny::column(width = 3,
+    shiny::column(width = 2,
                   # shiny::h3("Show timeline"),
                   # shinyWidgets::switchInput(
                   #   inputId = "show_timeline",
@@ -29,10 +29,10 @@ state_stats.ui <- function() {
                     multiple = TRUE,
                     selected = c("Texas", "New York", "California", "Washington")
                   )),
-    shiny::column(width = 9,
+    shiny::column(width = 7,
                   shinydashboard::tabBox(side = "left",
                                          selected = "Tab1",
-                                         width = 9,
+                                         width = 12,
                                          shiny::tabPanel(value = "Tab1",
                                                          title = "Confirmed cases",
                                                          shiny::plotOutput("confirmed_state_plot")),
@@ -41,10 +41,13 @@ state_stats.ui <- function() {
                                                          shiny::plotOutput("deaths_state_plot")),
                                          shiny::tabPanel(value = "Tab3",
                                                          title = "Tests",
-                                                         shiny::plotOutput("tests_state_plot"))))
+                                                         shiny::plotOutput("tests_state_plot")))),
+      shiny::column(width = 3, shinydashboard::valueBoxOutput(outputId = "confirmed_state")),
+      shiny::column(width = 3, shinydashboard::valueBoxOutput(outputId = "deaths_state")),
+      shiny::column(width = 3, shinydashboard::valueBoxOutput(outputId = "tests_state")),
+      shiny::column(width = 3, shinydashboard::valueBoxOutput(outputId = "attack_rate_state"))
     )
 }
-
 
 state_stats.server <- function(input, output, session) {
 
@@ -54,6 +57,18 @@ state_stats.server <- function(input, output, session) {
       dplyr::filter(stateName %in% input$statesGroup) %>% 
       dplyr::filter(ndays <= input$last_x_days)
 
+  })
+
+  totals <- shiny::reactive({
+    df() %>% 
+      dplyr::arrange(desc(Date)) %>% 
+      dplyr::group_by(stateName) %>% 
+      dplyr::slice(1) %>% 
+      dplyr::ungroup() %>% 
+      dplyr::summarise(total_confirmed = sum(confirmed),
+                       total_deaths = sum(deaths),
+                       total_tests = sum(total_tests),
+                       mean_attack_rate = round(mean(attack_rate, na.rm = TRUE), 0))
   })
 
   output$confirmed_state_plot <- shiny::renderPlot({
@@ -68,7 +83,40 @@ state_stats.server <- function(input, output, session) {
     state_stats.tests(df = df())
   })
 
+  output$confirmed_state <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      value = totals() %>% dplyr::select(total_confirmed),
+      subtitle = "Confirmed Cases",
+      color = "red",
+      width = NULL
+    )
+  })
+
+  output$deaths_state <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      value = totals() %>% dplyr::select(total_deaths),
+      subtitle = "Deaths",
+      color = "red",
+      width = NULL
+    )
+  })
+
+  output$tests_state <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      value = totals() %>% dplyr::select(total_tests),
+      subtitle = "Tests",
+      color = "red",
+      width = NULL
+    )
+  })
+  
+  output$attack_rate_state <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      value = totals() %>% dplyr::select(mean_attack_rate),
+      subtitle = "Attack rate",
+      color = "red",
+      width = NULL
+    )
+  })
+
 }
-
-
-
