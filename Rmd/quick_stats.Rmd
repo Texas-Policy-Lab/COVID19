@@ -51,7 +51,7 @@ The following graphs show the timelines of when different countries tried differ
 ```{r}
 timeline_us_cls <- structure(list(df = world %>% 
                                        dplyr::filter(is.na(stateName)),
-                                  countryName = "US",
+                                  country = "US",
                                   title = "Confirmed cases in the United States over time",
                                   hjust = 1,
                                   nudge_x = 20),
@@ -63,7 +63,7 @@ do.call(timeline, timeline_us_cls)
 
 ```{r}
 timeline_china_cls <- structure(list(df = world,
-                                  countryName = "China",
+                                  country = "China",
                                   title = "Confirmed cases in {} over time"),
                              class = "china")
 do.call(timeline, timeline_china_cls)
@@ -73,7 +73,7 @@ do.call(timeline, timeline_china_cls)
 
 ```{r}
 timeline_italy_cls <- structure(list(df = world,
-                                     countryName = "Italy",
+                                     country = "Italy",
                                      title = "Confirmed cases in {} over time",
                                      str_width = 100,
                                      hjust = 1,
@@ -87,11 +87,11 @@ do.call(timeline, timeline_italy_cls)
 
 #### Confirmed cases
 
-The total number of confirmed cases in Texas is `r state  %>% dplyr::filter(State == "TX")  %>% dplyr::summarise(max = max(confirmed)) %>% dplyr::pull(max)`. That number has increased over the last several weeks, however it is likely that this number is underreported due to a lack of testing in the state of Texas.
+The total number of confirmed cases in Texas is `r state  %>% dplyr::filter(stateAbb == "TX")  %>% dplyr::summarise(max = max(confirmed)) %>% dplyr::pull(max)`. That number has increased over the last several weeks, however it is likely that this number is underreported due to a lack of testing in the state of Texas.
 
 ```{r}
 states <- state %>% 
-  dplyr::filter(State %in% c("TX", "CA", "WA", "FL", "NY"))
+  dplyr::filter(stateAbb %in% c("TX", "CA", "WA", "FL", "NY"))
 
 gg <- ggplot(states,
              aes(x = Date, y = confirmed, color = stateName)) +
@@ -109,7 +109,7 @@ print(gg)
 
 #### Deaths
 
-The total number of deaths in Texas is `r states  %>% dplyr::filter(State == "TX")  %>% dplyr::summarise(max = max(deaths)) %>% dplyr::pull(max)`.
+The total number of deaths in Texas is `r states  %>% dplyr::filter(stateAbb == "TX")  %>% dplyr::summarise(max = max(deaths)) %>% dplyr::pull(max)`.
 
 ```{r}
 
@@ -129,7 +129,7 @@ print(gg)
 
 #### Testing
 
-The total number of tests in Texas is `r states  %>% dplyr::filter(State == "TX")  %>% dplyr::summarise(max = max(total_tests, na.rm = TRUE)) %>% dplyr::pull(max)`. On Monday March 16th, Governor Greg Abbott suggested that the testing capacity in Texas would ramp up substantially over the following week (March 16th thru March 22nd) to over 10,000 tests. However, testing has fallen short of this initial estimate. The governor promised that by the end of the week (March 22nd) "everyone who needs a COVID-19 test will be able to get a COVID-19 test", however this doesn't seem to be the case. Texas appears to be substantially lagging in ramping up it's testing capacity, which Governor Andrew Cuomo said was the first line of defense again COVID-19 (The Daily March 18th, 2020).
+The total number of tests in Texas is `r states  %>% dplyr::filter(stateAbb == "TX")  %>% dplyr::summarise(max = max(total_tests, na.rm = TRUE)) %>% dplyr::pull(max)`. On Monday March 16th, Governor Greg Abbott suggested that the testing capacity in Texas would ramp up substantially over the following week (March 16th thru March 22nd) to over 10,000 tests. However, testing has fallen short of this initial estimate. The governor promised that by the end of the week (March 22nd) "everyone who needs a COVID-19 test will be able to get a COVID-19 test", however this doesn't seem to be the case. Texas appears to be substantially lagging in ramping up it's testing capacity, which Governor Andrew Cuomo said was the first line of defense again COVID-19 (The Daily March 18th, 2020).
 
 ```{r}
 gg <- ggplot(states,
@@ -153,7 +153,7 @@ print(gg)
 
 ```{r}
 timeline_tx_cls <- structure(list(df = state,
-                                  stateName = "Texas",
+                                  state = "Texas",
                                   title = "Confirmed cases in the state of {} over time",
                                   hjust = 1,
                                   nudge_x = 20,
@@ -168,7 +168,7 @@ do.call(timeline, timeline_tx_cls)
 
 ```{r}
 timeline_ca_cls <- structure(list(df = state,
-                                  stateName = "California",
+                                  state = "California",
                                   title = "Confirmed cases in the state of {} over time",
                                   str_width = 100,
                                   hjust = 1,
@@ -183,7 +183,7 @@ do.call(timeline, timeline_ca_cls)
 
 ```{r}
 timeline_ny_cls <- structure(list(df = state,
-                               stateName = "New York",
+                               state = "New York",
                                title = "Confirmed cases in the state of {} over time",
                                str_width = 100,
                                hjust = 1,
@@ -200,11 +200,11 @@ do.call(timeline, timeline_ny_cls)
 ```{r}
 
 tx <- county %>% 
-  dplyr::filter(State == "TX") %>%
-  dplyr::filter(`County Name` %in% c("Harris County", "Travis County", "Dallas County"))
+  dplyr::filter(stateAbb == "TX") %>%
+  dplyr::filter(countyName %in% c("Harris County", "Travis County", "Dallas County"))
 
 gg <- ggplot(tx,
-             aes(x = Date, y = confirmed, color = `County Name`)) +
+             aes(x = Date, y = confirmed, color = countyName)) +
   geom_point() +
   geom_line() +
   scale_color_manual("States", values = as.vector(tpltheme::tpl_palettes$categorical)) +
@@ -223,10 +223,10 @@ print(gg)
 map_county <- map_data('county') %>% 
   dplyr::filter(region == "texas") %>% 
   dplyr::left_join(county %>% 
-    dplyr::filter(State == "TX") %>% 
-    dplyr::mutate(subregion = tolower(gsub(" County", "", `County Name`))) %>% 
+    dplyr::filter(stateAbb == "TX") %>% 
+    dplyr::mutate(subregion = tolower(gsub(" County", "", countyName))) %>% 
     dplyr::arrange(desc(Date)) %>% 
-      dplyr::group_by(`County Name`) %>% 
+      dplyr::group_by(countyName) %>% 
       dplyr::slice(1)
   )
 
