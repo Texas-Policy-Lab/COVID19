@@ -171,7 +171,7 @@ text_format <- function(gg,
                         direction = NULL) {
   
   gg +
-    ggrepel::geom_text_repel(size = size,
+    ggrepel::geom_label_repel(size = size,
                     hjust = hjust,
                     nudge_x = nudge_x,
                     box.padding = box_padding,
@@ -205,14 +205,14 @@ timeline.default <- function(df,
     df <- df %>% 
       dplyr::filter(countryName == country)
     
-    title <- glue::glue(title, country)
+    title <- glue::glue(title)
   }
 
   if(!is.null(state)) {
     df <- df %>% 
       dplyr::filter(stateName == state)
     
-    title <- glue::glue(title, state)
+    title <- glue::glue(title)
   }
 
   gg <- ggplot2::ggplot(df,
