@@ -33,7 +33,9 @@ create_data.county <- function(write = FALSE, ...) {
                   deaths_lag = dplyr::lag(deaths),
                   pct_chg_confirmed = ((confirmed - confirmed_lag)/confirmed)*100,
                   pct_chg_deaths = ((deaths - deaths_lag)/deaths)*100
-    )
+    ) %>% 
+    dplyr::rename(countyName = `County Name`,
+                  stateAbb = State)
 
   if(write) {
     write.csv(county, file.path("data", "county.csv"), row.names = FALSE)
@@ -75,7 +77,8 @@ create_data.state <- function(write = FALSE, ...) {
                  ,pct_chg_postive = ((positive - positive_lag)/positive)*100
                  ,pct_chg_negative = ((negative - negative_lag)/negative)*100
     ) %>% 
-    dplyr::left_join(timeline_data())
+    dplyr::left_join(timeline_data()) %>% 
+    dplyr::rename(stateAbb = State)
 
   # state[is.na(state)] <- 0
 
@@ -125,7 +128,8 @@ create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
                  ,pct_chg_confirmed = ((confirmed - confirmed_lag)/confirmed)*100
                  ,pct_chg_deaths = ((deaths - deaths_lag)/deaths)*100
                  ,ndayssince100 = Date - day100) %>%
-    dplyr::left_join(timeline_data())
+    dplyr::left_join(timeline_data()) %>% 
+    dplyr::rename(countryName = country)
 
   if(write) {
     write.csv(world, file.path("data", "world.csv"), row.names = FALSE)
