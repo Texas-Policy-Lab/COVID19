@@ -32,3 +32,11 @@
 .nav-tabs {
   font-family: var(--main-fonts);
 }
+
+.inner > h3 {
+  color: var(--white);
+}
+
+.col-sm-4 {
+    width: 100%;
+}
