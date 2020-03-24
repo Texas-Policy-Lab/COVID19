@@ -8,18 +8,18 @@ ui_element.default <- function(tab, ...) {
 
 # This tab corresponds to tab 1 in the `mainDashboard.yaml` file
 ui_element.tab1 <- function(tab, ...) {
-  return(NULL)
+  timeline_world.ui()
 }
 
 # This tab corresponds to tab 2 in the `mainDashboard.yaml` file
 ui_element.tab2 <- function(tab, ...) {
-  return(NULL)
+  timeline_state.ui()
 }
 
-# This tab corresponds to tab 3 in the `mainDashboard.yaml` file
-ui_element.tab3 <- function(tab, ...) {
-  return(NULL)
-}
+# # This tab corresponds to tab 3 in the `mainDashboard.yaml` file
+# ui_element.tab3 <- function(tab, ...) {
+#   return(NULL)
+# }
 
 # Uncomment these addtional tabx functions or add more to match the tabs layout in the mainDashboard.yaml file
 
