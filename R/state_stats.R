@@ -2,8 +2,14 @@ state_stats.ui <- function() {
 
   shiny::fluidRow(
     shiny::column(width = 3,
+                  # shiny::h3("Show timeline"),
+                  # shinyWidgets::switchInput(
+                  #   inputId = "show_timeline",
+                  #   # label = "Show timeline",
+                  #   onStatus = "#e54e4d"
+                  # ),
                   shiny::sliderInput(inputId = "last_x_days",
-                                     label = "Last x days",
+                                     label = "# most recent days",
                                      min = min(state$ndays),
                                      max = max(state$ndays),
                                      step = 1,
@@ -29,7 +35,7 @@ state_stats.ui <- function() {
                                          width = 9,
                                          shiny::tabPanel(value = "Tab1",
                                                          title = "Confirmed cases",
-                                                         shiny::plotOutput("confirmed_cases_state_plot")),
+                                                         shiny::plotOutput("confirmed_state_plot")),
                                          shiny::tabPanel(value = "Tab2",
                                                          title = "Deaths",
                                                          shiny::plotOutput("deaths_state_plot")),
@@ -41,34 +47,27 @@ state_stats.ui <- function() {
 
 
 state_stats.server <- function(input, output, session) {
-  
-  output$confirmed_cases_state_plot <- shiny::renderPlot({
 
-   df <- state %>% 
-     dplyr::filter(stateName %in% input$statesGroup) %>% 
-     dplyr::filter(ndays <= input$last_x_days)
-   
-   state_stats.confirmed(df = df)
-  })
-  
-  output$deaths_state_plot <- shiny::renderPlot({
+  df <- shiny::reactive({
 
-    df <- state %>% 
+    state %>% 
       dplyr::filter(stateName %in% input$statesGroup) %>% 
       dplyr::filter(ndays <= input$last_x_days)
-    
-    state_stats.deaths(df = df)
+
+  })
+
+  output$confirmed_state_plot <- shiny::renderPlot({
+   state_stats.confirmed(df = df())
+  })
+
+  output$deaths_state_plot <- shiny::renderPlot({
+    state_stats.deaths(df = df())
   })
 
   output$tests_state_plot <- shiny::renderPlot({
-    
-    df <- state %>% 
-      dplyr::filter(stateName %in% input$statesGroup) %>% 
-      dplyr::filter(ndays <= input$last_x_days)
-    
-    state_stats.tests(df = df)
+    state_stats.tests(df = df())
   })
-  
+
 }
 
 
