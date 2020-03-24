@@ -143,8 +143,9 @@ pandemic_declared <- function(gg, df,
   gg <- gg + 
     geom_vline(xintercept = pandemic$Date, linetype="dashed",
                color = "grey", size = 1) +
-      annotate(geom = "text", x = pandemic$Date, y = max(df$confirmed) - 1000,
-               label = "WHO declares pandemic", size = 3)
+      annotate(geom = "label", x = pandemic$Date, y = (max(df$confirmed)*.95),
+               label = "WHO declares pandemic", size = 3) +
+    theme_bw()
   
   
   # pandemic <- data.frame(Date = as.Date(c("2020-02-11", "2020-03-11", "2020-03-17")),
@@ -227,7 +228,6 @@ timeline.default <- function(df,
                   caption = paste("Source:", world_data_source),
                   title = title) +
     ggplot2::scale_y_continuous(labels = scales::comma_format())
-    
 
   gg <- text_format(gg = gg,
                     size = size, 
