@@ -1,4 +1,5 @@
 #' @title TPL Server
-server <- function(input, output) {
-
+server <- function(input, output, session) {
+  timeline_world.server(input, output, session)
+  timeline_state.server(input, output, session)
 }
