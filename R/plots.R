@@ -225,7 +225,9 @@ timeline.default <- function(df,
     ggplot2::labs(y = y_lab,
                   x = x_lab,
                   caption = paste("Source:", world_data_source),
-                  title = title)
+                  title = title) +
+    ggplot2::scale_y_continuous(labels = scales::comma_format())
+    
 
   gg <- text_format(gg = gg,
                     size = size, 
@@ -261,6 +263,7 @@ state_stats.default <- function(df,
     geom_point() +
     scale_color_manual(legend_lab,
                        values = as.vector(tpltheme::tpl_palettes$categorical)) + 
+    scale_y_continuous(labels = scales::comma_format()) +
     labs(x = x_lab,
          y = y_lab,
          caption = paste("Source:", usafacts_source))
