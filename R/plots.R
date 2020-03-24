@@ -204,13 +204,15 @@ timeline.default <- function(df,
   if(!is.null(countryName)) {
     df <- df %>% 
       dplyr::filter(country == countryName)
-  
+    
+    title <- glue::glue(title, countryName)
   }
 
   if(!is.null(stateName)) {
     df <- df %>% 
       dplyr::filter(stateName == stateName)
     
+    title <- glue::glue(title, stateName)
   }
 
   gg <- ggplot2::ggplot(df,
@@ -223,7 +225,7 @@ timeline.default <- function(df,
     ggplot2::labs(y = y_lab,
                   x = x_lab,
                   caption = paste("Source:", world_data_source),
-                  title = title)
+                  title = glue::glue(title, stateName))
 
   gg <- text_format(gg = gg,
                     size = size, 
@@ -236,91 +238,4 @@ timeline.default <- function(df,
   gg <- pandemic_declared(gg = gg, df = df)
 
   print(gg)
-}
-
-timeline.china <- function(df, 
-                           countryName = "China",
-                           title = "Confirmed cases in China over time") {
-  timeline(df = df,
-           country = countryName,
-           title = title)
-}
-
-timeline.italy <- function(df, 
-                           countryName = "Italy",
-                           title = "Confirmed cases in Italy over time",
-                           str_width = 100,
-                           hjust = 1,
-                           nudge_x = 20,
-                           box_padding = 1) {
-
-  timeline(df = df,
-           country = countryName,
-           title = title,
-           str_width = str_width,
-           hjust = hjust,
-           nudge_x = nudge_x,
-           box_padding = box_padding)
-}
-
-timeline.us <- function(df, 
-                        countryName = "US",
-                        title = "Confirmed cases in the United States over time",
-                        hjust = 1,
-                        nudge_x = 20) {
-  
-  timeline(df = df,
-           country = countryName,
-           title = title,
-           hjust = hjust,
-           nudge_x = nudge_x)
-}
-
-timeline.tx <- function(df, 
-                        stateName = "Texas",
-                        title = "Confirmed cases in the state of Texas over time",
-                        hjust = 1,
-                        nudge_x = 20,
-                        box_padding = 1) {
-  
-  timeline(df = df,
-           state = stateName,
-           title = title,
-           hjust = hjust,
-           nudge_x = nudge_x,
-           box_padding = box_padding)
-}
-
-timeline.ca <- function(df, 
-                        countryName = "California",
-                        title = "Confirmed cases in the state of California over time",
-                        str_width = 100,
-                        hjust = 1,
-                        nudge_x = 20,
-                        box_padding = 1) {
-  
-  timeline(df = df,
-           country = countryName,
-           title = title,
-           str_width = str_width,
-           hjust = hjust,
-           nudge_x = nudge_x,
-           box_padding = box_padding)
-}
-
-timeline.ny <- function(df, 
-                        countryName = "New York",
-                        title = "Confirmed cases in the state of New York over time",
-                        str_width = 100,
-                        hjust = 1,
-                        nudge_x = 20,
-                        box_padding = 1) {
-  
-  timeline(df = df,
-           country = countryName,
-           title = title,
-           str_width = str_width,
-           hjust = hjust,
-           nudge_x = nudge_x,
-           box_padding = box_padding)
 }
