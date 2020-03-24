@@ -41,7 +41,7 @@ line_chart.default <- function(df = NULL,
       
       gg <- ggplot(df, aes(x = x, y = y, label = str_wrap(label_vec, width = 65))) +
         geom_point(color = "#e54e4d") +
-        geom_text_repel(size = 3,
+        geom_label_repel(size = 3,
                         hjust = 0,
                         nudge_x = 2) +
         theme_bw()
@@ -62,7 +62,7 @@ line_chart.default <- function(df = NULL,
                    aes(x = x_vec, y = y_vec, color = color_vec,
                        label = str_wrap(label_vec, width = 65))) +
         scale_color_manual(values = as.vector(tpltheme::palette_tpl_main)) +
-        geom_text_repel(size = 3,
+        geom_label_repel(size = 3,
                         hjust = 0,
                         nudge_x = 2) +
         theme_bw()
@@ -84,7 +84,7 @@ line_chart.default <- function(df = NULL,
          caption = paste(usafacts_source, census_source, covid_tracking_source, sep = "/n")) +
     geom_vline(xintercept = pandemic$Date, linetype="dashed", 
                color = "grey", size = 1) +
-    annotate(geom="text", x = pandemic$Date, y = max(df$confirmed) - 1000,
+    annotate(geom="label", x = pandemic$Date, y = (max(df$confirmed)*.9),
              label = "WHO declares pandemic", size = annotation_text_size) +
     theme_bw()
   
@@ -147,7 +147,7 @@ pandemic_declared <- function(gg, df,
   gg <- gg + 
     geom_vline(xintercept = pandemic$Date, linetype="dashed",
                color = "grey", size = 1) +
-      annotate(geom = "text", x = pandemic$Date, y = max(df$confirmed) - 1000,
+      annotate(geom = "label", x = pandemic$Date, y = (max(df$confirmed)*.9),
                label = "WHO declares pandemic", size = 3) +
     theme_bw()
   
@@ -176,7 +176,7 @@ text_format <- function(gg,
                         direction = NULL) {
   
   gg +
-    ggrepel::geom_text_repel(size = size,
+    ggrepel::geom_label_repel(size = size,
                     hjust = hjust,
                     nudge_x = nudge_x,
                     box.padding = box_padding,
