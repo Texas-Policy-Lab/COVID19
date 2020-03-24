@@ -26,7 +26,9 @@ create_data.county <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...
     dplyr::arrange(Date, State) %>%
     dplyr::left_join(census.county_pop()) %>%
     dplyr::mutate(confirm_per_100k = (confirmed/pop)*100000
-                 ,death_per100k = (deaths/pop)*100000) %>% 
+                 ,death_per100k = (deaths/pop)*100000
+                 ,attack_rate = pop/confirmed
+                 ) %>% 
     dplyr::arrange(State, countyFIPS, Date) %>% 
     dplyr::group_by(State, countyFIPS) %>% 
     dplyr::mutate(confirmed_lag = dplyr::lag(confirmed)
@@ -68,6 +70,7 @@ create_data.state <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
                  ,positive_per100k = (positive/pop)*100000
                  ,negative_per100k = (negative/pop)*100000
                  ,pending_per100k = (pending/pop)*100000
+                 ,attack_rate = pop/confirmed
     ) %>% 
     dplyr::arrange(State, Date) %>% 
     dplyr::group_by(State) %>% 
