@@ -18,7 +18,7 @@ world <- create_data.world()
 
 timeline_tx_cls <- structure(list(df = state,
                                   state = "Texas",
-                                  title = "Confirmed cases in the state of {} over time",
+                                  title = "Confirmed cases in the state of {state} over time",
                                   hjust = 1,
                                   nudge_x = 20,
                                   box_padding = 1),
@@ -26,7 +26,7 @@ timeline_tx_cls <- structure(list(df = state,
 
 timeline_ca_cls <- structure(list(df = state,
                                   state = "California",
-                                  title = "Confirmed cases in the state of {} over time",
+                                  title = "Confirmed cases in the state of {state} over time",
                                   str_width = 100,
                                   hjust = 1,
                                   nudge_x = 20,
@@ -35,7 +35,7 @@ timeline_ca_cls <- structure(list(df = state,
 
 timeline_ny_cls <- structure(list(df = state,
                                   state = "New York",
-                                  title = "Confirmed cases in the state of {} over time",
+                                  title = "Confirmed cases in the state of {state} over time",
                                   str_width = 100,
                                   hjust = 1,
                                   nudge_x = 20,
@@ -52,12 +52,12 @@ timeline_us_cls <- structure(list(df = world %>%
 
 timeline_china_cls <- structure(list(df = world,
                                      country = "China",
-                                     title = "Confirmed cases in {} over time"),
+                                     title = "Confirmed cases in {country} over time"),
                                 class = "china")
 
 timeline_italy_cls <- structure(list(df = world,
                                      country = "Italy",
-                                     title = "Confirmed cases in {} over time",
+                                     title = "Confirmed cases in {country} over time",
                                      str_width = 100,
                                      hjust = 1,
                                      nudge_x = 20,

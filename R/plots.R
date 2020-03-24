@@ -41,7 +41,7 @@ line_chart.default <- function(df = NULL,
       
       gg <- ggplot(df, aes(x = x, y = y, label = str_wrap(label_vec, width = 65))) +
         geom_point(color = "#e54e4d") +
-        geom_text_repel(size = 3,
+        geom_label_repel(size = 3,
                         hjust = 0,
                         nudge_x = 2)
     }
@@ -60,7 +60,7 @@ line_chart.default <- function(df = NULL,
                    aes(x = x_vec, y = y_vec, color = color_vec,
                        label = str_wrap(label_vec, width = 65))) +
         scale_color_manual(values = as.vector(tpltheme::palette_tpl_main)) +
-        geom_text_repel(size = 3,
+        geom_label_repel(size = 3,
                         hjust = 0,
                         nudge_x = 2)
       
@@ -171,7 +171,7 @@ text_format <- function(gg,
                         direction = NULL) {
   
   gg +
-    ggrepel::geom_text_repel(size = size,
+    ggrepel::geom_label_repel(size = size,
                     hjust = hjust,
                     nudge_x = nudge_x,
                     box.padding = box_padding,
@@ -205,14 +205,14 @@ timeline.default <- function(df,
     df <- df %>% 
       dplyr::filter(countryName == country)
     
-    title <- glue::glue(title, country)
+    title <- glue::glue(title)
   }
 
   if(!is.null(state)) {
     df <- df %>% 
       dplyr::filter(stateName == state)
     
-    title <- glue::glue(title, state)
+    title <- glue::glue(title)
   }
 
   gg <- ggplot2::ggplot(df,
