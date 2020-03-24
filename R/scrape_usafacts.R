@@ -8,7 +8,7 @@ usa_facts_data <- function(...) UseMethod("usa_facts_data")
 #' @export
 usa_facts_data.default <- function(url = "https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/",
                                    csv_name = NULL) {
-  
+
   site <- xml2::read_html(url)
 
   links <- site %>%
@@ -20,11 +20,10 @@ usa_facts_data.default <- function(url = "https://usafacts.org/visualizations/co
   url <- csvs[stringr::str_detect(csvs, csv_name)]
 
   df <- readr::read_csv(url)
-  
-  utils::write.csv(df, here::here("./data/usafacts/", csv_name))
-  
-  return(df)
 
+  utils::write.csv(df, here::here("./data/usafacts/", csv_name))
+
+  return(df)
 }
 
 #' @title Get USAFacts: confirmed data
