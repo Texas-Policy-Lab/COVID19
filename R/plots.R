@@ -169,7 +169,8 @@ text_format <- function(gg,
                         nudge_x = NULL,
                         box_padding = NULL,
                         point.padding = NULL,
-                        direction = NULL) {
+                        direction = NULL,
+                        alpha = NULL) {
   
   gg +
     ggrepel::geom_label_repel(size = size,
@@ -178,7 +179,8 @@ text_format <- function(gg,
                     box.padding = box_padding,
                     na.rm = TRUE,
                     point.padding = point.padding,
-                    direction = direction)
+                    direction = direction,
+                    alpha = alpha)
 }
 
 timeline <- function(...) UseMethod ("timeline")
@@ -196,6 +198,7 @@ timeline.default <- function(df,
                              box_padding = .5,
                              point.padding = .2,
                              direction = "y",
+                             alpha = 1,
                              str_width = 65,
                              usafacts_source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)",
                              census_source = "Population data: 2018 American Community Survey 5-year Estimates",
@@ -235,7 +238,8 @@ timeline.default <- function(df,
                     nudge_x = nudge_x,
                     box_padding = box_padding,
                     point.padding = point.padding,
-                    direction = direction)
+                    direction = direction,
+                    alpha = alpha)
 
   gg <- pandemic_declared(gg = gg, df = df)
 
