@@ -14,6 +14,10 @@ ui:
       page_title: "World Level Data"
     tab2:
       menu_title: "State Level Data"
-      icon: "star"
+      icon: "flag"
       page_title: "State Level Data"
+    tab3:
+      menu_title: "County Level Data"
+      icon: "star"
+      page_title: "County Level Data"
 
