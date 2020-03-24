@@ -183,8 +183,8 @@ text_format <- function(gg,
 timeline <- function(...) UseMethod ("timeline")
 
 timeline.default <- function(df,
-                             countryName = NULL,
-                             stateName = NULL,
+                             country = NULL,
+                             state = NULL,
                              color = "#e54e4d",
                              y_lab = "Confirmed cases",
                              x_lab = "Date",
@@ -201,18 +201,18 @@ timeline.default <- function(df,
                              covid_tracking_source = "Testing data: The Covid Tracking Project (https://covidtracking.com/)",
                              world_data_source ="Johns Hopkins Center for Systems Science and Engineering  (https://github.com/CSSEGISandData/COVID-19)") {
 
-  if(!is.null(countryName)) {
+  if(!is.null(country)) {
     df <- df %>% 
-      dplyr::filter(country == countryName)
+      dplyr::filter(countryName == country)
     
-    title <- glue::glue(title, countryName)
+    title <- glue::glue(title, country)
   }
 
-  if(!is.null(stateName)) {
+  if(!is.null(state)) {
     df <- df %>% 
-      dplyr::filter(stateName == stateName)
+      dplyr::filter(stateName == state)
     
-    title <- glue::glue(title, stateName)
+    title <- glue::glue(title, state)
   }
 
   gg <- ggplot2::ggplot(df,
@@ -225,7 +225,7 @@ timeline.default <- function(df,
     ggplot2::labs(y = y_lab,
                   x = x_lab,
                   caption = paste("Source:", world_data_source),
-                  title = glue::glue(title, stateName))
+                  title = title)
 
   gg <- text_format(gg = gg,
                     size = size, 
