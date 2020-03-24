@@ -37,6 +37,9 @@ create_data.county <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...
                  ,pct_chg_deaths = (dy_deaths/deaths)*100
                  ,ndayssince100 = Date - day100
     ) %>% 
+    dplyr::arrange(desc(Date)) %>% 
+    dplyr::mutate(ndays = seq(1, dplyr::n())
+    ) %>%
     dplyr::rename(countyName = `County Name`,
                   stateAbb = State)
 
@@ -85,7 +88,10 @@ create_data.state <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
                  ,pct_chg_postive = (dy_positive/positive)*100
                  ,pct_chg_negative = (dy_negative/negative)*100
                  ,ndayssince100 = Date - day100
-    ) %>% 
+    ) %>%
+    dplyr::arrange(desc(Date)) %>% 
+    dplyr::mutate(ndays = seq(1, dplyr::n())
+    ) %>%
     dplyr::left_join(timeline_data()) %>% 
     dplyr::rename(stateAbb = State)
 
@@ -114,8 +120,11 @@ create_data.usa <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...) {
                  ,dy_deaths = deaths - deaths_lag
                  ,pct_chg_confirmed = (dy_confirmed/confirmed)*100
                  ,pct_chg_deaths = (dy_deaths/deaths)*100
-                 ,ndayssince100 = Date - day100)
-    
+                 ,ndayssince100 = Date - day100) %>% 
+    dplyr::arrange(desc(Date)) %>% 
+    dplyr::mutate(ndays = seq(1, dplyr::n())
+                  )
+
   if(write) {
     write.csv(usa, file.path("data", "usa.csv"), row.names = FALSE)
   }
@@ -141,7 +150,11 @@ create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
                  ,dy_deaths = (deaths - deaths_lag)
                  ,pct_chg_confirmed = (dy_confirmed/confirmed)*100
                  ,pct_chg_deaths = (dy_deaths/deaths)*100
-                 ,ndayssince100 = Date - day100) %>%
+                 ,ndayssince100 = Date - day100
+    ) %>% 
+    dplyr::arrange(desc(Date)) %>% 
+    dplyr::mutate(ndays = seq(1, dplyr::n())
+                  ) %>%
     dplyr::left_join(timeline_data()) %>% 
     dplyr::rename(countryName = country)
 
