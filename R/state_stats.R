@@ -1,47 +1,47 @@
-state_stats <- function(...) UseMethod("state_stats")
+stats <- function(...) UseMethod("state_stats")
 
-state_stats.default <- function(df,
-                                alpha = 1,
-                                x = "Date",
-                                y = NULL,
-                                color = NULL,
-                                y_lab = NULL,
-                                x_lab = "Date",
-                                legend_lab = "States",
-                                size = 3, 
-                                hjust = 0, 
-                                nudge_x = 8,
-                                box_padding = .5,
-                                point.padding = .2,
-                                direction = "y",
-                                str_width = 65,
-                                usafacts_source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)") {
+stats.default <- function(df,
+                          alpha = 1,
+                          x = "Date",
+                          y = NULL,
+                          color = NULL,
+                          y_lab = NULL,
+                          x_lab = "Date",
+                          legend_lab = "States",
+                          size = 3, 
+                          hjust = 0, 
+                          nudge_x = 8,
+                          box_padding = .5,
+                          point.padding = .2,
+                          direction = "y",
+                          str_width = 65,
+                          usafacts_source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)") {
 
   x_vec <- df[[x]]
   y_vec <- df[[y]]
   color_vec <- df[[color]]
-
+  
   gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec,
-                       label = stringr::str_wrap(label,
-                                                 width = str_width))) +
-    geom_line() +
-    geom_point() +
-    scale_color_manual(legend_lab,
-                       values = as.vector(tpltheme::tpl_palettes$categorical)) + 
-    scale_y_continuous(labels = scales::comma_format()) +
-    labs(x = x_lab,
-         y = y_lab,
-         caption = paste("Source:", usafacts_source))
-
+                   label = stringr::str_wrap(label,
+                                             width = str_width))) +
+  geom_line() +
+  geom_point() +
+  scale_color_manual(legend_lab,
+                   values = as.vector(tpltheme::tpl_palettes$categorical)) + 
+  scale_y_continuous(labels = scales::comma_format()) +
+  labs(x = x_lab,
+     y = y_lab,
+     caption = paste("Source:", usafacts_source))
+  
   gg <- text_format(gg = gg,
-                    size = size, 
-                    hjust = hjust, 
-                    nudge_x = nudge_x,
-                    box_padding = box_padding,
-                    point.padding = point.padding,
-                    direction = direction,
-                    alpha = alpha)
-
+                size = size, 
+                hjust = hjust, 
+                nudge_x = nudge_x,
+                box_padding = box_padding,
+                point.padding = point.padding,
+                direction = direction,
+                alpha = alpha)
+  
   gg <- pandemic_declared(gg = gg, df = df, y = y)
   print(gg)
 } 
@@ -54,7 +54,7 @@ state_stats.confirmed <- function(df, alpha) {
               df = df,
               alpha = alpha)
 
-  do.call(state_stats, cls)
+  do.call(stats, cls)
 }
 
 state_stats.deaths <- function(df, alpha) {
@@ -65,7 +65,7 @@ state_stats.deaths <- function(df, alpha) {
               df = df,
               alpha = alpha)
   
-  do.call(state_stats, cls)
+  do.call(stats, cls)
 }
 
 state_stats.tests <- function(df, alpha) {
@@ -76,7 +76,7 @@ state_stats.tests <- function(df, alpha) {
               df = df,
               alpha = alpha)
 
-  do.call(state_stats, cls)
+  do.call(stats, cls)
 }
 
 widget.state_timeline_switch <- function() {
