@@ -58,12 +58,10 @@ state_stats.ui <- function() {
 
   shiny::fluidRow(
     shiny::column(width = 3,
-                  # shiny::h3("Show timeline"),
-                  # shinyWidgets::switchInput(
-                  #   inputId = "show_timeline",
-                  #   # label = "Show timeline",
-                  #   onStatus = "#e54e4d"
-                  # ),
+                  shiny::h3("Show timeline"),
+                  shinyWidgets::switchInput(
+                    inputId = "show_timeline"
+                  ),
                   shiny::sliderInput(inputId = "last_x_days",
                                      label = "# most recent days",
                                      min = min(state$ndays),
