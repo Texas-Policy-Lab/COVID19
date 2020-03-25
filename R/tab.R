@@ -8,12 +8,11 @@ ui_element.default <- function(tab, ...) {
 
 # This tab corresponds to tab 1 in the `mainDashboard.yaml` file
 ui_element.tab1 <- function(tab, ...) {
-  timeline_world.ui()
+  country_stats.ui()
 }
 
 # This tab corresponds to tab 2 in the `mainDashboard.yaml` file
 ui_element.tab2 <- function(tab, ...) {
-  timeline_state.ui()
   state_stats.ui()
 }
 
