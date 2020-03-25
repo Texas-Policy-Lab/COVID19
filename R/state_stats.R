@@ -81,13 +81,13 @@ state_stats.tests <- function(df, alpha) {
 
 widget.state_timeline_switch <- function() {
   shinyWidgets::switchInput(
-    inputId = "show_timeline2"
+    inputId = "state_show_timeline"
   )
 }
 
 widget.state_ndays_slider <- function() {
 
-  shiny::sliderInput(inputId = "last_x_days",
+  shiny::sliderInput(inputId = "state_last_x_days",
                      label = "# most recent days",
                      min = min(state$ndays),
                      max = max(state$ndays),
@@ -145,34 +145,34 @@ state_stats.ui <- function() {
 
 state_stats.server <- function(input, output, session) {
 
-  df <- shiny::reactive({
+  state_sub <- shiny::reactive({
 
     state %>% 
       dplyr::filter(stateName %in% input$statesGroup) %>% 
-      dplyr::filter(ndays <= input$last_x_days)
+      dplyr::filter(ndays <= input$state_last_x_days)
 
   })
 
-  alpha <- shiny::reactive({
-    alpha <- ifelse(input$show_timeline2, 1, 0)
+  state_alpha <- shiny::reactive({
+    alpha <- ifelse(input$state_show_timeline, 1, 0)
   })
 
   output$confirmed_state_plot <- shiny::renderPlot({
 
-   state_stats.confirmed(df = df(),
-                         alpha = alpha())
+   state_stats.confirmed(df = state_sub(),
+                         alpha = state_alpha())
   })
 
   output$deaths_state_plot <- shiny::renderPlot({
 
-    state_stats.deaths(df = df(),
-                          alpha = alpha())
+    state_stats.deaths(df = state_sub(),
+                       alpha = state_alpha())
   })
 
   output$tests_state_plot <- shiny::renderPlot({
 
-    state_stats.tests(df = df(),
-                          alpha = alpha())
+    state_stats.tests(df = state_sub(),
+                      alpha = state_alpha())
   })
 
 }
