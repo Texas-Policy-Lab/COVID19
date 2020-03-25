@@ -83,7 +83,10 @@ stats.default <- function(df,
     scale_y_continuous(labels = scales::comma_format()) +
     labs(x = x_lab,
          y = y_lab,
-         caption = paste("Source:", usafacts_source))
+         caption = paste(stringr::str_wrap(paste("Source:", usafacts_source), width = 100),
+                         paste("Data last updated:",timestamp()),
+                         sep ="\n")
+    )
 
   gg <- text_format(gg = gg,
                     size = size, 
