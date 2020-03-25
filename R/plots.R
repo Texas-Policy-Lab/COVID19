@@ -131,7 +131,7 @@
 #'   return(gg)
 #' }
 
-pandemic_declared <- function(gg, df, 
+pandemic_declared <- function(gg, df, y,
                               text1 = "WHO announces that the new coronavirus disease will be called 'COVID-19'",
                               text2 = "WHO declares outbreak a pandemic",
                               text3 = "Federal plan leaked which warns the new coronavirus pandemic may last up to 18 months or longer and come in multiple waves") {
@@ -143,7 +143,7 @@ pandemic_declared <- function(gg, df,
   gg <- gg + 
     geom_vline(xintercept = pandemic$Date, linetype="dashed",
                color = "grey", size = 1) +
-      annotate(geom = "label", x = pandemic$Date, y = (max(df$confirmed)*.95),
+      annotate(geom = "label", x = pandemic$Date, y = (max(df[[y]])*.95),
                label = "WHO declares pandemic", size = 3) +
     theme_bw()
   
@@ -171,7 +171,7 @@ text_format <- function(gg,
                         point.padding = NULL,
                         direction = NULL,
                         alpha = NULL) {
-  
+
   gg +
     ggrepel::geom_label_repel(size = size,
                     hjust = hjust,
