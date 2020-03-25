@@ -2,7 +2,6 @@ timeline_world.ui <- function() {
   shiny::fluidRow(
     shiny::column(
       width = 2,
-      shiny::fluidRow(
       shiny::radioButtons(
         "choose_country",
         label = shiny::h3("Country"),
@@ -13,31 +12,26 @@ timeline_world.ui <- function() {
           "Italy" = "italy"
         ),
         selected = "us"
-      )
-    ),
-    
-    shiny::fluidRow(
-    shinyWidgets::switchInput(
-      inputId = "showEvents",
-      label = "Show Events",
-      # handleWidth = "1000px",
-      # width = "100%",
-      size = "mini"
-      )
-    )
+      ),
+                    shiny::h3("Show timeline"),
+                    shinyWidgets::switchInput(
+                      inputId = "show_timeline"
+                      # label = "Show timeline",
+                      # onStatus = "#e54e4d"
+                    )
   ),
     
     shiny::column(width = 8,
                   shiny::plotOutput("timeline_world_plot"))
   )
+
 }
 
 timeline_world.server <- function(input, output, session) {
   
   df <- shiny::reactive({
-    
-    world %>% 
-      dplyr::mutate(alpha = ifelse(input$showEvents == TRUE, 1, 0))
+
+    timeline.default(alpha = ifelse(input$show_timeline, 1, 0))
     
   })
   
