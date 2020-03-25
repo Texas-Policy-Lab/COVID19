@@ -8,11 +8,16 @@ ui:
     title: "COVID 19"
     wide: 350
   tabs:
-    tab1:
-      menu_title: "State Level Data"
-      icon: ""
-      page_title: "State Level Data"
+    tab1: 
+      menu_title: "World Level Data"
+      icon: "globe"
+      page_title: "World Level Data"
     tab2:
+      menu_title: "State Level Data"
+      icon: "flag"
+      page_title: "State Level Data"
+    tab3:
       menu_title: "County Level Data"
-      icon:  ""
+      icon: "star"
       page_title: "County Level Data"
+

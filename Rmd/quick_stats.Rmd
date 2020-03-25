@@ -1,0 +1,222 @@
+---
+output:
+  html_document:
+    css: ["../www/css/main.css", "../www/css/tabBoxes.css", "../www/css/footer.css"]
+---
+
+## COVID-19 {.tabset .tabset-fade}
+
+```{r include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, eval = TRUE)
+options(encoding = "UTF-8")
+options(scipen=999)
+```
+
+```{r include = FALSE}
+library(magrittr)
+library(ggplot2)
+library(ggrepel)
+library(stringr)
+
+tpltheme::set_tpl_theme(style = "print", font = "lato")
+
+rm(list = ls())
+options(encoding = "UTF-8")
+
+sapply(list.files("../R", full.names = TRUE, recursive = TRUE), source, .GlobalEnv)
+
+county <- create_data.county()
+
+state <- create_data.state()
+
+usa <- create_data.usa()
+
+world <- create_data.world()
+
+usafacts_source <- "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)"
+census_source <- "Population data: 2018 American Community Survey 5-year Estimates"
+covid_tracking_source <- "Testing data: The Covid Tracking Project (https://covidtracking.com/)"
+world_data_source <- "Johns Hopkins Center for Systems Science and Engineering  (https://github.com/CSSEGISandData/COVID-19)"
+
+```
+
+### World
+
+#### Timelines
+
+The following graphs show the timelines of when different countries tried different interventions over time. China is one of a few countries who has been successful in "flattening the curve". On January 23rd, 2020 they implemented one of the most extreme interventions - quarantine in Wuhan and three other cities. On January 24th, 2020 the Chinese government expanded the quarantine to the entire Hubei province. China saw the first decreases in daily infection rates approximately 26 days after implementing the quarantines in the Hubei province.
+
+##### United States
+
+```{r}
+timeline.us(df = world, alpha = 1)
+```
+
+##### China
+
+```{r}
+timeline.china(df = world, alpha = 1)
+```
+
+##### Italy
+
+```{r}
+timeline.italy(df = world, alpha = 1)
+```
+
+### State Level
+
+#### Confirmed cases
+
+The total number of confirmed cases in Texas is `r state  %>% dplyr::filter(stateAbb == "TX")  %>% dplyr::summarise(max = max(confirmed)) %>% dplyr::pull(max)`. That number has increased over the last several weeks, however it is likely that this number is underreported due to a lack of testing in the state of Texas.
+
+```{r}
+states <- state %>% 
+  dplyr::filter(stateAbb %in% c("TX", "CA", "WA", "FL", "NY"))
+
+gg <- ggplot(states,
+             aes(x = Date, y = confirmed, color = stateName)) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual("States", values = as.vector(tpltheme::tpl_palettes$categorical)) +
+  labs(y = "Confirmed cases",
+       x = "Date",
+       caption = paste("Source:", usafacts_source),
+       title = "Confirmed cases over time") +
+  ylim(0, NA)
+
+print(gg)
+```
+
+#### Deaths
+
+The total number of deaths in Texas is `r states  %>% dplyr::filter(stateAbb == "TX")  %>% dplyr::summarise(max = max(deaths)) %>% dplyr::pull(max)`.
+
+```{r}
+gg <- ggplot(states,
+             aes(x = Date, y = deaths, color = stateName)) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual("States", values = as.vector(tpltheme::tpl_palettes$categorical)) +
+  labs(y = "Deaths",
+       x = "Date",
+       caption = paste("Source:", usafacts_source),
+       title = "Confirmed deaths over time") +
+  ylim(0, NA)
+
+print(gg)
+```
+
+#### Testing
+
+The total number of tests in Texas is `r states  %>% dplyr::filter(stateAbb == "TX")  %>% dplyr::summarise(max = max(total_tests, na.rm = TRUE)) %>% dplyr::pull(max)`. On Monday March 16th, Governor Greg Abbott suggested that the testing capacity in Texas would ramp up substantially over the following week (March 16th thru March 22nd) to over 10,000 tests. However, testing has fallen short of this initial estimate. The governor promised that by the end of the week (March 22nd) "everyone who needs a COVID-19 test will be able to get a COVID-19 test", however this doesn't seem to be the case. Texas appears to be substantially lagging in ramping up it's testing capacity, which Governor Andrew Cuomo said was the first line of defense again COVID-19 (The Daily March 18th, 2020).
+
+```{r}
+gg <- ggplot(states,
+             aes(x = Date, y = total_tests, color = stateName)) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual("States", values = as.vector(tpltheme::tpl_palettes$categorical)) +
+  labs(y = "Total # of tests",
+       x = "Date",
+       caption = paste("Source:", covid_tracking_source),
+       title = "Total # of tests over time") +
+  ylim(0, NA)
+
+print(gg)
+```
+
+
+#### Timelines
+
+##### Texas
+
+```{r}
+timeline.tx(df = state, alpha = 1)
+```
+
+
+##### California
+
+```{r}
+timeline.ca(df = state, alpha = 1)
+```
+
+##### New York
+
+```{r}
+timeline.ny(df = state, alpha = 1)
+```
+
+### County Level
+
+#### Confirmed cases
+
+```{r}
+
+tx <- county %>% 
+  dplyr::filter(stateAbb == "TX") %>%
+  dplyr::filter(countyName %in% c("Harris County", "Travis County", "Dallas County"))
+
+gg <- ggplot(tx,
+             aes(x = Date, y = confirmed, color = countyName)) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual("States", values = as.vector(tpltheme::tpl_palettes$categorical)) +
+  labs(y = "Total # confirmed cases",
+       x = "Date",
+       caption = paste("Source:", usafacts_source),
+       title = "Total # confirmed cases over time") +
+  ylim(0, NA)
+
+print(gg)
+
+```
+
+
+```{r}
+map_county <- map_data('county') %>% 
+  dplyr::filter(region == "texas") %>% 
+  dplyr::left_join(county %>% 
+    dplyr::filter(stateAbb == "TX") %>% 
+    dplyr::mutate(subregion = tolower(gsub(" County", "", countyName))) %>% 
+    dplyr::arrange(desc(Date)) %>% 
+      dplyr::group_by(countyName) %>% 
+      dplyr::slice(1)
+  )
+
+ggplot(map_county, aes(x = long, y = lat, group = group, fill = confirmed)) + 
+  geom_polygon() +
+  coord_map()
+
+```
+
+### Discussion and Limitations
+
+While this report provides a selective look at COVID-19 trends at the worldwide, national and state level, it is important to recognize the limitations of the data. Restrictive measures, testing capacity, and monitoring protocols vary between countries. The testing capacity of Italy and China far exceeds that of the United States; a greater number of confirmed cases will be seen in areas that test more individuals. While the United States is working to make more coronavirus tests available, demand still exceeds availability. As such, the reported number of confirmed cases is presumed to be less than the total number of cases.
+ 
+In the US, differences in testing and restrictive measures taken by individual states and counties must also be taken into account. Each state has a different timeline of when its first case was confirmed and the subsequent measures taken to protect its citizens, all of which cover the span of less than two months, with more extreme measures such as "shelter-in-place" occurring within the past week. Furthermore, states are now able to take responsibility for overseeing tests developed and used in their states, but many states do not have the legal authority, expertise, or staff necessary. In states that are able to receive authorization, we would expect the number of tests and confirmed cases to increase. Provided the recently implemented state mandates and the developing nature surrounding the coronavirus, it is too early to say whether such measures are working or to draw definitive conclusions about the trajectory of cases.
+
+##### References
+
+[1 Business Insider: A comprehensive timeline of the new coronavirus pandemic, from China's first COVID-19 case to the present](https://www.businessinsider.com/coronavirus-pandemic-timeline-history-major-events-2020-3#january-13-the-first-coronavirus-case-outside-of-china-was-reported-in-thailand-5)
+ 
+[2 SF Chronicle: Efforts intensify to slow spread of coronavirus, SF bans gatherings of more than 100](https://www.sfchronicle.com/bayarea/article/Efforts-intensify-to-slow-spread-of-coronavirus-15129637.php)
+ 
+[3 New York Times: De Blasio Declares State of Emergency in N.Y.C., and Large Gatherings Are Banned](https://www.nytimes.com/2020/03/12/nyregion/coronavirus-new-york-update.html#link-67d77703)
+ 
+[4 Texas Tribune: Texas governor declares statewide emergency, says state will soon be able to test thousands ](https://www.texastribune.org/2020/03/13/texas-coronavirus-cases-state-emergency-greg-abbott/)
+ 
+[5 CNBC: California announces first coronavirus death, bringing US fatalities to at least 11](https://www.cnbc.com/2020/03/04/california-confirms-first-coronavirus-death-bringing-us-fatalities-to-at-least-11.html)
+ 
+[6 Wall Street Journal: New York State Has First Coronavirus Deaths](https://www.wsj.com/articles/new-york-state-has-first-coronavirus-death-11584198758)
+ 
+[7 Chron: Matagorda County reports first coronavirus-related death in Texas](https://www.chron.com/news/houston-texas/houston/article/matagorda-county-first-coronavirus-death-15136253.php)
+
+[8 NPR: U.S. Coronavirus Testing Starts To Ramp Up But Still Lags](https://www.npr.org/sections/health-shots/2020/03/18/817768723/u-s-coronavirus-testing-starts-to-ramp-up-but-still-lags)
+ 
+[9 Our World in Data: How many tests for COVID-19 are being performed around the world?](https://ourworldindata.org/covid-testing)
+
+[11 Texas Tribune: Texas Gov. Greg Abbott says to expect "exponential" increase in positive coronavirus cases](https://www.texastribune.org/2020/03/16/texas-coronavirus-cases-will-increase-exponentially-gov-greg-abbott/)
+
+[12 The Daily Podcast: Gov. Andrew Cuomo: 'It's Making Sure We Live Through This'](https://www.nytimes.com/2020/03/18/podcasts/the-daily/cuomo-new-york-coronavirus.html)
