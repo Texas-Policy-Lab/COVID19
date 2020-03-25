@@ -295,3 +295,13 @@ state_stats.tests <- function(df) {
   
   do.call(state_stats, cls)
 }
+
+state_stats.attack_rate <- function(df) {
+  
+  cls <- list(y_lab = "Attack rate (1 in X people have coronovirus)",
+              y = "attack_rate",
+              color = "stateName",
+              df = df)
+  
+  do.call(state_stats, cls)
+}
