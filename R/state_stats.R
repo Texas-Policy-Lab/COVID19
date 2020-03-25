@@ -1,4 +1,3 @@
-
 state_stats <- function(...) UseMethod("state_stats")
 
 state_stats.default <- function(df,
@@ -54,35 +53,50 @@ state_stats.tests <- function(df) {
   
   do.call(state_stats, cls)
 }
+
+widget.timeline_switch <- function() {
+  shinyWidgets::switchInput(
+    inputId = "show_timeline"
+  )
+}
+
+widget.ndays_slider <- function() {
+
+  shiny::sliderInput(inputId = "last_x_days",
+                     label = "# most recent days",
+                     min = min(state$ndays),
+                     max = max(state$ndays),
+                     step = 1,
+                     value = max(state$ndays))
+
+}
+
+widget.state_picker <- function() {
+  shinyWidgets::pickerInput(
+    inputId = "statesGroup", 
+    label = "States",
+    choices = sapply(unique(state$stateName),
+                     FUN = function(x) x,
+                     USE.NAMES = TRUE, simplify = FALSE), 
+    options = list(
+      `actions-box` = TRUE, 
+      size = 10,
+      `selected-text-format` = "count > 3",
+      `live-search` = TRUE
+    ), 
+    multiple = TRUE,
+    selected = c("Texas", "New York", "California", "Washington")
+  )
+}
+
 state_stats.ui <- function() {
 
   shiny::fluidRow(
     shiny::column(width = 3,
                   shiny::h3("Show timeline"),
-                  shinyWidgets::switchInput(
-                    inputId = "show_timeline"
-                  ),
-                  shiny::sliderInput(inputId = "last_x_days",
-                                     label = "# most recent days",
-                                     min = min(state$ndays),
-                                     max = max(state$ndays),
-                                     step = 1,
-                                     value = max(state$ndays)),
-                  shinyWidgets::pickerInput(
-                    inputId = "statesGroup", 
-                    label = "States",
-                    choices = sapply(unique(state$stateName),
-                                     FUN = function(x) x,
-                                     USE.NAMES = TRUE, simplify = FALSE), 
-                    options = list(
-                      `actions-box` = TRUE, 
-                      size = 10,
-                      `selected-text-format` = "count > 3",
-                      `live-search` = TRUE
-                    ), 
-                    multiple = TRUE,
-                    selected = c("Texas", "New York", "California", "Washington")
-                  )),
+                  widget.timeline_switch(),
+                  widget.ndays_slider(),
+                  widget.state_picker()),
     shiny::column(width = 9,
                   shinydashboard::tabBox(side = "left",
                                          selected = "Tab1",
