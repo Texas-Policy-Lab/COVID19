@@ -49,38 +49,19 @@ The following graphs show the timelines of when different countries tried differ
 ##### United States
 
 ```{r}
-timeline_us_cls <- structure(list(df = world %>% 
-                                       dplyr::filter(is.na(stateName)),
-                                  country = "US",
-                                  title = "Confirmed cases in the United States over time",
-                                  hjust = 1,
-                                  nudge_x = 20),
-                             class = "us")
-do.call(timeline, timeline_us_cls)
+timeline.us(df = world, alpha = 1)
 ```
 
 ##### China
 
 ```{r}
-timeline_china_cls <- structure(list(df = world,
-                                  country = "China",
-                                  title = "Confirmed cases in {} over time"),
-                             class = "china")
-do.call(timeline, timeline_china_cls)
+timeline.china(df = world, alpha = 1)
 ```
 
 ##### Italy
 
 ```{r}
-timeline_italy_cls <- structure(list(df = world,
-                                     country = "Italy",
-                                     title = "Confirmed cases in {} over time",
-                                     str_width = 100,
-                                     hjust = 1,
-                                     nudge_x = 20,
-                                     box_padding = 1),
-                             class = "italy")
-do.call(timeline, timeline_italy_cls)
+timeline.italy(df = world, alpha = 1)
 ```
 
 ### State Level
@@ -112,7 +93,6 @@ print(gg)
 The total number of deaths in Texas is `r states  %>% dplyr::filter(stateAbb == "TX")  %>% dplyr::summarise(max = max(deaths)) %>% dplyr::pull(max)`.
 
 ```{r}
-
 gg <- ggplot(states,
              aes(x = Date, y = deaths, color = stateName)) +
   geom_point() +
@@ -152,45 +132,20 @@ print(gg)
 ##### Texas
 
 ```{r}
-timeline_tx_cls <- structure(list(df = state,
-                                  state = "Texas",
-                                  title = "Confirmed cases in the state of {} over time",
-                                  hjust = 1,
-                                  nudge_x = 20,
-                                  box_padding = 1),
-                             class = "tx")
-do.call(timeline, timeline_tx_cls)
-
+timeline.tx(df = state, alpha = 1)
 ```
 
 
 ##### California
 
 ```{r}
-timeline_ca_cls <- structure(list(df = state,
-                                  state = "California",
-                                  title = "Confirmed cases in the state of {} over time",
-                                  str_width = 100,
-                                  hjust = 1,
-                                  nudge_x = 20,
-                                  box_padding = 1),
-                             class = "tx")
-do.call(timeline, timeline_ca_cls)
-
+timeline.ca(df = state, alpha = 1)
 ```
 
 ##### New York
 
 ```{r}
-timeline_ny_cls <- structure(list(df = state,
-                               state = "New York",
-                               title = "Confirmed cases in the state of {} over time",
-                               str_width = 100,
-                               hjust = 1,
-                               nudge_x = 20,
-                               box_padding = 1),
-                             class = "ny")
-do.call(timeline, timeline_ny_cls)
+timeline.ny(df = state, alpha = 1)
 ```
 
 ### County Level
