@@ -48,7 +48,7 @@ widget.state_ndays_slider <- function() {
 
 }
 
-widget.state_state_picker <- function() {
+widget.state_picker <- function() {
   shinyWidgets::pickerInput(
     inputId = "statesGroup", 
     label = "States",
@@ -68,7 +68,7 @@ widget.state_state_picker <- function() {
 
 tabBox.state <- function() {
   shinydashboard::tabBox(side = "left",
-                         selected = "Tab1",
+                         selected = "state_tab1",
                          width = 9,
                          shiny::tabPanel(value = "state_tab1",
                                          title = "Confirmed cases",
@@ -88,7 +88,7 @@ state_stats.ui <- function() {
                   shiny::h3("Show timeline"),
                   widget.state_timeline_switch(),
                   widget.state_ndays_slider(),
-                  widget.state_state_picker()),
+                  widget.state_picker()),
     shiny::column(width = 9,
                   tabBox.state()
                   )
