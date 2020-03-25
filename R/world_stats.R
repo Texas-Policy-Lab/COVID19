@@ -92,25 +92,38 @@ country_stats.server <- function(input, output, session) {
     
   })
   
+  timeline_sub <- shiny::reactive({
+    
+    timeline <- update_timeline.country(country_sub())
+    
+    timeline <- aggregate(timeline$label, list(timeline$countryName,
+                                               timeline$Date), paste, collapse="; ")
+    
+    names(timeline) <- c("countryName", "Date", "label")
+    
+    timeline <- timeline %>% 
+      dplyr::right_join(country_sub())
+  })
+  
   country_alpha <- shiny::reactive({
     alpha <- ifelse(input$country_show_timeline, 1, 0)
   })
   
   output$confirmed_country_plot <- shiny::renderPlot({
 
-    country_stats.confirmed(df = country_sub(),
+    country_stats.confirmed(df = timeline_sub(),
                             alpha = country_alpha())
   })
   
   output$deaths_country_plot <- shiny::renderPlot({
 
-    country_stats.deaths(df = country_sub(),
+    country_stats.deaths(df = timeline_sub(),
                          alpha = country_alpha())
   })
 
   output$tests_country_plot <- shiny::renderPlot({
 
-    country_stats.tests(df = country_sub(),
+    country_stats.tests(df = timeline_sub(),
                         alpha = country_alpha())
   })
   
