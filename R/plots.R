@@ -131,7 +131,7 @@
 #'   return(gg)
 #' }
 
-pandemic_declared <- function(gg, df, 
+pandemic_declared <- function(gg, df, y,
                               text1 = "WHO announces that the new coronavirus disease will be called 'COVID-19'",
                               text2 = "WHO declares outbreak a pandemic",
                               text3 = "Federal plan leaked which warns the new coronavirus pandemic may last up to 18 months or longer and come in multiple waves") {
@@ -143,7 +143,7 @@ pandemic_declared <- function(gg, df,
   gg <- gg + 
     geom_vline(xintercept = pandemic$Date, linetype="dashed",
                color = "grey", size = 1) +
-      annotate(geom = "label", x = pandemic$Date, y = (max(df$confirmed)*.95),
+      annotate(geom = "label", x = pandemic$Date, y = (max(df[[y]])*.95),
                label = "WHO declares pandemic", size = 3) +
     theme_bw()
   
@@ -171,7 +171,7 @@ text_format <- function(gg,
                         point.padding = NULL,
                         direction = NULL,
                         alpha = NULL) {
-  
+
   gg +
     ggrepel::geom_label_repel(size = size,
                     hjust = hjust,
@@ -182,3 +182,54 @@ text_format <- function(gg,
                     direction = direction,
                     alpha = alpha)
 }
+
+stats <- function(...) UseMethod("stats")
+
+stats.default <- function(df,
+                          alpha = 1,
+                          x = "Date",
+                          y = NULL,
+                          color = NULL,
+                          y_lab = NULL,
+                          x_lab = "Date",
+                          legend_lab = "States",
+                          size = 3, 
+                          hjust = 0, 
+                          nudge_x = 8,
+                          box_padding = .5,
+                          point.padding = .2,
+                          direction = "y",
+                          str_width = 65,
+                          usafacts_source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)") {
+  
+  x_vec <- df[[x]]
+  y_vec <- df[[y]]
+  color_vec <- df[[color]]
+  
+  gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec,
+                       label = stringr::str_wrap(label,
+                                                 width = str_width))) +
+    geom_line() +
+    geom_point() +
+    scale_color_manual(legend_lab,
+                       values = as.vector(tpltheme::tpl_palettes$categorical)) + 
+    scale_y_continuous(labels = scales::comma_format()) +
+    labs(x = x_lab,
+         y = y_lab,
+         caption = paste(stringr::str_wrap(paste("Source:", usafacts_source), width = 100),
+                         paste("Data last updated:",timestamp()),
+                         sep ="\n")
+    )
+
+  gg <- text_format(gg = gg,
+                    size = size, 
+                    hjust = hjust, 
+                    nudge_x = nudge_x,
+                    box_padding = box_padding,
+                    point.padding = point.padding,
+                    direction = direction,
+                    alpha = alpha)
+  
+  gg <- pandemic_declared(gg = gg, df = df, y = y)
+  print(gg)
+} 
