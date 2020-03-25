@@ -16,11 +16,11 @@ state_stats.default <- function(df,
                                 direction = "y",
                                 str_width = 65,
                                 usafacts_source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)") {
-  
+
   x_vec <- df[[x]]
   y_vec <- df[[y]]
   color_vec <- df[[color]]
-  
+
   gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec,
                        label = stringr::str_wrap(label,
                                                  width = str_width))) +
@@ -32,7 +32,7 @@ state_stats.default <- function(df,
     labs(x = x_lab,
          y = y_lab,
          caption = paste("Source:", usafacts_source))
-  
+
   gg <- text_format(gg = gg,
                     size = size, 
                     hjust = hjust, 
@@ -41,7 +41,7 @@ state_stats.default <- function(df,
                     point.padding = point.padding,
                     direction = direction,
                     alpha = alpha)
-  
+
   gg <- pandemic_declared(gg = gg, df = df, y = y)
   print(gg)
 } 
@@ -79,13 +79,13 @@ state_stats.tests <- function(df, alpha) {
   do.call(state_stats, cls)
 }
 
-widget.timeline_switch <- function() {
+widget.state_timeline_switch <- function() {
   shinyWidgets::switchInput(
     inputId = "show_timeline2"
   )
 }
 
-widget.ndays_slider <- function() {
+widget.state_ndays_slider <- function() {
 
   shiny::sliderInput(inputId = "last_x_days",
                      label = "# most recent days",
@@ -96,7 +96,7 @@ widget.ndays_slider <- function() {
 
 }
 
-widget.state_picker <- function() {
+widget.state_state_picker <- function() {
   shinyWidgets::pickerInput(
     inputId = "statesGroup", 
     label = "States",
@@ -114,27 +114,32 @@ widget.state_picker <- function() {
   )
 }
 
+tabBox.state <- function() {
+  shinydashboard::tabBox(side = "left",
+                         selected = "Tab1",
+                         width = 9,
+                         shiny::tabPanel(value = "state_tab1",
+                                         title = "Confirmed cases",
+                                         shiny::plotOutput("confirmed_state_plot")),
+                         shiny::tabPanel(value = "state_tab2",
+                                         title = "Deaths",
+                                         shiny::plotOutput("deaths_state_plot")),
+                         shiny::tabPanel(value = "stage_tab3",
+                                         title = "Tests",
+                                         shiny::plotOutput("tests_state_plot")))
+}
+
 state_stats.ui <- function() {
 
   shiny::fluidRow(
     shiny::column(width = 3,
                   shiny::h3("Show timeline"),
-                  widget.timeline_switch(),
-                  widget.ndays_slider(),
-                  widget.state_picker()),
+                  widget.state_timeline_switch(),
+                  widget.state_ndays_slider(),
+                  widget.state_state_picker()),
     shiny::column(width = 9,
-                  shinydashboard::tabBox(side = "left",
-                                         selected = "Tab1",
-                                         width = 9,
-                                         shiny::tabPanel(value = "Tab1",
-                                                         title = "Confirmed cases",
-                                                         shiny::plotOutput("confirmed_state_plot")),
-                                         shiny::tabPanel(value = "Tab2",
-                                                         title = "Deaths",
-                                                         shiny::plotOutput("deaths_state_plot")),
-                                         shiny::tabPanel(value = "Tab3",
-                                                         title = "Tests",
-                                                         shiny::plotOutput("tests_state_plot"))))
+                  tabBox.state()
+                  )
     )
 }
 
