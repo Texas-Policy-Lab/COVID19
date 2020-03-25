@@ -20,7 +20,8 @@ create_data.default <- function(...) {
 
 #' @title Create county level data
 #' @export
-create_data.county <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...) {
+create_data.county <- function(write = FALSE, day100 = as.Date("2020-1-18"),
+                               pth = "./data/xwalk_state_stateAbb.csv", ...) {
 
   county <- create_data.default() %>%
     dplyr::arrange(Date, State) %>%
@@ -41,12 +42,13 @@ create_data.county <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...
     dplyr::mutate(ndays = seq(1, dplyr::n())
     ) %>%
     dplyr::rename(countyName = `County Name`,
-                  stateAbb = State)
+                  stateAbb = State) %>% 
+    dplyr::left_join(read.csv(here::here(pth), stringsAsFactors = FALSE))
 
   if(write) {
     write.csv(county, file.path("data", "county.csv"), row.names = FALSE)
   }
-  
+
   return(county)
 }
 
@@ -92,11 +94,7 @@ create_data.state <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
     dplyr::arrange(desc(Date)) %>% 
     dplyr::mutate(ndays = seq(1, dplyr::n())
     ) %>%
-    dplyr::left_join(timeline_data() %>% 
-                       dplyr::filter(!is.na(stateName))) %>% 
     dplyr::rename(stateAbb = State)
-
-  # state[is.na(state)] <- 0
 
   if(write) {
     write.csv(state, file.path("data", "state.csv"), row.names = FALSE)
@@ -156,8 +154,6 @@ create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
     dplyr::arrange(desc(Date)) %>% 
     dplyr::mutate(ndays = seq(1, dplyr::n())
                   ) %>%
-    dplyr::left_join(timeline_data() %>%
-                       dplyr::filter(is.na(stateName))) %>% 
     dplyr::rename(countryName = country)
 
   if(write) {
@@ -165,7 +161,6 @@ create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
   }
   
   return(world)
-
 }
 
 #' @title Create fips xwalk
