@@ -8,11 +8,11 @@ timestamp <- function() {
   
   formatted_date <- format(strptime(date, format = "%A %B %d %H:%M:%S %Y"), "%A, %B %d %I:%M:%S %p")
   
-  htmltools::tags$div(class = "timestamp_container",
-  htmltools::tags$div(class = "timestamp"
-                      ,htmltools::tags$p("Last updated:", htmltools::br(), formatted_date)
-                      )
-  )
+  # htmltools::tags$div(class = "timestamp_container",
+  # htmltools::tags$div(class = "timestamp"
+  #                     ,htmltools::tags$p("Last updated:", htmltools::br(), formatted_date)
+  #                     )
+  # )
   
    
 }
