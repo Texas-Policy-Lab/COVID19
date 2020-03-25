@@ -1,19 +1,29 @@
 state_stats <- function(...) UseMethod("state_stats")
 
 state_stats.default <- function(df,
+                                alpha = 1,
                                 x = "Date",
                                 y = NULL,
                                 color = NULL,
                                 y_lab = NULL,
                                 x_lab = "Date",
                                 legend_lab = "States",
+                                size = 3, 
+                                hjust = 0, 
+                                nudge_x = 8,
+                                box_padding = .5,
+                                point.padding = .2,
+                                direction = "y",
+                                str_width = 65,
                                 usafacts_source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)") {
   
-  x <- df[[x]]
-  y <- df[[y]]
-  color <- df[[color]]
+  x_vec <- df[[x]]
+  y_vec <- df[[y]]
+  color_vec <- df[[color]]
   
-  ggplot(df, aes(x = x, y = y, color = color)) +
+  gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec,
+                       label = stringr::str_wrap(label,
+                                                 width = str_width))) +
     geom_line() +
     geom_point() +
     scale_color_manual(legend_lab,
@@ -22,41 +32,56 @@ state_stats.default <- function(df,
     labs(x = x_lab,
          y = y_lab,
          caption = paste("Source:", usafacts_source))
+  
+  gg <- text_format(gg = gg,
+                    size = size, 
+                    hjust = hjust, 
+                    nudge_x = nudge_x,
+                    box_padding = box_padding,
+                    point.padding = point.padding,
+                    direction = direction,
+                    alpha = alpha)
+  
+  gg <- pandemic_declared(gg = gg, df = df, y = y)
+  print(gg)
 } 
 
-state_stats.confirmed <- function(df) {
+state_stats.confirmed <- function(df, alpha) {
   
   cls <- list(y_lab = "# confirmed cases",
               y = "confirmed",
               color = "stateName",
-              df = df)
-  
+              df = df,
+              alpha = alpha)
+
   do.call(state_stats, cls)
 }
 
-state_stats.deaths <- function(df) {
+state_stats.deaths <- function(df, alpha) {
   
   cls <- list(y_lab = "# deaths",
               y = "deaths",
               color = "stateName",
-              df = df)
+              df = df,
+              alpha = alpha)
   
   do.call(state_stats, cls)
 }
 
-state_stats.tests <- function(df) {
+state_stats.tests <- function(df, alpha) {
   
   cls <- list(y_lab = "# tests",
               y = "total_tests",
               color = "stateName",
-              df = df)
-  
+              df = df,
+              alpha = alpha)
+
   do.call(state_stats, cls)
 }
 
 widget.timeline_switch <- function() {
   shinyWidgets::switchInput(
-    inputId = "show_timeline"
+    inputId = "show_timeline2"
   )
 }
 
@@ -113,7 +138,6 @@ state_stats.ui <- function() {
     )
 }
 
-
 state_stats.server <- function(input, output, session) {
 
   df <- shiny::reactive({
@@ -124,19 +148,26 @@ state_stats.server <- function(input, output, session) {
 
   })
 
+  alpha <- shiny::reactive({
+    alpha <- ifelse(input$show_timeline2, 1, 0)
+  })
+
   output$confirmed_state_plot <- shiny::renderPlot({
-   state_stats.confirmed(df = df())
+
+   state_stats.confirmed(df = df(),
+                         alpha = alpha())
   })
 
   output$deaths_state_plot <- shiny::renderPlot({
-    state_stats.deaths(df = df())
+
+    state_stats.deaths(df = df(),
+                          alpha = alpha())
   })
 
   output$tests_state_plot <- shiny::renderPlot({
-    state_stats.tests(df = df())
+
+    state_stats.tests(df = df(),
+                          alpha = alpha())
   })
 
 }
-
-
-
