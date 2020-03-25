@@ -105,6 +105,7 @@ tpl_ui <- function(title, tabs, css_pth, js_pth, favicon_pth) {
                               ,type = "image/png"
                               ,href = favicon_pth))
             ,shinydashboard::dashboardPage(header, sidebar, body)
+            ,timestamp()
             ,footer()
             )
           )
