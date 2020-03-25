@@ -92,7 +92,8 @@ create_data.state <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
     dplyr::arrange(desc(Date)) %>% 
     dplyr::mutate(ndays = seq(1, dplyr::n())
     ) %>%
-    dplyr::left_join(timeline_data()) %>% 
+    dplyr::left_join(timeline_data() %>% 
+                       dplyr::filter(!is.na(stateName))) %>% 
     dplyr::rename(stateAbb = State)
 
   # state[is.na(state)] <- 0
@@ -155,7 +156,8 @@ create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
     dplyr::arrange(desc(Date)) %>% 
     dplyr::mutate(ndays = seq(1, dplyr::n())
                   ) %>%
-    dplyr::left_join(timeline_data()) %>% 
+    dplyr::left_join(timeline_data() %>%
+                       dplyr::filter(is.na(stateName))) %>% 
     dplyr::rename(countryName = country)
 
   if(write) {
