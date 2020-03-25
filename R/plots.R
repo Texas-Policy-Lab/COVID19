@@ -183,7 +183,7 @@ text_format <- function(gg,
                     alpha = alpha)
 }
 
-stats <- function(...) UseMethod("state_stats")
+stats <- function(...) UseMethod("stats")
 
 stats.default <- function(df,
                           alpha = 1,
