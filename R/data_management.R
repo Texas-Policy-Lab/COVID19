@@ -181,13 +181,3 @@ fips_xwalk.state <- function(geocodes_pth = "./data/census/geocodes.csv") {
     dplyr::select(stateFIPS, label) %>% 
     dplyr::rename(stateName = label)
 }
-
-timeline_data <- function(pth = here::here("./data/covid_timeline.csv")) {
-
-  readr::read_csv(pth) %>% 
-    dplyr::mutate(Date = lubridate::mdy(Date),
-                  label = paste(lubridate::month(Date, label = TRUE, abbr = TRUE),
-                                " ", lubridate::day(Date), ", ", lubridate::year(Date), ": ", label, sep = ""),
-                  label = stringi::stri_enc_toutf8(label))
-
-}
