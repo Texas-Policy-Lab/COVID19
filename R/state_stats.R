@@ -41,7 +41,12 @@ state_stats.ui <- function() {
                                                          shiny::plotOutput("deaths_state_plot")),
                                          shiny::tabPanel(value = "Tab3",
                                                          title = "Tests",
-                                                         shiny::plotOutput("tests_state_plot")))),
+                                                         shiny::plotOutput("tests_state_plot")),
+                                         shiny::tabPanel(value = "Tab4",
+                                                         title = "Attack rate",
+                                                         shiny::plotOutput("attack_rate_state_plot"))
+                                         )
+                  ),
       shiny::column(width = 3, shinydashboard::valueBoxOutput(outputId = "confirmed_state")),
       shiny::column(width = 3, shinydashboard::valueBoxOutput(outputId = "deaths_state")),
       shiny::column(width = 3, shinydashboard::valueBoxOutput(outputId = "tests_state")),
@@ -82,6 +87,10 @@ state_stats.server <- function(input, output, session) {
   output$tests_state_plot <- shiny::renderPlot({
     state_stats.tests(df = df())
   })
+  
+  output$attack_rate_state_plot <- shiny::renderPlot({
+    state_stats.attack_rate(df = df())
+  })
 
   output$confirmed_state <- shinydashboard::renderValueBox({
     shinydashboard::valueBox(
@@ -109,7 +118,7 @@ state_stats.server <- function(input, output, session) {
       width = NULL
     )
   })
-  
+
   output$attack_rate_state <- shinydashboard::renderValueBox({
     shinydashboard::valueBox(
       value = totals() %>% dplyr::select(mean_attack_rate),
