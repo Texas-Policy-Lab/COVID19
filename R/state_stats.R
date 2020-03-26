@@ -54,7 +54,7 @@ widget.state_event_picker <- function() {
     choices = update_timeline.state(state) %>%
       dplyr::distinct(event) %>% 
       dplyr::pull(event),
-    multiple = TRUE,
+    multiple = FALSE,
     options = list(
       `actions-box` = TRUE, 
       size = 10,
