@@ -1,10 +1,18 @@
+state_stats <- function(...) UseMethod("state_stats")
+
+state_stats.default <- function(df, alpha, ...) {
+
+  list(df = df,
+       alpha = alpha,
+       color = "stateName",
+       source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)")
+}
+
 state_stats.confirmed <- function(df, alpha) {
   
   cls <- list(y_lab = "# confirmed cases",
-              y = "confirmed",
-              color = "stateName",
-              df = df,
-              alpha = alpha)
+              y = "confirmed")
+  cls <- append(cls, state_stats(df, alpha))
 
   do.call(stats, cls)
 }
@@ -12,21 +20,17 @@ state_stats.confirmed <- function(df, alpha) {
 state_stats.deaths <- function(df, alpha) {
   
   cls <- list(y_lab = "# deaths",
-              y = "deaths",
-              color = "stateName",
-              df = df,
-              alpha = alpha)
-  
+              y = "deaths")
+  cls <- append(cls, state_stats(df, alpha))
+
   do.call(stats, cls)
 }
 
 state_stats.tests <- function(df, alpha) {
   
   cls <- list(y_lab = "# tests",
-              y = "total_tests",
-              color = "stateName",
-              df = df,
-              alpha = alpha)
+              y = "total_tests")
+  cls <- append(cls, state_stats(df, alpha))
 
   do.call(stats, cls)
 }
