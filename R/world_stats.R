@@ -1,10 +1,19 @@
+country_stats <- function(...) UseMethod("country_stats")
+
+country_stats.default <- function(df, alpha, ...) {
+  
+  list(df = df,
+       alpha = alpha,
+       color = "countryName",
+       source = "Johns Hopkins Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19)")
+}
+
 country_stats.confirmed <- function(df, alpha) {
 
   cls <- list(y_lab = "# confirmed cases",
-              y = "confirmed",
-              color = "countryName",
-              df = df,
-              alpha = alpha)
+              y = "confirmed")
+
+  cls <- append(cls, country_stats(df, alpha))
 
   do.call(stats, cls)
 }
@@ -12,10 +21,9 @@ country_stats.confirmed <- function(df, alpha) {
 country_stats.deaths <- function(df, alpha) {
 
   cls <- list(y_lab = "# deaths",
-              y = "deaths",
-              color = "countryName",
-              df = df,
-              alpha = alpha)
+              y = "deaths")
+
+  cls <- append(cls, country_stats(df, alpha))
 
   do.call(stats, cls)
 }
