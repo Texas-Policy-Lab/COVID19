@@ -1,22 +1,22 @@
 country_stats.confirmed <- function(df, alpha) {
-  
+
   cls <- list(y_lab = "# confirmed cases",
               y = "confirmed",
               color = "countryName",
               df = df,
               alpha = alpha)
-  
+
   do.call(stats, cls)
 }
 
 country_stats.deaths <- function(df, alpha) {
-  
+
   cls <- list(y_lab = "# deaths",
               y = "deaths",
               color = "countryName",
               df = df,
               alpha = alpha)
-  
+
   do.call(stats, cls)
 }
 
@@ -27,14 +27,14 @@ widget.country_timeline_switch <- function() {
 }
 
 widget.country_ndays_slider <- function() {
-  
+
   shiny::sliderInput(inputId = "country_last_x_days",
                      label = "# most recent days",
                      min = min(world$ndays),
                      max = max(world$ndays),
                      step = 1,
                      value = max(world$ndays))
-  
+
 }
 
 widget.country_picker <- function() {
@@ -52,6 +52,24 @@ widget.country_picker <- function() {
     ), 
     multiple = TRUE,
     selected = c("US", "China", "Italy", "South Korea")
+  )
+}
+
+widget.country_event_picker <- function() {
+
+  shinyWidgets::pickerInput(
+    inputId = "countryEvent",
+    label = "Events", 
+    choices = update_timeline.country(world) %>%
+      dplyr::distinct(event) %>% 
+      dplyr::pull(event),
+    multiple = TRUE,
+    options = list(
+      `actions-box` = TRUE, 
+      size = 10,
+      `selected-text-format` = "count > 3",
+      `live-search` = TRUE
+    )
   )
 }
 
@@ -74,6 +92,7 @@ country_stats.ui <- function() {
     shiny::column(width = 3,
                   shiny::h3("Show timeline"),
                   widget.country_timeline_switch(),
+                  widget.country_event_picker(),
                   widget.country_ndays_slider(),
                   widget.country_picker()),
     shiny::column(width = 9,
@@ -89,20 +108,30 @@ country_stats.server <- function(input, output, session) {
     world %>% 
       dplyr::filter(countryName %in% input$countriesGroup) %>% 
       dplyr::filter(ndays <= input$country_last_x_days)
+      
     
   })
   
   timeline_sub <- shiny::reactive({
     
-    timeline <- update_timeline.country(country_sub())
+    timeline <- update_timeline.country(country_sub()) %>% 
+      dplyr::filter(event %in% input$countryEvent)
     
-    timeline <- aggregate(timeline$label, list(timeline$countryName,
-                                               timeline$Date), paste, collapse="; ")
+    if (nrow(timeline) > 0) {
+      timeline <- aggregate(timeline$label, list(timeline$countryName,
+                                                 timeline$Date), paste, collapse="; ")
+      
+      names(timeline) <- c("countryName", "Date", "label")
+      
+      timeline <- timeline %>% 
+        dplyr::right_join(country_sub())
+      
+    } else {
+      
+      country_sub() %>% 
+        dplyr::mutate(label = NA)
+    }
     
-    names(timeline) <- c("countryName", "Date", "label")
-    
-    timeline <- timeline %>% 
-      dplyr::right_join(country_sub())
   })
   
   country_alpha <- shiny::reactive({
