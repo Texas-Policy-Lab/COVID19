@@ -6,7 +6,8 @@ country_stats.default <- function(df, alpha, ...) {
        alpha = alpha,
        color = "countryName",
        source = "Johns Hopkins Center for Systems Science and Engineering",
-       url = "URL: https://github.com/CSSEGISandData/COVID-19")
+       url = "URL: https://github.com/CSSEGISandData/COVID-19",
+       tt_place = "Country")
 }
 
 country_stats.confirmed <- function(df, alpha) {
@@ -14,20 +15,20 @@ country_stats.confirmed <- function(df, alpha) {
   cls <- list(y_lab = "# confirmed cases",
               y = "confirmed",
               tt_name = "Cases")
-
+  
   cls <- append(cls, country_stats(df, alpha))
-
+  
   do.call(stats, cls)
 }
 
 country_stats.deaths <- function(df, alpha) {
-
+  
   cls <- list(y_lab = "# deaths",
               y = "deaths",
               tt_name = "Deaths")
-
+  
   cls <- append(cls, country_stats(df, alpha))
-
+  
   do.call(stats, cls)
 }
 
@@ -38,14 +39,14 @@ widget.country_timeline_switch <- function() {
 }
 
 widget.country_ndays_slider <- function() {
-
+  
   shiny::sliderInput(inputId = "country_last_x_days",
                      label = "# most recent days",
                      min = min(world$ndays),
                      max = max(world$ndays),
                      step = 1,
                      value = max(world$ndays))
-
+  
 }
 
 widget.country_picker <- function() {
@@ -67,7 +68,7 @@ widget.country_picker <- function() {
 }
 
 widget.country_event_picker <- function() {
-
+  
   shinyWidgets::pickerInput(
     inputId = "countryEvent",
     label = NULL, 
@@ -94,11 +95,11 @@ tabBox.country <- function() {
                          shiny::tabPanel(value = "country_tab2",
                                          title = "Deaths",
                                          ggiraph::girafeOutput("deaths_country_plot"))
-                         )
+  )
 }
 
 country_stats.ui <- function() {
-
+  
   shiny::fluidRow(
     shiny::column(width = 2,
                   shiny::tags$div(
