@@ -15,3 +15,12 @@ csse_data.deaths <- function(url = "https://raw.githubusercontent.com/CSSEGISand
     dplyr::group_by(Date, Country.Region) %>% 
     dplyr::summarise(deaths = sum(deaths))
 }
+
+#' @title CSSE recovered data
+csse_data.recovered <- function(url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv") {
+  
+  df <- read.delim(url, stringsAsFactors = FALSE, encoding="latin1") %>% 
+    tidyr::gather(Date, recovered, -c(Province.State, Country.Region, Lat, Long)) %>% 
+    dplyr::group_by(Date, Country.Region) %>% 
+    dplyr::summarise(recovered = sum(recovered))
+}
