@@ -5,16 +5,19 @@ create_data <- function(...) UseMethod("create_data")
 create_data.default <- function(...) {
 
   confirmed_df <- usa_facts_data.confirmed() %>% 
-    tidyr::gather(Date, confirmed, -c(countyFIPS, `County Name`, State, stateFIPS))
+    tidyr::gather(Date, confirmed, -c(countyFIPS, `County Name`, State, stateFIPS)) %>%
+    dplyr::mutate(Date = gsub("X", "", Date)
+                  ,Date = gsub("[.]", "/", Date)
+                  ,Date = lubridate::mdy(Date))
 
   deaths_df <- usa_facts_data.deaths() %>% 
-    tidyr::gather(Date, deaths, -c(countyFIPS, `County Name`, State, stateFIPS))
+    tidyr::gather(Date, deaths, -c(countyFIPS, `County Name`, State, stateFIPS)) %>% 
+    dplyr::mutate(Date = gsub("X", "", Date)
+                  ,Date = gsub("[.]", "/", Date)
+                  ,Date = lubridate::mdy(Date))
 
   df <- confirmed_df %>%
-    dplyr::left_join(deaths_df) %>%
-    dplyr::mutate(Date = gsub("X", "", Date)
-                 ,Date = gsub("[.]", "/", Date)
-                 ,Date = lubridate::mdy(Date))
+    dplyr::left_join(deaths_df)
 
 }
 
@@ -27,16 +30,16 @@ create_data.county <- function(write = FALSE, day100 = as.Date("2020-1-18"),
     dplyr::arrange(Date, State) %>%
     dplyr::left_join(census.county_pop()) %>%
     dplyr::mutate(confirm_per_100k = (confirmed/pop)*100000
-                 ,death_per100k = (deaths/pop)*100000) %>% 
+                  ,death_per100k = (deaths/pop)*100000) %>% 
     dplyr::arrange(State, countyFIPS, Date) %>% 
     dplyr::group_by(State, countyFIPS) %>% 
     dplyr::mutate(confirmed_lag = dplyr::lag(confirmed)
-                 ,deaths_lag = dplyr::lag(deaths)
-                 ,dy_confirmed = confirmed - confirmed_lag
-                 ,dy_deaths = deaths - deaths_lag
-                 ,pct_chg_confirmed = (dy_confirmed/confirmed)*100
-                 ,pct_chg_deaths = (dy_deaths/deaths)*100
-                 ,ndayssince100 = Date - day100
+                  ,deaths_lag = dplyr::lag(deaths)
+                  ,dy_confirmed = confirmed - confirmed_lag
+                  ,dy_deaths = deaths - deaths_lag
+                  ,pct_chg_confirmed = (dy_confirmed/confirmed)*100
+                  ,pct_chg_deaths = (dy_deaths/deaths)*100
+                  ,ndayssince100 = Date - day100
     ) %>% 
     dplyr::arrange(desc(Date)) %>% 
     dplyr::mutate(ndays = seq(1, dplyr::n())
