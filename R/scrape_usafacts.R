@@ -21,7 +21,7 @@ usa_facts_data.default <- function(url = "https://static.usafacts.org/public/dat
 #' @param csv_name string. Default is "covid_confirmed_usafacts.csv"
 #' @export
 usa_facts_data.confirmed <- function(csv_name = "covid_confirmed_usafacts.csv") {
-
+  
   usa_facts_data(csv_name = csv_name)
 }
 
@@ -30,6 +30,6 @@ usa_facts_data.confirmed <- function(csv_name = "covid_confirmed_usafacts.csv") 
 #' @param csv_name string. Default is "covid_deaths_usafacts.csv"
 #' @export
 usa_facts_data.deaths <- function(csv_name = "covid_deaths_usafacts.csv") {
-
+  
   usa_facts_data(csv_name = csv_name)
 }
