@@ -67,7 +67,7 @@ stats.default <- function(df,
                           point.padding = .2,
                           direction = "y",
                           str_width = 65,
-                          usafacts_source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)") {
+                          source = NULL) {
   
   x_vec <- df[[x]]
   y_vec <- df[[y]]
@@ -83,7 +83,7 @@ stats.default <- function(df,
     scale_y_continuous(labels = scales::comma_format()) +
     labs(x = x_lab,
          y = y_lab,
-         caption = paste(stringr::str_wrap(paste("Source:", usafacts_source), width = 100),
+         caption = paste(stringr::str_wrap(paste("Source:", source), width = 100),
                          paste("Data last updated:",timestamp()),
                          sep ="\n")
     )
