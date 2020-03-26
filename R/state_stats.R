@@ -93,7 +93,7 @@ widget.state_picker <- function() {
 tabBox.state <- function() {
   shinydashboard::tabBox(side = "left",
                          selected = "state_tab1",
-                         width = 9,
+                         width = 12,
                          shiny::tabPanel(value = "state_tab1",
                                          title = "Confirmed cases",
                                          shiny::plotOutput("confirmed_state_plot")),
@@ -108,7 +108,7 @@ tabBox.state <- function() {
 state_stats.ui <- function() {
 
   shiny::fluidRow(
-    shiny::column(width = 3,
+    shiny::column(width = 2,
                   shiny::tags$div(
                     class = "timeline-container",
                     shiny::h3("Timeline"),
@@ -119,9 +119,10 @@ state_stats.ui <- function() {
                   ),
                   widget.state_ndays_slider(),
                   widget.state_picker()),
-    shiny::column(width = 9,
+    shiny::column(width = 7,
                   tabBox.state()
-                  )
+                  ),
+    shiny::column(width = 3)
     )
 }
 
