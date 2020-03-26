@@ -139,20 +139,22 @@ county_stats.ui <- function() {
 }
 
 county_stats.server <- function(input, output, session) {
-  
+
   county_sub <- shiny::reactive({
-    
-    county %>%
-      dplyr::filter(stateName %in% input$statesGroup2) %>%
-      dplyr::filter(countyName %in% input$countysGroup) %>% 
-      dplyr::filter(ndays <= input$county_last_x_days) %>% 
-      dplyr::filter(!is.na(Date))
+
+     cnty <- county %>%
+       dplyr::filter(stateName %in% input$stateGroup2) %>%
+       dplyr::filter(countyName %in% input$countysGroup) %>%
+       dplyr::filter(ndays <= input$county_last_x_days) %>%
+       dplyr::filter(!is.na(Date))
   })
 
   timeline_county_sub <- shiny::reactive({
 
     timeline <- update_timeline.county(county = county_sub()) %>%
-      dplyr::filter(event %in% input$countyEvent)
+      dplyr::filter(event %in% input$countyEvent) %>% 
+      dplyr::filter(stateName %in% input$statesGroup2) %>%
+      dplyr::filter(countyName %in% input$countysGroup)
 
     if (nrow(timeline) > 0) {
 
