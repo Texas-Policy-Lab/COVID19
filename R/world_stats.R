@@ -11,7 +11,7 @@ country_stats.default <- function(df, alpha, ...) {
 }
 
 country_stats.confirmed <- function(df, alpha) {
-
+  
   cls <- list(y_lab = "# confirmed cases",
               y = "confirmed",
               tt_name = "Cases")
@@ -120,20 +120,21 @@ country_stats.ui <- function() {
 }
 
 country_stats.server <- function(input, output, session) {
-
+  
   country_sub <- shiny::reactive({
-
+    
     world %>% 
       dplyr::filter(countryName %in% input$countriesGroup) %>% 
       dplyr::filter(ndays <= input$country_last_x_days)
-      
+    
     
   })
   
   timeline_sub <- shiny::reactive({
     
-    timeline <- update_timeline.country(country_sub()) %>% 
-      dplyr::filter(event %in% input$countryEvent)
+    timeline <- update_timeline.country(country_sub()) %>%
+      dplyr::filter(event %in% input$countryEvent) %>%
+      dplyr::filter(!is.na(Date))
     
     if (nrow(timeline) > 0) {
       timeline <- aggregate(timeline$label, list(timeline$countryName,
@@ -141,7 +142,7 @@ country_stats.server <- function(input, output, session) {
       
       names(timeline) <- c("countryName", "Date", "label")
       
-      timeline <- timeline %>% 
+      timeline <- timeline %>%
         dplyr::right_join(country_sub())
       
     } else {

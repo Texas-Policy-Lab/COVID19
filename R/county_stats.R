@@ -149,9 +149,9 @@ county_stats.server <- function(input, output, session) {
       dplyr::filter(!is.na(Date))
   })
 
-  timeline_sub <- shiny::reactive({
+  timeline_county_sub <- shiny::reactive({
 
-    timeline <- update_timeline.county(county_sub()) %>%
+    timeline <- update_timeline.county(county = county_sub()) %>%
       dplyr::filter(event %in% input$countyEvent)
 
     if (nrow(timeline) > 0) {
@@ -176,13 +176,13 @@ county_stats.server <- function(input, output, session) {
 
   output$confirmed_county_plot <- ggiraph::renderGirafe({
 
-    county_stats.confirmed(df = timeline_sub(),
+    county_stats.confirmed(df = timeline_county_sub(),
                            alpha = county_alpha())
   })
 
   output$deaths_county_plot <- ggiraph::renderGirafe({
   
-    county_stats.deaths(df = timeline_sub(),
+    county_stats.deaths(df = timeline_county_sub(),
                         alpha = county_alpha())
   })
 
