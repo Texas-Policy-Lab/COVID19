@@ -100,8 +100,19 @@ stats.default <- function(df,
                     alpha = alpha)
 
   gg <- pandemic_declared(gg = gg, df = df, y = y)
-  
+
   gg <- gg + 
-    theme(plot.caption = element_text(hjust = 0, vjust = 0))
+    theme(plot.caption = element_text(hjust = 0, vjust = 0, size = 10),
+          axis.title = element_text(size = 16,
+                                    margin(t = 0, r = 10, b = 0, l = 10, unit = "pt")),
+          axis.text = element_text(size = 12),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          legend.title = element_text(size = 14),
+          legend.text = element_text(size = 12),
+          panel.border = element_rect(color = "white"),
+          axis.line = element_line(colour = "grey")
+          )
+
   print(gg)
 } 
