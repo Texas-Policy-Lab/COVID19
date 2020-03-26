@@ -5,7 +5,8 @@ country_stats.default <- function(df, alpha, ...) {
   list(df = df,
        alpha = alpha,
        color = "countryName",
-       source = "Johns Hopkins Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19)")
+       source = "Johns Hopkins Center for Systems Science and Engineering",
+       url = "URL: https://github.com/CSSEGISandData/COVID-19")
 }
 
 country_stats.confirmed <- function(df, alpha) {
