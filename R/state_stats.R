@@ -37,6 +37,25 @@ widget.state_timeline_switch <- function() {
   )
 }
 
+widget.state_event_picker <- function() {
+  
+  shinyWidgets::pickerInput(
+    inputId = "stateEvent",
+    label = "Events", 
+    choices = update_timeline.state(state) %>%
+      dplyr::distinct(event) %>% 
+      dplyr::pull(event),
+    multiple = TRUE,
+    options = list(
+      `actions-box` = TRUE, 
+      size = 10,
+      `selected-text-format` = "count > 3",
+      `live-search` = TRUE
+    )
+  )
+}
+
+
 widget.state_ndays_slider <- function() {
 
   shiny::sliderInput(inputId = "state_last_x_days",
@@ -87,6 +106,7 @@ state_stats.ui <- function() {
     shiny::column(width = 3,
                   shiny::h3("Show timeline"),
                   widget.state_timeline_switch(),
+                  widget.state_event_picker(),
                   widget.state_ndays_slider(),
                   widget.state_picker()),
     shiny::column(width = 9,
@@ -107,16 +127,24 @@ state_stats.server <- function(input, output, session) {
   
   timeline_sub <- shiny::reactive({
     
-    timeline <- update_timeline.state(state_sub())
+    timeline <- update_timeline.state(state_sub()) %>% 
+      dplyr::filter(event %in% input$stateEvent)
     
-    timeline <- aggregate(timeline$label, list(timeline$stateName,
-                                               timeline$Date), paste, collapse="; ")
+    if (nrow(timeline) > 0) {
     
-    names(timeline) <- c("stateName", "Date", "label")
+      timeline <- aggregate(timeline$label, list(timeline$stateName,
+                                                 timeline$Date), paste, collapse="; ")
+      names(timeline) <- c("stateName", "Date", "label")
+      
+      timeline <- timeline %>% 
+        dplyr::right_join(state_sub())
+      
+    } else {
+      state_sub() %>% 
+        dplyr::mutate(label = NA)
+    }
     
-    timeline <- timeline %>% 
-      dplyr::right_join(state_sub())
-  })
+    })
 
   state_alpha <- shiny::reactive({
     alpha <- ifelse(input$state_show_timeline, 1, 0)
