@@ -67,7 +67,8 @@ stats.default <- function(df,
                           point.padding = .2,
                           direction = "y",
                           str_width = 65,
-                          source = NULL) {
+                          source = NULL,
+                          url = NULL) {
   
   x_vec <- df[[x]]
   y_vec <- df[[y]]
@@ -84,7 +85,8 @@ stats.default <- function(df,
     labs(x = x_lab,
          y = y_lab,
          caption = paste(stringr::str_wrap(paste("Source:", source), width = 100),
-                         paste("Data last updated:",timestamp()),
+                         url,
+                         paste("Data last updated:", timestamp()),
                          sep ="\n")
     )
 
@@ -98,5 +100,8 @@ stats.default <- function(df,
                     alpha = alpha)
 
   gg <- pandemic_declared(gg = gg, df = df, y = y)
+  
+  gg <- gg + 
+    theme(plot.caption = element_text(hjust = 0, vjust = 0))
   print(gg)
 } 
