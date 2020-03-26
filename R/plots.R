@@ -74,12 +74,11 @@ stats.default <- function(df,
   color_vec <- df[[color]]
 
   gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec,
-                       text = stringr::str_wrap(label,
-                                                 width = str_width),
                        label = stringr::str_wrap(label,
-                                                width = str_width))) +
-    geom_line() +
-    geom_point() +
+                                                width = str_width),
+                       tooltip = glue::glue("Country: {color_vec}<br>Date: {x_vec}<br>Cases: {y_vec}"))) +
+    ggiraph::geom_point_interactive() +
+    ggiraph::geom_line_interactive(size = 1) +
     scale_color_manual(legend_lab,
                        values = as.vector(tpltheme::tpl_palettes$categorical)) + 
     scale_y_continuous(labels = scales::comma_format()) +
@@ -101,5 +100,5 @@ stats.default <- function(df,
 
   gg <- pandemic_declared(gg = gg, df = df, y = y)
   # print(gg)
-  gg <- plotly::ggplotly(gg, tooltip = "text")
+  gg <- ggiraph::girafe(ggobj = gg)
 } 
