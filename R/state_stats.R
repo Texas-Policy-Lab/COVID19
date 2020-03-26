@@ -6,7 +6,8 @@ state_stats.default <- function(df, alpha, ...) {
        alpha = alpha,
        color = "stateName",
        source = "Confirmed COVID-19 cases and deaths: USAFacts Data",
-       url = "URL: https://usafacts.org/")
+       url = "URL: https://usafacts.org/",
+       tt_place = "State")
 }
 
 state_stats.confirmed <- function(df, alpha) {
@@ -99,13 +100,13 @@ tabBox.state <- function() {
                          width = 12,
                          shiny::tabPanel(value = "state_tab1",
                                          title = "Confirmed cases",
-                                         shiny::plotOutput("confirmed_state_plot")),
+                                         ggiraph::girafeOutput("confirmed_state_plot")),
                          shiny::tabPanel(value = "state_tab2",
                                          title = "Deaths",
-                                         shiny::plotOutput("deaths_state_plot")),
+                                         ggiraph::girafeOutput("deaths_state_plot")),
                          shiny::tabPanel(value = "stage_tab3",
                                          title = "Tests",
-                                         shiny::plotOutput("tests_state_plot")))
+                                         ggiraph::girafeOutput("tests_state_plot")))
 }
 
 state_stats.ui <- function() {
@@ -164,19 +165,19 @@ state_stats.server <- function(input, output, session) {
     alpha <- ifelse(input$state_show_timeline, 1, 0)
   })
 
-  output$confirmed_state_plot <- shiny::renderPlot({
+  output$confirmed_state_plot <- ggiraph::renderGirafe({
 
    state_stats.confirmed(df = timeline_sub(),
                          alpha = state_alpha())
   })
 
-  output$deaths_state_plot <- shiny::renderPlot({
+  output$deaths_state_plot <- ggiraph::renderGirafe({
 
     state_stats.deaths(df = timeline_sub(),
                        alpha = state_alpha())
   })
 
-  output$tests_state_plot <- shiny::renderPlot({
+  output$tests_state_plot <- ggiraph::renderGirafe({
 
     state_stats.tests(df = timeline_sub(),
                       alpha = state_alpha())
