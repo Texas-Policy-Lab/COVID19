@@ -59,7 +59,7 @@ widget.country_event_picker <- function() {
 
   shinyWidgets::pickerInput(
     inputId = "countryEvent",
-    label = "Events", 
+    label = NULL, 
     choices = update_timeline.country(world) %>%
       dplyr::distinct(event) %>% 
       dplyr::pull(event),
@@ -90,9 +90,14 @@ country_stats.ui <- function() {
 
   shiny::fluidRow(
     shiny::column(width = 3,
-                  shiny::h3("Show timeline"),
-                  widget.country_timeline_switch(),
-                  widget.country_event_picker(),
+                  shiny::tags$div(
+                    class = "timeline-container",
+                    shiny::h3("Timeline"),
+                    shiny::h4("On/Off"),
+                    widget.country_timeline_switch(),
+                    shiny::h4("Events"),
+                    widget.country_event_picker()
+                  ),
                   widget.country_ndays_slider(),
                   widget.country_picker()),
     shiny::column(width = 9,
