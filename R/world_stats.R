@@ -61,10 +61,10 @@ tabBox.country <- function() {
                          width = 9,
                          shiny::tabPanel(value = "country_tab1",
                                          title = "Confirmed cases",
-                                         shiny::plotOutput("confirmed_country_plot")),
+                                         plotly::plotlyOutput("confirmed_country_plot")),
                          shiny::tabPanel(value = "country_tab2",
                                          title = "Deaths",
-                                         shiny::plotOutput("deaths_country_plot"))
+                                         plotly::plotlyOutput("deaths_country_plot"))
                          )
 }
 
@@ -109,19 +109,19 @@ country_stats.server <- function(input, output, session) {
     alpha <- ifelse(input$country_show_timeline, 1, 0)
   })
   
-  output$confirmed_country_plot <- shiny::renderPlot({
+  output$confirmed_country_plot <- plotly::renderPlotly({
 
     country_stats.confirmed(df = timeline_sub(),
                             alpha = country_alpha())
   })
   
-  output$deaths_country_plot <- shiny::renderPlot({
+  output$deaths_country_plot <- plotly::renderPlotly({
 
     country_stats.deaths(df = timeline_sub(),
                          alpha = country_alpha())
   })
 
-  output$tests_country_plot <- shiny::renderPlot({
+  output$tests_country_plot <- plotly::renderPlotly({
 
     country_stats.tests(df = timeline_sub(),
                         alpha = country_alpha())

@@ -74,8 +74,10 @@ stats.default <- function(df,
   color_vec <- df[[color]]
 
   gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec,
+                       text = stringr::str_wrap(label,
+                                                 width = str_width),
                        label = stringr::str_wrap(label,
-                                                 width = str_width))) +
+                                                width = str_width))) +
     geom_line() +
     geom_point() +
     scale_color_manual(legend_lab,
@@ -98,5 +100,6 @@ stats.default <- function(df,
                     alpha = alpha)
 
   gg <- pandemic_declared(gg = gg, df = df, y = y)
-  print(gg)
+  # print(gg)
+  gg <- plotly::ggplotly(gg, tooltip = "text")
 } 
