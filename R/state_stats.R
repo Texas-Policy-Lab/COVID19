@@ -12,7 +12,8 @@ state_stats.default <- function(df, alpha, ...) {
 state_stats.confirmed <- function(df, alpha) {
   
   cls <- list(y_lab = "# confirmed cases",
-              y = "confirmed")
+              y = "confirmed",
+              tt_name = "Cases")
   cls <- append(cls, state_stats(df, alpha))
 
   do.call(stats, cls)
@@ -21,7 +22,8 @@ state_stats.confirmed <- function(df, alpha) {
 state_stats.deaths <- function(df, alpha) {
   
   cls <- list(y_lab = "# deaths",
-              y = "deaths")
+              y = "deaths",
+              tt_name = "Deaths")
   cls <- append(cls, state_stats(df, alpha))
 
   do.call(stats, cls)
@@ -30,7 +32,8 @@ state_stats.deaths <- function(df, alpha) {
 state_stats.tests <- function(df, alpha) {
   
   cls <- list(y_lab = "# tests",
-              y = "total_tests")
+              y = "total_tests",
+              tt_name = "Tests")
   cls <- append(cls, state_stats(df, alpha))
 
   do.call(stats, cls)
