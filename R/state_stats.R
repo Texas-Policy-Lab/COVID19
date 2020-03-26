@@ -41,7 +41,7 @@ widget.state_event_picker <- function() {
   
   shinyWidgets::pickerInput(
     inputId = "stateEvent",
-    label = "Events", 
+    label = NULL, 
     choices = update_timeline.state(state) %>%
       dplyr::distinct(event) %>% 
       dplyr::pull(event),
@@ -104,9 +104,14 @@ state_stats.ui <- function() {
 
   shiny::fluidRow(
     shiny::column(width = 3,
-                  shiny::h3("Show timeline"),
-                  widget.state_timeline_switch(),
-                  widget.state_event_picker(),
+                  shiny::tags$div(
+                    class = "timeline-container",
+                    shiny::h3("Timeline"),
+                    shiny::h4("On/Off"),
+                    widget.state_timeline_switch(),
+                    shiny::h4("Events"),
+                    widget.state_event_picker()
+                  ),
                   widget.state_ndays_slider(),
                   widget.state_picker()),
     shiny::column(width = 9,
