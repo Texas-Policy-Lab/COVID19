@@ -1,7 +1,7 @@
 #' @title CSSE confirmed cases data
 csse_data.confirmed <- function(url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv") {
  
-  df <- read.csv(url) %>% 
+  df <- read.csv(url, stringsAsFactors = FALSE) %>% 
     tidyr::gather(Date, confirmed, -c(Province.State, Country.Region, Lat, Long)) %>% 
     dplyr::group_by(Date, Country.Region) %>% 
     dplyr::summarise(confirmed = sum(confirmed))
@@ -10,8 +10,17 @@ csse_data.confirmed <- function(url = "https://raw.githubusercontent.com/CSSEGIS
 #' @title CSSE deaths data
 csse_data.deaths <- function(url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv") {
   
-  df <- read.csv(url) %>% 
+  df <- read.csv(url, stringsAsFactors = FALSE) %>% 
     tidyr::gather(Date, deaths, -c(Province.State, Country.Region, Lat, Long)) %>% 
     dplyr::group_by(Date, Country.Region) %>% 
     dplyr::summarise(deaths = sum(deaths))
+}
+
+#' @title CSSE recovered data
+csse_data.recovered <- function(url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv") {
+  
+  df <- read.delim(url, stringsAsFactors = FALSE, encoding="latin1") %>% 
+    tidyr::gather(Date, recovered, -c(Province.State, Country.Region, Lat, Long)) %>% 
+    dplyr::group_by(Date, Country.Region) %>% 
+    dplyr::summarise(recovered = sum(recovered))
 }

@@ -67,7 +67,9 @@ stats.default <- function(df,
                           point.padding = .2,
                           direction = "y",
                           str_width = 65,
-                          usafacts_source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)") {
+                          source = NULL,
+                          url = NULL,
+                          tt_name = NULL) {
   
   x_vec <- df[[x]]
   y_vec <- df[[y]]
@@ -76,7 +78,7 @@ stats.default <- function(df,
   gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec,
                        label = stringr::str_wrap(label,
                                                 width = str_width),
-                       tooltip = glue::glue("Country: {color_vec}<br>Date: {x_vec}<br>Cases: {y_vec}"))) +
+                       tooltip = glue::glue("Country: {color_vec}<br>Date: {x_vec}<br>{tt_name}: {y_vec}"))) +
     ggiraph::geom_point_interactive() +
     ggiraph::geom_line_interactive(size = 1) +
     scale_color_manual(legend_lab,
@@ -84,8 +86,9 @@ stats.default <- function(df,
     scale_y_continuous(labels = scales::comma_format()) +
     labs(x = x_lab,
          y = y_lab,
-         caption = paste(stringr::str_wrap(paste("Source:", usafacts_source), width = 100),
-                         paste("Data last updated:",timestamp()),
+         caption = paste(stringr::str_wrap(paste("Source:", source), width = 100),
+                         url,
+                         paste("Data last updated:", timestamp()),
                          sep ="\n")
     )
 
@@ -99,6 +102,24 @@ stats.default <- function(df,
                     alpha = alpha)
 
   gg <- pandemic_declared(gg = gg, df = df, y = y)
-  # print(gg)
+
+  gg <- gg + 
+    theme(plot.caption = element_text(hjust = 0, vjust = 0, size = 10),
+          axis.title = element_text(size = 16,
+                                    margin(t = 0, r = 10, b = 0, l = 10, unit = "pt")),
+          axis.text = element_text(size = 12),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          legend.title = element_text(size = 14),
+          legend.text = element_text(size = 12),
+          panel.border = element_rect(color = "white"),
+          axis.line = element_line(colour = "grey")
+    )
+  
+  
+  
   gg <- ggiraph::girafe(ggobj = gg)
+
+  # print(gg)
+
 } 
