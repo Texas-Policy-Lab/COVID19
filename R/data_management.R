@@ -137,13 +137,13 @@ create_data.usa <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...) {
 #' @title Create data nation-level data
 #' @export
 create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...) {
-
+  
   world <- csse_data.confirmed() %>%
     dplyr::left_join(csse_data.deaths()) %>%
     dplyr::ungroup() %>% 
     dplyr::rename(countryName = Country.Region) %>% 
     dplyr::mutate(Date = gsub("X", "", Date)
-                 ,Date = gsub("[.]", "/", Date)
+                  ,Date = gsub("[.]", "/", Date)
                  ,Date = lubridate::mdy(Date)
                  ,countryName = gsub("[^[:alnum:] ]", "", countryName)) %>% 
     dplyr::arrange(Date, countryName) %>% 
