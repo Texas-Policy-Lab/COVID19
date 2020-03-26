@@ -79,7 +79,7 @@ stats.default <- function(df,
   gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec, label = stringr::str_wrap(label,
                                                                                           width = str_width))) +
     geom_line() +
-    ggiraph::geom_point_interactive(tooltip = glue::glue("{tt_place}: {color_vec}<br>Date: {x_vec}<br>{tt_name}: {y_vec}")) +
+    ggiraph::geom_point_interactive(tooltip = glue::glue("{tt_place}: {color_vec}<br>Date: {format(x_vec, '%B %d, %Y')}<br>{tt_name}: {comma(y_vec)}")) +
     scale_color_manual(legend_lab,
                        values = as.vector(tpltheme::tpl_palettes$categorical)) + 
     scale_y_continuous(labels = scales::comma_format()) +
