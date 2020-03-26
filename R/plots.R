@@ -10,9 +10,8 @@ pandemic_declared <- function(gg, df, y,
   gg <- gg + 
     geom_vline(xintercept = pandemic$Date, linetype="dashed",
                color = "grey", size = 1) +
-      annotate(geom = "label", x = pandemic$Date, y = (max(df[[y]])*.95),
-               label = "WHO declares pandemic", size = 3) +
-    theme_bw()
+      annotate(geom = "label", x = pandemic$Date, y = (max(df[[y]], na.rm = T)*.95),
+               label = "WHO declares pandemic", size = 3)
   
   
   # pandemic <- data.frame(Date = as.Date(c("2020-02-11", "2020-03-11", "2020-03-17")),
@@ -28,26 +27,6 @@ pandemic_declared <- function(gg, df, y,
   #                                     text3 = "#5393EA"))
 
   return(gg)
-}
-
-text_format <- function(gg,
-                        size = NULL, 
-                        hjust = NULL, 
-                        nudge_x = NULL,
-                        box_padding = NULL,
-                        point.padding = NULL,
-                        direction = NULL,
-                        alpha = NULL) {
-
-  gg +
-    ggrepel::geom_label_repel(size = size,
-                    hjust = hjust,
-                    nudge_x = nudge_x,
-                    box.padding = box_padding,
-                    na.rm = TRUE,
-                    point.padding = point.padding,
-                    direction = direction,
-                    alpha = alpha)
 }
 
 stats <- function(...) UseMethod("stats")
@@ -89,20 +68,7 @@ stats.default <- function(df,
                          url,
                          paste("Data last updated:", timestamp()),
                          sep ="\n")
-    )
-
-  gg <- text_format(gg = gg,
-                    size = size, 
-                    hjust = hjust, 
-                    nudge_x = nudge_x,
-                    box_padding = box_padding,
-                    point.padding = point.padding,
-                    direction = direction,
-                    alpha = alpha)
-
-  gg <- pandemic_declared(gg = gg, df = df, y = y)
-
-  gg <- gg + 
+    ) +
     theme(plot.caption = element_text(hjust = 0, vjust = 0, size = 10),
           axis.title = element_text(size = 16,
                                     margin(t = 0, r = 10, b = 0, l = 10, unit = "pt")),
@@ -111,14 +77,21 @@ stats.default <- function(df,
           panel.grid.minor.x = element_blank(),
           legend.title = element_text(size = 14),
           legend.text = element_text(size = 12),
-          panel.border = element_rect(color = "white"),
+    #       panel.border = element_rect(color = "white"),
           axis.line = element_line(colour = "grey")
     )
-  
-  
-  
+
+  gg <- gg +
+    ggrepel::geom_label_repel(size = size,
+                              hjust = hjust,
+                              nudge_x = nudge_x,
+                              box.padding = box_padding,
+                              na.rm = TRUE,
+                              point.padding = point.padding,
+                              direction = direction,
+                              alpha = alpha)
+
+  gg <- pandemic_declared(gg = gg, df = df, y = y)
+
   gg <- ggiraph::girafe(ggobj = gg)
-
-  # print(gg)
-
 } 
