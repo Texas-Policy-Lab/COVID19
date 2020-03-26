@@ -3,7 +3,8 @@
 
 /* Border around each widget */
 .form-group.shiny-input-container,
-.action-button {
+.action-button,
+.timeline-container {
   border-radius: 5px;
   border: 1px solid var(--grey-20-darker);
   padding: 7px 10px 7px 10px;
@@ -211,4 +212,25 @@ input[type="checkbox"]:checked {
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
     color: #fff;
     background: var(--main-tpl-red);
+}
+
+.timeline-container > .form-group.shiny-input-container {
+    border: 1px solid var(--white);
+    margin-left: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    margin-bottom: 0px;
+}
+
+.timeline-container {
+  margin-bottom: 15px;
+  max-width: 100%;
+  width: 300px;
+}
+
+.timeline-container > h4 {
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 0px;
 }
