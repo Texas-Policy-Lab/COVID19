@@ -12,7 +12,8 @@ country_stats.default <- function(df, alpha, ...) {
 country_stats.confirmed <- function(df, alpha) {
 
   cls <- list(y_lab = "# confirmed cases",
-              y = "confirmed")
+              y = "confirmed",
+              tt_name = "Cases")
 
   cls <- append(cls, country_stats(df, alpha))
 
@@ -22,7 +23,8 @@ country_stats.confirmed <- function(df, alpha) {
 country_stats.deaths <- function(df, alpha) {
 
   cls <- list(y_lab = "# deaths",
-              y = "deaths")
+              y = "deaths",
+              tt_name = "Deaths")
 
   cls <- append(cls, country_stats(df, alpha))
 
