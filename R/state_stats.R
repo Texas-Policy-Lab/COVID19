@@ -5,7 +5,8 @@ state_stats.default <- function(df, alpha, ...) {
   list(df = df,
        alpha = alpha,
        color = "stateName",
-       source = "Confirmed COVID-19 cases and deaths: USAFacts Data (https://usafacts.org/)")
+       source = "Confirmed COVID-19 cases and deaths: USAFacts Data",
+       url = "URL: https://usafacts.org/")
 }
 
 state_stats.confirmed <- function(df, alpha) {
