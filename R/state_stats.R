@@ -143,7 +143,8 @@ state_stats.server <- function(input, output, session) {
   timeline_sub <- shiny::reactive({
     
     timeline <- update_timeline.state(state_sub()) %>% 
-      dplyr::filter(event %in% input$stateEvent)
+      dplyr::filter(event %in% input$stateEvent) %>% 
+      dplyr::filter(!is.na(Date))
     
     if (nrow(timeline) > 0) {
     
