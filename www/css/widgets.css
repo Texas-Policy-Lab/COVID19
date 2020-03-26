@@ -206,3 +206,9 @@ input[type="checkbox"]:checked {
   background-color: var(--main-tpl-red);
   border-color: var(--main-tpl-red);
 }
+
+/*Format Input button */
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
+    color: #fff;
+    background: var(--main-tpl-red);
+}
