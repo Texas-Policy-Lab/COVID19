@@ -16,10 +16,10 @@ ui_element.tab2 <- function(tab, ...) {
   state_stats.ui()
 }
 
-# # This tab corresponds to tab 3 in the `mainDashboard.yaml` file
-# ui_element.tab3 <- function(tab, ...) {
-#   return(NULL)
-# }
+# This tab corresponds to tab 3 in the `mainDashboard.yaml` file
+ui_element.tab3 <- function(tab, ...) {
+  county_stats.ui()
+}
 
 # Uncomment these addtional tabx functions or add more to match the tabs layout in the mainDashboard.yaml file
 
