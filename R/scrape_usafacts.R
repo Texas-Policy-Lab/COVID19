@@ -6,20 +6,10 @@ usa_facts_data <- function(...) UseMethod("usa_facts_data")
 #' @param confirmed string. The name of the confirmed deaths csv file which will be downloaded.
 #' @param deaths string. The name of the confirmed deaths csv file which will be downloaded.
 #' @export
-usa_facts_data.default <- function(url = "https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/",
-                                   csv_name = NULL) {
+usa_facts_data.default <- function(url = "https://static.usafacts.org/public/data/covid-19/",
+                                   csv_name) {
 
-  site <- xml2::read_html(url)
-
-  links <- site %>%
-    rvest::html_nodes(".ts-rich-text a") %>%
-    rvest::html_attr("href")
-
-  csvs <- links[stringr::str_detect(links, ".csv")]
-
-  url <- csvs[stringr::str_detect(csvs, csv_name)]
-
-  df <- readr::read_csv(url)
+  df <- readr::read_csv(paste0(url, csv_name))
 
   utils::write.csv(df, here::here("./data/usafacts/", csv_name))
 
@@ -32,7 +22,7 @@ usa_facts_data.default <- function(url = "https://usafacts.org/visualizations/co
 #' @export
 usa_facts_data.confirmed <- function(csv_name = "covid_confirmed_usafacts.csv") {
 
-  usa_facts_data.default(csv_name = csv_name)
+  usa_facts_data(csv_name = csv_name)
 }
 
 #' @title Get USAFacts: deaths data
@@ -41,5 +31,5 @@ usa_facts_data.confirmed <- function(csv_name = "covid_confirmed_usafacts.csv") 
 #' @export
 usa_facts_data.deaths <- function(csv_name = "covid_deaths_usafacts.csv") {
 
-  usa_facts_data.default(csv_name = csv_name)
+  usa_facts_data(csv_name = csv_name)
 }
