@@ -104,6 +104,19 @@ state_stats.server <- function(input, output, session) {
       dplyr::filter(ndays <= input$state_last_x_days)
 
   })
+  
+  timeline_sub <- shiny::reactive({
+    
+    timeline <- update_timeline.state(state_sub())
+    
+    timeline <- aggregate(timeline$label, list(timeline$stateName,
+                                               timeline$Date), paste, collapse="; ")
+    
+    names(timeline) <- c("stateName", "Date", "label")
+    
+    timeline <- timeline %>% 
+      dplyr::right_join(state_sub())
+  })
 
   state_alpha <- shiny::reactive({
     alpha <- ifelse(input$state_show_timeline, 1, 0)
@@ -111,19 +124,19 @@ state_stats.server <- function(input, output, session) {
 
   output$confirmed_state_plot <- shiny::renderPlot({
 
-   state_stats.confirmed(df = state_sub(),
+   state_stats.confirmed(df = timeline_sub(),
                          alpha = state_alpha())
   })
 
   output$deaths_state_plot <- shiny::renderPlot({
 
-    state_stats.deaths(df = state_sub(),
+    state_stats.deaths(df = timeline_sub(),
                        alpha = state_alpha())
   })
 
   output$tests_state_plot <- shiny::renderPlot({
 
-    state_stats.tests(df = state_sub(),
+    state_stats.tests(df = timeline_sub(),
                       alpha = state_alpha())
   })
 

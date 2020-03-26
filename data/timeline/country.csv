@@ -1,0 +1,17 @@
+countryName,Date,event,label
+Italy,2/22/2020,Quarantine,"Government announces decree imposing quarantine of more than 50,000 people from 11 different municipalities in Northern Italy"
+Italy,3/4/2020,Shutdown schools and universities,Nationwide shutdown of all schools and universities 
+Italy,3/8/2020,Quarantine,"Enacts forced quarantine (lockdown) for region of Lombardy, nearly a quarter of its population (travel restrictions and ban on all public gatherings)"
+Italy,3/10/2020,Quarantine,Extends emergency coronavirus measures to entire country and places all 60 million residents on lockdown (travel restrictions and ban on all public gatherings)
+Italy,3/17/2020,Death,"Reports 475 deaths, highest single-day death toll for any country since outbreak began"
+China,12/10/2019,Other,One of the earliest known coronavirus patients reports feeling ill
+China,12/27/2019,Other,Wuhan health officials are told about the new coronavirus 
+China,12/31/2019,Other,Chinese officials inform WHO about cluster of 41 patients with mysterious pneumonia
+China,1/7/2020,Other,Novel coronavirus identified
+China,1/23/2020,Quarantine,Wuhan and three other chinese cities placed under quarantine
+China,1/24/2020,Quarantine,Hubei province placed under quarantine (36 million people) and new hospital in Wuhan begins to be built
+China,2/9/2020,Death,Death toll surpasses that of 2002-2003 SARS epidemic with 811 deaths recorded
+US,1/31/2020,Travel ban,Trump bans foreign nationals from entering the US if they were in China within the prior two weeks
+US,3/11/2020,Travel ban,Trump bans all travel from 26 European countries
+US,3/13/2020,State of emergency,US national emergency is declared
+US,3/19/2020,State of emergency,Nearly all US states declare state of emergency 

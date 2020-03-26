@@ -1,5 +1,5 @@
 #' @title CSSE confirmed cases data
-csse_data.confirmed <- function(url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv") {
+csse_data.confirmed <- function(url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv") {
  
   df <- read.csv(url) %>% 
     tidyr::gather(Date, confirmed, -c(Province.State, Country.Region, Lat, Long)) %>% 
@@ -8,7 +8,7 @@ csse_data.confirmed <- function(url = "https://raw.githubusercontent.com/CSSEGIS
 }
 
 #' @title CSSE deaths data
-csse_data.deaths <- function(url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv") {
+csse_data.deaths <- function(url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv") {
   
   df <- read.csv(url) %>% 
     tidyr::gather(Date, deaths, -c(Province.State, Country.Region, Lat, Long)) %>% 
