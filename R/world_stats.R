@@ -60,7 +60,7 @@ widget.country_picker <- function() {
       `live-search` = TRUE
     ), 
     multiple = TRUE,
-    selected = c("US", "China", "Italy", "South Korea")
+    selected = c("US", "China", "Italy", "Korea, South", "Iran")
   )
 }
 
