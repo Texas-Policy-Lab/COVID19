@@ -68,17 +68,18 @@ stats.default <- function(df,
                           direction = "y",
                           str_width = 65,
                           source = NULL,
-                          url = NULL) {
+                          url = NULL,
+                          tt_name = NULL,
+                          tt_place = NULL) {
   
   x_vec <- df[[x]]
   y_vec <- df[[y]]
   color_vec <- df[[color]]
 
-  gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec,
-                       label = stringr::str_wrap(label,
-                                                 width = str_width))) +
+  gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec, label = stringr::str_wrap(label,
+                                                                                          width = str_width))) +
     geom_line() +
-    geom_point() +
+    ggiraph::geom_point_interactive(tooltip = glue::glue("{tt_place}: {color_vec}<br>Date: {format(x_vec, '%B %d, %Y')}<br>{tt_name}: {comma(y_vec)}")) +
     scale_color_manual(legend_lab,
                        values = as.vector(tpltheme::tpl_palettes$categorical)) + 
     scale_y_continuous(labels = scales::comma_format()) +
@@ -112,7 +113,12 @@ stats.default <- function(df,
           legend.text = element_text(size = 12),
           panel.border = element_rect(color = "white"),
           axis.line = element_line(colour = "grey")
-          )
+    )
+  
+  
+  
+  gg <- ggiraph::girafe(ggobj = gg)
 
-  print(gg)
+  # print(gg)
+
 } 
