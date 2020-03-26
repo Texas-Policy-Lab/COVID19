@@ -137,12 +137,13 @@ create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
   world <- csse_data.confirmed() %>%
     dplyr::left_join(csse_data.deaths()) %>%
     dplyr::ungroup() %>% 
-    dplyr::rename(country = Country.Region) %>% 
+    dplyr::rename(countryName = Country.Region) %>% 
     dplyr::mutate(Date = gsub("X", "", Date)
                  ,Date = gsub("[.]", "/", Date)
-                 ,Date = lubridate::mdy(Date)) %>% 
-    dplyr::arrange(Date, country) %>% 
-    dplyr::group_by(country) %>% 
+                 ,Date = lubridate::mdy(Date)
+                 ,countryName = gsub("[^[:alnum:] ]", "", countryName)) %>% 
+    dplyr::arrange(Date, countryName) %>% 
+    dplyr::group_by(countryName) %>% 
     dplyr::mutate(confirmed_lag = dplyr::lag(confirmed)
                  ,deaths_lag = dplyr::lag(deaths)
                  ,dy_confirmed = confirmed - confirmed_lag
@@ -153,8 +154,7 @@ create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
     ) %>% 
     dplyr::arrange(desc(Date)) %>% 
     dplyr::mutate(ndays = seq(1, dplyr::n())
-                  ) %>%
-    dplyr::rename(countryName = country)
+                  )
 
   if(write) {
     write.csv(world, file.path("data", "world.csv"), row.names = FALSE)
