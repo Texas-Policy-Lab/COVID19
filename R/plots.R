@@ -122,3 +122,34 @@ stats.default <- function(df,
   # print(gg)
 
 } 
+
+timeline <- function(...) UseMethod("timeline")
+
+timeline.default <- function(df,
+                          alpha = 1,
+                          x = "Date",
+                          y = 1,
+                          y_lab = NULL,
+                          x_lab = "Date",
+                          legend_lab = "States",
+                          size = 3) {
+
+  gg <- ggplot(df, aes(x = Date, y = 1, label = label, tooltip = glue::glue("{countryName} on {format(Date, '%B %d, %Y')}:<br>{label}"))) +
+    ggiraph::geom_point_interactive(size = size) +
+    labs(y = element_blank(),
+         x = x_lab) +
+      scale_color_manual(legend_lab,
+                         values = as.vector(tpltheme::tpl_palettes$categorical))
+    
+  gg <- gg +
+    theme(
+      axis.line.y.left = element_blank(),
+      axis.text.y.left = element_blank(),
+      axis.line.x.bottom = element_blank(),
+      axis.ticks.x = element_blank()
+    )
+  
+  gg <- ggiraph::girafe(ggobj = gg)
+  
+} 
+

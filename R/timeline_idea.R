@@ -1,6 +1,6 @@
-# #devtools::install_github("shosaco/vistime")
+# # devtools::install_github("shosaco/vistime")
 # # library(vistime)
-# 
+
 # country_test <- update_timeline.country(world)
 # 
 # china <- country_test %>%
@@ -20,7 +20,7 @@
 #        x = element_blank()) +
 #   theme(
 #     axis.line.y.left = element_blank(),
-#     axis.text.y.left = element_blank(), 
+#     axis.text.y.left = element_blank(),
 #     axis.line.x.bottom = element_blank(),
 #     axis.ticks.x = element_blank()
 #   )
