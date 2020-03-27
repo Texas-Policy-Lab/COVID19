@@ -36,7 +36,7 @@ widget.county_timeline_switch <- function() {
   )
 }
 
-widget.county_event_picker <- function() {
+widget.county_event_picker <- function(county) {
   
   shinyWidgets::pickerInput(
     inputId = "countyEvent",
@@ -55,7 +55,7 @@ widget.county_event_picker <- function() {
 }
 
 
-widget.county_ndays_slider <- function() {
+widget.county_ndays_slider <- function(county) {
   
   shiny::sliderInput(inputId = "county_last_x_days",
                      label = "# most recent days",
@@ -66,7 +66,7 @@ widget.county_ndays_slider <- function() {
   
 }
 
-widget.county_picker <- function() {
+widget.county_picker <- function(county) {
   shinyWidgets::pickerInput(
     inputId = "countysGroup", 
     label = "Counties",
@@ -85,7 +85,7 @@ widget.county_picker <- function() {
 }
 
 
-widget.state_picker2 <- function() {
+widget.state_picker2 <- function(county) {
   shinyWidgets::pickerInput(
     inputId = "stateGroup2", 
     label = "States",
@@ -116,7 +116,7 @@ tabBox.county <- function() {
   )
 }
 
-county_stats.ui <- function() {
+county_stats.ui <- function(county) {
   
   shiny::fluidRow(
     shiny::column(width = 2,
@@ -126,11 +126,11 @@ county_stats.ui <- function() {
                     shiny::h4("On/Off"),
                     widget.county_timeline_switch(),
                     shiny::h4("Events"),
-                    widget.county_event_picker()
+                    widget.county_event_picker(county)
                   ),
-                  widget.county_ndays_slider(),
-                  widget.state_picker2(),
-                  widget.county_picker()),
+                  widget.county_ndays_slider(county),
+                  widget.state_picker2(county),
+                  widget.county_picker(county)),
     shiny::column(width = 7,
                   tabBox.county()
     ),
@@ -138,7 +138,7 @@ county_stats.ui <- function() {
   )
 }
 
-county_stats.server <- function(input, output, session) {
+county_stats.server <- function(input, output, session, county) {
 
   county_sub <- shiny::reactive({
 

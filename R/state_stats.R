@@ -46,7 +46,7 @@ widget.state_timeline_switch <- function() {
   )
 }
 
-widget.state_event_picker <- function() {
+widget.state_event_picker <- function(state) {
   
   shinyWidgets::pickerInput(
     inputId = "stateEvent",
@@ -65,7 +65,7 @@ widget.state_event_picker <- function() {
 }
 
 
-widget.state_ndays_slider <- function() {
+widget.state_ndays_slider <- function(state) {
 
   shiny::sliderInput(inputId = "state_last_x_days",
                      label = "# most recent days",
@@ -76,7 +76,7 @@ widget.state_ndays_slider <- function() {
 
 }
 
-widget.state_picker <- function() {
+widget.state_picker <- function(state) {
   shinyWidgets::pickerInput(
     inputId = "statesGroup", 
     label = "States",
@@ -109,7 +109,7 @@ tabBox.state <- function() {
                                          ggiraph::girafeOutput("tests_state_plot")))
 }
 
-state_stats.ui <- function() {
+state_stats.ui <- function(state) {
 
   shiny::fluidRow(
     shiny::column(width = 2,
@@ -119,10 +119,10 @@ state_stats.ui <- function() {
                     shiny::h4("On/Off"),
                     widget.state_timeline_switch(),
                     shiny::h4("Events"),
-                    widget.state_event_picker()
+                    widget.state_event_picker(state)
                   ),
-                  widget.state_ndays_slider(),
-                  widget.state_picker()),
+                  widget.state_ndays_slider(state),
+                  widget.state_picker(state)),
     shiny::column(width = 7,
                   tabBox.state()
                   ),
@@ -130,7 +130,7 @@ state_stats.ui <- function() {
     )
 }
 
-state_stats.server <- function(input, output, session) {
+state_stats.server <- function(input, output, session, state) {
 
   state_sub <- shiny::reactive({
 
