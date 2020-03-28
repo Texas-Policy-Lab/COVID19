@@ -16,7 +16,7 @@ country_stats.confirmed <- function(df, alpha) {
               y = "confirmed",
               tt_name = "Cases")
 
-  cls <- append(cls, country_stats(df, alpha))
+  cls <- append(cls, country_stats(df = df, alpha = alpha))
 
   do.call(stats, cls)
 }
@@ -27,7 +27,7 @@ country_stats.deaths <- function(df, alpha) {
               y = "deaths",
               tt_name = "Deaths")
   
-  cls <- append(cls, country_stats(df, alpha))
+  cls <- append(cls, country_stats(df = df, alpha = alpha))
   
   do.call(stats, cls)
 }
@@ -160,8 +160,9 @@ country_stats.server <- function(input, output, session, world) {
 
     country_stats.confirmed(df = timeline_sub(),
                             alpha = country_alpha())
+    
   })
-  
+
   output$deaths_country_plot <- ggiraph::renderGirafe({
 
     country_stats.deaths(df = timeline_sub(),
