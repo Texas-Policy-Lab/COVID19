@@ -6,6 +6,6 @@ timestamp <- function() {
   
   date <- date()
   
-  formatted_date <- format(strptime(date, format = "%A %B %d %H:%M:%S %Y"), "%A, %B %d %I:%M:%S %p")
+  formatted_date <- format(strptime(date, format = "%A %B %d %H:%M:%S %Y", tz = "America/Chicago"), "%A, %B %d %I:%M:%S %p %Z")
    
 }

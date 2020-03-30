@@ -43,7 +43,7 @@ stats.default <- function(df,
          y = y_lab,
          caption = paste(stringr::str_wrap(paste("Source:", source), width = 100),
                          url,
-                         paste("Data last updated:", timestamp()),
+                         paste("Data last updated:", timestamp(), "(Central time)"),
                          sep ="\n"),
          linetype = ""
     ) +
@@ -59,16 +59,6 @@ stats.default <- function(df,
           axis.line = element_line(colour = "grey"),
           text = element_text(family="Arial")
     )
-
-  gg <- gg +
-    ggrepel::geom_label_repel(size = size,
-                              hjust = hjust,
-                              nudge_x = nudge_x,
-                              box.padding = box_padding,
-                              na.rm = TRUE,
-                              point.padding = point.padding,
-                              direction = direction,
-                              alpha = alpha)
 
   gg <- ggiraph::girafe(ggobj = gg)
 } 
