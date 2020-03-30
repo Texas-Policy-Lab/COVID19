@@ -1,5 +1,6 @@
 library(magrittr)
 library(ggplot2)
+library(scales)
 
 rm(list = ls())
 options(encoding = "UTF-8")

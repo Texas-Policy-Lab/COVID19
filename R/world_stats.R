@@ -75,7 +75,7 @@ widget.country_event_picker <- function() {
     choices = update_timeline.country(world) %>%
       dplyr::distinct(event) %>% 
       dplyr::pull(event),
-    multiple = TRUE,
+    multiple = FALSE,
     options = list(
       `actions-box` = TRUE, 
       size = 10,

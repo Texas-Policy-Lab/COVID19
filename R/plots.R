@@ -60,7 +60,7 @@ stats.default <- function(df,
                           y_lab = NULL,
                           x_lab = "Date",
                           legend_lab = "States",
-                          size = 3, 
+                          size = 2.5, 
                           hjust = 0, 
                           nudge_x = 8,
                           box_padding = .5,
@@ -79,7 +79,7 @@ stats.default <- function(df,
   gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec, label = stringr::str_wrap(label,
                                                                                           width = str_width))) +
     geom_line() +
-    ggiraph::geom_point_interactive(tooltip = glue::glue("{tt_place}: {color_vec}<br>Date: {x_vec}<br>{tt_name}: {y_vec}")) +
+    ggiraph::geom_point_interactive(tooltip = glue::glue("{tt_place}: {color_vec}<br>Date: {format(x_vec, '%B %d, %Y')}<br>{tt_name}: {comma(y_vec)}")) +
     scale_color_manual(legend_lab,
                        values = as.vector(tpltheme::tpl_palettes$categorical)) + 
     scale_y_continuous(labels = scales::comma_format()) +
@@ -122,3 +122,34 @@ stats.default <- function(df,
   # print(gg)
 
 } 
+
+timeline <- function(...) UseMethod("timeline")
+
+timeline.default <- function(df,
+                          alpha = 1,
+                          x = "Date",
+                          y = 1,
+                          y_lab = NULL,
+                          x_lab = "Date",
+                          legend_lab = "States",
+                          size = 3) {
+
+  gg <- ggplot(df, aes(x = Date, y = 1, label = label, tooltip = glue::glue("{countryName} on {format(Date, '%B %d, %Y')}:<br>{label}"))) +
+    ggiraph::geom_point_interactive(size = size) +
+    labs(y = element_blank(),
+         x = x_lab) +
+      scale_color_manual(legend_lab,
+                         values = as.vector(tpltheme::tpl_palettes$categorical))
+    
+  gg <- gg +
+    theme(
+      axis.line.y.left = element_blank(),
+      axis.text.y.left = element_blank(),
+      axis.line.x.bottom = element_blank(),
+      axis.ticks.x = element_blank()
+    )
+  
+  gg <- ggiraph::girafe(ggobj = gg)
+  
+} 
+
