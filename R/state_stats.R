@@ -1,10 +1,21 @@
+state_stats <- function(...) UseMethod("state_stats")
+
+state_stats.default <- function(df, alpha, ...) {
+
+  list(df = df,
+       alpha = alpha,
+       color = "stateName",
+       source = "Confirmed COVID-19 cases and deaths: USAFacts Data",
+       url = "URL: https://usafacts.org/",
+       tt_place = "State")
+}
+
 state_stats.confirmed <- function(df, alpha) {
   
   cls <- list(y_lab = "# confirmed cases",
               y = "confirmed",
-              color = "stateName",
-              df = df,
-              alpha = alpha)
+              tt_name = "Cases")
+  cls <- append(cls, state_stats(df, alpha))
 
   do.call(stats, cls)
 }
@@ -13,10 +24,9 @@ state_stats.deaths <- function(df, alpha) {
   
   cls <- list(y_lab = "# deaths",
               y = "deaths",
-              color = "stateName",
-              df = df,
-              alpha = alpha)
-  
+              tt_name = "Deaths")
+  cls <- append(cls, state_stats(df, alpha))
+
   do.call(stats, cls)
 }
 
@@ -24,9 +34,8 @@ state_stats.tests <- function(df, alpha) {
   
   cls <- list(y_lab = "# tests",
               y = "total_tests",
-              color = "stateName",
-              df = df,
-              alpha = alpha)
+              tt_name = "Tests")
+  cls <- append(cls, state_stats(df, alpha))
 
   do.call(stats, cls)
 }
@@ -36,6 +45,25 @@ widget.state_timeline_switch <- function() {
     inputId = "state_show_timeline"
   )
 }
+
+widget.state_event_picker <- function() {
+  
+  shinyWidgets::pickerInput(
+    inputId = "stateEvent",
+    label = NULL, 
+    choices = update_timeline.state(state) %>%
+      dplyr::distinct(event) %>% 
+      dplyr::pull(event),
+    multiple = TRUE,
+    options = list(
+      `actions-box` = TRUE, 
+      size = 10,
+      `selected-text-format` = "count > 3",
+      `live-search` = TRUE
+    )
+  )
+}
+
 
 widget.state_ndays_slider <- function() {
 
@@ -69,29 +97,36 @@ widget.state_picker <- function() {
 tabBox.state <- function() {
   shinydashboard::tabBox(side = "left",
                          selected = "state_tab1",
-                         width = 9,
+                         width = 12,
                          shiny::tabPanel(value = "state_tab1",
                                          title = "Confirmed cases",
-                                         shiny::plotOutput("confirmed_state_plot")),
+                                         ggiraph::girafeOutput("confirmed_state_plot")),
                          shiny::tabPanel(value = "state_tab2",
                                          title = "Deaths",
-                                         shiny::plotOutput("deaths_state_plot")),
+                                         ggiraph::girafeOutput("deaths_state_plot")),
                          shiny::tabPanel(value = "stage_tab3",
                                          title = "Tests",
-                                         shiny::plotOutput("tests_state_plot")))
+                                         ggiraph::girafeOutput("tests_state_plot")))
 }
 
 state_stats.ui <- function() {
 
   shiny::fluidRow(
-    shiny::column(width = 3,
-                  shiny::h3("Show timeline"),
-                  widget.state_timeline_switch(),
+    shiny::column(width = 2,
+                  shiny::tags$div(
+                    class = "timeline-container",
+                    shiny::h3("Timeline"),
+                    shiny::h4("On/Off"),
+                    widget.state_timeline_switch(),
+                    shiny::h4("Events"),
+                    widget.state_event_picker()
+                  ),
                   widget.state_ndays_slider(),
                   widget.state_picker()),
-    shiny::column(width = 9,
+    shiny::column(width = 7,
                   tabBox.state()
-                  )
+                  ),
+    shiny::column(width = 3)
     )
 }
 
@@ -107,34 +142,42 @@ state_stats.server <- function(input, output, session) {
   
   timeline_sub <- shiny::reactive({
     
-    timeline <- update_timeline.state(state_sub())
+    timeline <- update_timeline.state(state_sub()) %>% 
+      dplyr::filter(event %in% input$stateEvent)
     
-    timeline <- aggregate(timeline$label, list(timeline$stateName,
-                                               timeline$Date), paste, collapse="; ")
+    if (nrow(timeline) > 0) {
     
-    names(timeline) <- c("stateName", "Date", "label")
+      timeline <- aggregate(timeline$label, list(timeline$stateName,
+                                                 timeline$Date), paste, collapse="; ")
+      names(timeline) <- c("stateName", "Date", "label")
+      
+      timeline <- timeline %>% 
+        dplyr::right_join(state_sub())
+      
+    } else {
+      state_sub() %>% 
+        dplyr::mutate(label = NA)
+    }
     
-    timeline <- timeline %>% 
-      dplyr::right_join(state_sub())
-  })
+    })
 
   state_alpha <- shiny::reactive({
     alpha <- ifelse(input$state_show_timeline, 1, 0)
   })
 
-  output$confirmed_state_plot <- shiny::renderPlot({
+  output$confirmed_state_plot <- ggiraph::renderGirafe({
 
    state_stats.confirmed(df = timeline_sub(),
                          alpha = state_alpha())
   })
 
-  output$deaths_state_plot <- shiny::renderPlot({
+  output$deaths_state_plot <- ggiraph::renderGirafe({
 
     state_stats.deaths(df = timeline_sub(),
                        alpha = state_alpha())
   })
 
-  output$tests_state_plot <- shiny::renderPlot({
+  output$tests_state_plot <- ggiraph::renderGirafe({
 
     state_stats.tests(df = timeline_sub(),
                       alpha = state_alpha())
