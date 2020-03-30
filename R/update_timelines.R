@@ -1,3 +1,4 @@
+#' https://www.nlc.org/program-initiative/covid-19-local-action-tracker
 update_timeline <- function() useMethod("update_timeline")
 
 update_timeline.country <- function(world,
