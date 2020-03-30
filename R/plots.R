@@ -84,7 +84,7 @@ stats.default <- function(df,
     labs(x = x_lab,
          y = y_lab,
          caption = paste(stringr::str_wrap(paste("Source:", usafacts_source), width = 100),
-                         paste("Data last updated:",timestamp()),
+                         paste("Data last updated:",timestamp(), "(Central time)"),
                          sep ="\n")
     )
 
