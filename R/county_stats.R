@@ -66,11 +66,11 @@ widget.county_ndays_slider <- function() {
   
 }
 
-widget.county_picker <- function() {
+widget.county_picker <- function(state_groups = "Texas") {
   shinyWidgets::pickerInput(
     inputId = "countysGroup", 
     label = "Counties",
-    choices = sapply(unique(county$countyName),
+    choices = sapply(unique(county$countyName[county$stateName == state_groups]),
                      FUN = function(x) x,
                      USE.NAMES = TRUE, simplify = FALSE), 
     options = list(
@@ -130,7 +130,7 @@ county_stats.ui <- function() {
                   ),
                   widget.county_ndays_slider(),
                   widget.state_picker2(),
-                  widget.county_picker()),
+                  widget.county_picker(state_groups = county_sub())),
     shiny::column(width = 7,
                   tabBox.county()
     ),
@@ -143,7 +143,9 @@ county_stats.server <- function(input, output, session) {
   county_sub <- shiny::reactive({
 
      cnty <- county %>%
-       dplyr::filter(stateName %in% input$stateGroup2) %>%
+       dplyr::filter(stateName %in% input$stateGroup2)
+     
+     cnty <- cnty %>% 
        dplyr::filter(countyName %in% input$countysGroup) %>%
        dplyr::filter(ndays <= input$county_last_x_days) %>%
        dplyr::filter(!is.na(Date))
