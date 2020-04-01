@@ -66,13 +66,11 @@ widget.county_ndays_slider <- function() {
   
 }
 
-widget.county_picker <- function(state_groups = "Texas") {
+widget.county_picker <- function() {
   shinyWidgets::pickerInput(
     inputId = "countysGroup", 
     label = "Counties",
-    choices = sapply(unique(county$countyName[county$stateName == state_groups]),
-                     FUN = function(x) x,
-                     USE.NAMES = TRUE, simplify = FALSE), 
+    choices = NULL, 
     options = list(
       `actions-box` = TRUE, 
       size = 10,
@@ -80,10 +78,9 @@ widget.county_picker <- function(state_groups = "Texas") {
       `live-search` = TRUE
     ), 
     multiple = TRUE,
-    selected = c("Harris County", "Bexar County", "Travis County", "Dallas County")
+    selected = NULL
   )
 }
-
 
 widget.state_picker2 <- function() {
   shinyWidgets::pickerInput(
@@ -130,7 +127,7 @@ county_stats.ui <- function() {
                   ),
                   widget.county_ndays_slider(),
                   widget.state_picker2(),
-                  widget.county_picker(state_groups = county_sub())),
+                  widget.county_picker()),
     shiny::column(width = 7,
                   tabBox.county()
     ),
@@ -140,6 +137,21 @@ county_stats.ui <- function() {
 
 county_stats.server <- function(input, output, session) {
 
+  shiny::observe({
+
+    # cnties <- county %>%
+    #   dplyr::filter(stateName %in% input$stateGroup2)
+
+    cnties <- sapply(unique(county$countyName[county$stateName == input$stateGroup2]),
+           FUN = function(x) x,
+           USE.NAMES = TRUE, simplify = FALSE)
+    
+    
+    shinyWidgets::updatePickerInput(session, inputId = "countysGroup", choices = cnties,
+                                    selected = NULL)
+    
+  })
+  
   county_sub <- shiny::reactive({
 
      cnty <- county %>%
@@ -173,7 +185,7 @@ county_stats.server <- function(input, output, session) {
     }
 
   })
-
+  
   county_alpha <- shiny::reactive({
     alpha <- ifelse(input$county_show_timeline, 1, 0)
   })
