@@ -32,7 +32,11 @@ census.county_pop <- function(url = "https://api.census.gov/data/2018/acs/acs5?g
 
   df <- df %>%
     dplyr::mutate(countyFIPS = as.numeric(paste0(stateFIPS, county))) %>% 
-    dplyr::select(-county)
+    dplyr::select(-county) %>% 
+    dplyr::arrange(desc(pop)) %>% 
+    dplyr::group_by(stateFIPS) %>% 
+    dplyr::mutate(county_pop_rank = seq(1, dplyr::n())) %>% 
+    dplyr::arrange(stateFIPS, pop)
 }
 
 census.state_pop <- function(url = "https://api.census.gov/data/2018/acs/acs5?get=",
