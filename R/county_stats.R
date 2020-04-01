@@ -54,7 +54,6 @@ widget.county_event_picker <- function() {
   )
 }
 
-
 widget.county_ndays_slider <- function() {
   
   shiny::sliderInput(inputId = "county_last_x_days",
@@ -139,28 +138,30 @@ county_stats.server <- function(input, output, session) {
 
   shiny::observe({
 
-    # cnties <- county %>%
-    #   dplyr::filter(stateName %in% input$stateGroup2)
+    cnty <- county %>%
+      dplyr::filter(stateName %in% input$stateGroup2)
 
-    cnties <- sapply(unique(county$countyName[county$stateName == input$stateGroup2]),
-           FUN = function(x) x,
-           USE.NAMES = TRUE, simplify = FALSE)
-    
-    
-    shinyWidgets::updatePickerInput(session, inputId = "countysGroup", choices = cnties,
-                                    selected = NULL)
-    
+    top_cnties <- cnty %>%
+      dplyr::filter(county_pop_rank %in% c(1:4)) %>%
+      dplyr::distinct(countyName) %>%
+      dplyr::pull(countyName)
+
+    cnties <- sapply(unique(cnty$countyName),
+                     FUN = function(x) x,
+                     USE.NAMES = TRUE, simplify = FALSE)
+
+    shinyWidgets::updatePickerInput(session, inputId = "countysGroup",
+                                    choices = cnties,
+                                    selected = top_cnties)
   })
   
   county_sub <- shiny::reactive({
-
-     cnty <- county %>%
-       dplyr::filter(stateName %in% input$stateGroup2)
-     
-     cnty <- cnty %>% 
-       dplyr::filter(countyName %in% input$countysGroup) %>%
-       dplyr::filter(ndays <= input$county_last_x_days) %>%
-       dplyr::filter(!is.na(Date))
+    
+    cnty <- county %>%
+      dplyr::filter(stateName %in% input$stateGroup2) %>% 
+      dplyr::filter(countyName %in% input$countysGroup) %>%
+      dplyr::filter(ndays <= input$county_last_x_days) %>%
+      dplyr::filter(!is.na(Date))
   })
 
   timeline_county_sub <- shiny::reactive({
