@@ -140,7 +140,7 @@ create_data.world <- function(write = FALSE, day100 = as.Date("2020-1-18"), ...)
   
   world <- csse_data.confirmed() %>%
     dplyr::left_join(csse_data.deaths()) %>%
-    dplyr::left_join(csse_data.recovered()) %>% 
+    dplyr::left_join(csse_data.recovered()) %>%
     dplyr::ungroup() %>% 
     dplyr::rename(countryName = `Country/Region`) %>% 
     dplyr::mutate(Date = gsub("X", "", Date)
