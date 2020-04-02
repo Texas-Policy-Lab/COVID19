@@ -61,15 +61,15 @@ sidebar_panel <- function(tabs) {
 #' @description Creates basic structure for main panel
 #' @inheritParams create_tab_ids
 #' @export
-main_panel <- function(tabs) {
+main_panel <- function(tabs, world, state, county) {
 
-  x <- lapply(tabs, function(tab)
+  x <- lapply(tabs, function(tab, world, state, county)
     shinydashboard::tabItem(
       tabName = tab$id
       ,shiny::div(shiny::span(tab$page_title)
                   ,class = "page-title")
-      ,ui_element(tab = tab)
-    ))
+      ,ui_element(tab = tab, world = world, state = state, county = county)
+    ), world = world, state = state, county = county)
 
   body <- shinydashboard::dashboardBody(
     shiny::div(class= "tab-content", x)
@@ -86,7 +86,8 @@ main_panel <- function(tabs) {
 #' @param favicon_pth path the favicon file
 #' @inheritParams logo
 #' @export
-tpl_ui <- function(title, tabs, css_pth, js_pth, favicon_pth) {
+tpl_ui <- function(title, tabs, css_pth, js_pth, favicon_pth,
+                   world, state, county) {
 
   tabs <- create_tab_ids(tabs = tabs)
 
@@ -94,7 +95,7 @@ tpl_ui <- function(title, tabs, css_pth, js_pth, favicon_pth) {
 
   sidebar <- sidebar_panel(tabs = tabs)
 
-  body <- main_panel(tabs = tabs)
+  body <- main_panel(tabs = tabs, world, state, county) 
 
   ui <- shiny::shinyUI(
           shiny::fluidPage(
@@ -105,7 +106,6 @@ tpl_ui <- function(title, tabs, css_pth, js_pth, favicon_pth) {
                               ,type = "image/png"
                               ,href = favicon_pth))
             ,shinydashboard::dashboardPage(header, sidebar, body)
-            # ,timestamp()
             ,footer()
             )
           )

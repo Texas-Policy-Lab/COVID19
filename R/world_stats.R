@@ -1,7 +1,7 @@
 country_stats <- function(...) UseMethod("country_stats")
 
 country_stats.default <- function(df, alpha, ...) {
-  
+
   list(df = df,
        alpha = alpha,
        color = "countryName",
@@ -15,9 +15,9 @@ country_stats.confirmed <- function(df, alpha) {
   cls <- list(y_lab = "# confirmed cases",
               y = "confirmed",
               tt_name = "Cases")
-  
-  cls <- append(cls, country_stats(df, alpha))
-  
+
+  cls <- append(cls, country_stats(df = df, alpha = alpha))
+
   do.call(stats, cls)
 }
 
@@ -27,7 +27,18 @@ country_stats.deaths <- function(df, alpha) {
               y = "deaths",
               tt_name = "Deaths")
   
-  cls <- append(cls, country_stats(df, alpha))
+  cls <- append(cls, country_stats(df = df, alpha = alpha))
+  
+  do.call(stats, cls)
+}
+
+country_stats.recovered <- function(df, alpha) {
+  
+  cls <- list(y_lab = "# recovered",
+              y = "recovered",
+              tt_name = "Recovered")
+  
+  cls <- append(cls, country_stats(df = df, alpha = alpha))
   
   do.call(stats, cls)
 }
@@ -38,18 +49,18 @@ widget.country_timeline_switch <- function() {
   )
 }
 
-widget.country_ndays_slider <- function() {
-  
+widget.country_ndays_slider <- function(world) {
+
   shiny::sliderInput(inputId = "country_last_x_days",
                      label = "# most recent days",
                      min = min(world$ndays),
                      max = max(world$ndays),
                      step = 1,
                      value = max(world$ndays))
-  
+
 }
 
-widget.country_picker <- function() {
+widget.country_picker <- function(world) {
   shinyWidgets::pickerInput(
     inputId = "countriesGroup", 
     label = "Country",
@@ -67,7 +78,7 @@ widget.country_picker <- function() {
   )
 }
 
-widget.country_event_picker <- function() {
+widget.country_event_picker <- function(world) {
   
   shinyWidgets::pickerInput(
     inputId = "countryEvent",
@@ -94,11 +105,15 @@ tabBox.country <- function() {
                                          ggiraph::girafeOutput("confirmed_country_plot")),
                          shiny::tabPanel(value = "country_tab2",
                                          title = "Deaths",
-                                         ggiraph::girafeOutput("deaths_country_plot"))
+                                         ggiraph::girafeOutput("deaths_country_plot")),
+                         shiny::tabPanel(value = "country_tab3",
+                                         title = "Recovered",
+                                         ggiraph::girafeOutput("recovered_country_plot"))
+                         
   )
 }
 
-country_stats.ui <- function() {
+country_stats.ui <- function(world) {
   
   shiny::fluidRow(
     shiny::column(width = 2,
@@ -108,10 +123,10 @@ country_stats.ui <- function() {
                     shiny::h4("On/Off"),
                     widget.country_timeline_switch(),
                     shiny::h4("Events"),
-                    widget.country_event_picker()
+                    widget.country_event_picker(world)
                   ),
-                  widget.country_ndays_slider(),
-                  widget.country_picker()),
+                  widget.country_ndays_slider(world),
+                  widget.country_picker(world)),
     shiny::column(width = 7,
                   tabBox.country()
     ),
@@ -119,59 +134,60 @@ country_stats.ui <- function() {
   )
 }
 
-country_stats.server <- function(input, output, session) {
+country_stats.server <- function(input, output, session, world) {
 
   country_sub <- shiny::reactive({
 
     world %>% 
       dplyr::filter(countryName %in% input$countriesGroup) %>% 
       dplyr::filter(ndays <= input$country_last_x_days)
-      
-    
+
   })
-  
+
   timeline_sub <- shiny::reactive({
-    
-    timeline <- update_timeline.country(country_sub()) %>% 
-      dplyr::filter(event %in% input$countryEvent)
-    
+
+    timeline <- update_timeline.country(country_sub()) %>%
+      dplyr::filter(event %in% input$countryEvent) %>%
+      dplyr::filter(!is.na(Date))
+
     if (nrow(timeline) > 0) {
       timeline <- aggregate(timeline$label, list(timeline$countryName,
                                                  timeline$Date), paste, collapse="; ")
-      
+
       names(timeline) <- c("countryName", "Date", "label")
-      
-      timeline <- timeline %>% 
+
+      timeline <- timeline %>%
         dplyr::right_join(country_sub())
-      
+
     } else {
-      
+
       country_sub() %>% 
         dplyr::mutate(label = NA)
     }
-    
+
   })
-  
+
   country_alpha <- shiny::reactive({
     alpha <- ifelse(input$country_show_timeline, 1, 0)
   })
-  
+
   output$confirmed_country_plot <- ggiraph::renderGirafe({
 
     country_stats.confirmed(df = timeline_sub(),
                             alpha = country_alpha())
+    
   })
-  
+
   output$deaths_country_plot <- ggiraph::renderGirafe({
 
     country_stats.deaths(df = timeline_sub(),
                          alpha = country_alpha())
   })
 
-  output$tests_country_plot <- ggiraph::renderGirafe({
+  output$recovered_country_plot <- ggiraph::renderGirafe({
 
-    country_stats.tests(df = timeline_sub(),
-                        alpha = country_alpha())
+    country_stats.recovered(df = timeline_sub(),
+                            alpha = country_alpha())
   })
   
 }

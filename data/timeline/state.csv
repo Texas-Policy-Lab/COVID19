@@ -15,7 +15,7 @@ Florida,3/7/2020,State of emergency,Level 2 state of emergency,https://www.busin
 Georgia,3/14/2020,State of emergency,State emergency declaration,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
 Hawaii,3/5/2020,State of emergency,State emergency declaration,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
 Idaho,3/13/2020,State of emergency,State emergency declaration,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
-Illinios,3/9/2020,State of emergency,State emergency declaration,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
+Illinois,3/9/2020,State of emergency,State emergency declaration,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
 Indiana,3/6/2020,State of emergency,State emergency declaration,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
 Iowa,3/9/2020,State of emergency,Proclamation of disaster emergency,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
 Kansas,3/12/2020,State of emergency,State emergency declaration,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
@@ -54,3 +54,22 @@ Washington,2/29/2020,State of emergency,State emergency declaration,https://www.
 Wisconsin,3/12/2020,State of emergency,State emergency declaration,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
 Wyoming,3/13/2020,State of emergency,State emergency declaration,https://www.businessinsider.com/california-washington-state-of-emergency-coronavirus-what-it-means-2020-3#utah-5
 Puerto Rico,3/15/2020,Curfew,Curfew from 5 a.m. to 9 p.m.,https://www.nbcnews.com/news/latino/puerto-rico-imposes-curfew-early-closings-contain-coronavirus-spread-n1159456
+California,3/23/2020,Beach/park closure,Soft closure of state parks,https://calmatters.org/health/coronavirus/2020/03/coronavirus-california-state-parks-beaches-parking-lots-closed-gavin-newsom/
+Oregon,3/23/2020,Beach/park closure,Beach/park closure,https://oregonstateparks.org/index.cfm?do=v.dsp_featureArticle&articleId=272
+Washington,3/25/2020,Beach/park closure,Beach/park closure,https://parks.state.wa.us/1177/Novel-Coronavirus---COVID-19
+New York,3/16/2020,Ban gathering,Ban gatherings of more than 50 people,https://www.bbc.com/news/world-us-canada-51902681
+Connecticut,3/16/2020,Ban gathering,Ban gatherings of more than 50 people,https://www.bbc.com/news/world-us-canada-51902681
+New York,3/16/2020,"Close restaurants, bars, wineries","Close restaurants, bars, wineries, gyms, movie theater, casinos",https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+New Jersey,3/16/2020,"Close restaurants, bars, wineries","Close restaurants, bars, wineries, gyms, movie theater, casinos",https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+Connecticut,3/16/2020,"Close restaurants, bars, wineries","Close restaurants, bars, wineries, gyms, movie theater, casinos",https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+Pennsylvania,3/16/2020,"Close restaurants, bars, wineries",Close all non-essential businesses,https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+North Carolina,3/17/2020,"Close restaurants, bars, wineries",Close restaurants and bars,https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+Ohio,3/15/2020,"Close restaurants, bars",Close restaurants and bars,https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+Illinois,3/15/2020,"Close restaurants, bars",Close restaurants and bars,https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+Massachusetts,3/17/2020,"Close restaurants, bars",Close restaurants and bars,https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+Massachusetts,3/17/2020,Ban gathering,Ban gatherings of more than 25 people,https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+Washington,3/15/2020,"Close restaurants, bars","Close restaurants, bars",https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+Michigan,3/16/2020,"Close restaurants, bars","Close restaurants, bars",https://www.axios.com/ohio-governor-bars-restaurants-coronavirus-26e4b6e3-7f65-4f6a-abf9-f3940220cc6f.html
+Colorado,3/17/2020,"Close restaurants, bars","Close restaurants, bars, gym, theater, casino",https://abcnews.go.com/US/coronavirus-live-updates-establishments-country-begin-shutting/story?id=69615056
+Maryland,3/16/2020,"Close restaurants, bars","Close restaurants, bars, gym, theater,",https://abcnews.go.com/US/coronavirus-live-updates-establishments-country-begin-shutting/story?id=69615056
+District of Columbia,3/16/2020,"Close restaurants, bars","Close gym, theater",https://abcnews.go.com/US/coronavirus-live-updates-establishments-country-begin-shutting/story?id=69615056

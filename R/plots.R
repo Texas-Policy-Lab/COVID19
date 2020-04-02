@@ -1,55 +1,3 @@
-pandemic_declared <- function(gg, df, y,
-                              text1 = "WHO announces that the new coronavirus disease will be called 'COVID-19'",
-                              text2 = "WHO declares outbreak a pandemic",
-                              text3 = "Federal plan leaked which warns the new coronavirus pandemic may last up to 18 months or longer and come in multiple waves") {
-
-  
-  pandemic <- df %>%
-    dplyr::filter(Date == as.Date("2020-03-11"))
-  
-  gg <- gg + 
-    geom_vline(xintercept = pandemic$Date, linetype="dashed",
-               color = "grey", size = 1) +
-      annotate(geom = "label", x = pandemic$Date, y = (max(df[[y]])*.95),
-               label = "WHO declares pandemic", size = 3) +
-    theme_bw()
-  
-  
-  # pandemic <- data.frame(Date = as.Date(c("2020-02-11", "2020-03-11", "2020-03-17")),
-  #                        # labels = c("A", "B", "C"),
-  #                        labelText = c(text1,
-  #                                      text2,
-  #                                      text3))
-  # gg <- gg + 
-  #   geom_vline(aes(xintercept = Date, color = labelText),
-  #              data = pandemic, linetype = "dashed", size = 1, show.legend = TRUE) +
-  #   scale_color_manual("", values = c(text1 = "#151248",
-  #                                     text2 = "#605F5E",
-  #                                     text3 = "#5393EA"))
-
-  return(gg)
-}
-
-text_format <- function(gg,
-                        size = NULL, 
-                        hjust = NULL, 
-                        nudge_x = NULL,
-                        box_padding = NULL,
-                        point.padding = NULL,
-                        direction = NULL,
-                        alpha = NULL) {
-
-  gg +
-    ggrepel::geom_label_repel(size = size,
-                    hjust = hjust,
-                    nudge_x = nudge_x,
-                    box.padding = box_padding,
-                    na.rm = TRUE,
-                    point.padding = point.padding,
-                    direction = direction,
-                    alpha = alpha)
-}
-
 stats <- function(...) UseMethod("stats")
 
 stats.default <- function(df,
@@ -59,7 +7,7 @@ stats.default <- function(df,
                           color = NULL,
                           y_lab = NULL,
                           x_lab = "Date",
-                          legend_lab = "States",
+                          legend_lab = NULL,
                           size = 3, 
                           hjust = 0, 
                           nudge_x = 8,
@@ -75,50 +23,42 @@ stats.default <- function(df,
   x_vec <- df[[x]]
   y_vec <- df[[y]]
   color_vec <- df[[color]]
+  
+  pandemic <- data.frame(Date = as.Date(c("2020-03-11")),
+                         labelText = c("WHO declares pandemic"))
 
-  gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec, label = stringr::str_wrap(label,
-                                                                                          width = str_width))) +
+  gg <- ggplot(df, aes(x = x_vec, y = y_vec, color = color_vec,
+                       label = stringr::str_wrap(label,
+                                                 width = str_width))) +
+    geom_vline(aes(xintercept = Date, 
+                   linetype = stringr::str_wrap(labelText, 8)), color = "#CCCCCC",
+               data = pandemic, show.legend = NA) +
     geom_line() +
-    ggiraph::geom_point_interactive(tooltip = glue::glue("{tt_place}: {color_vec}<br>Date: {x_vec}<br>{tt_name}: {y_vec}")) +
-    scale_color_manual(legend_lab,
+    ggiraph::geom_point_interactive(tooltip = glue::glue("{tt_place}: {color_vec}<br>Date: {format(x_vec, '%B %d, %Y')}<br>{tt_name}: {comma(y_vec)}"),
+                                    alpha = .75) +
+    scale_color_manual("",
                        values = as.vector(tpltheme::tpl_palettes$categorical)) + 
     scale_y_continuous(labels = scales::comma_format()) +
     labs(x = x_lab,
          y = y_lab,
          caption = paste(stringr::str_wrap(paste("Source:", source), width = 100),
                          url,
-                         paste("Data last updated:", timestamp()),
-                         sep ="\n")
-    )
-
-  gg <- text_format(gg = gg,
-                    size = size, 
-                    hjust = hjust, 
-                    nudge_x = nudge_x,
-                    box_padding = box_padding,
-                    point.padding = point.padding,
-                    direction = direction,
-                    alpha = alpha)
-
-  gg <- pandemic_declared(gg = gg, df = df, y = y)
-
-  gg <- gg + 
-    theme(plot.caption = element_text(hjust = 0, vjust = 0, size = 10),
+                         paste("Data last updated:", timestamp(), "(Central time)"),
+                         sep ="\n"),
+         linetype = ""
+    ) +
+      theme(plot.caption = element_text(hjust = 0, vjust = 0, size = 10),
           axis.title = element_text(size = 16,
-                                    margin(t = 0, r = 10, b = 0, l = 10, unit = "pt")),
+                                    margin(t = 0, r = 0, b = 0, l = 0, unit = "pt")),
+          axis.title.y = element_text(margin(t = 0, r = 10, b = 0, l = 0, unit = "pt")),
           axis.text = element_text(size = 12),
           panel.grid.major.x = element_blank(),
           panel.grid.minor.x = element_blank(),
           legend.title = element_text(size = 14),
           legend.text = element_text(size = 12),
-          panel.border = element_rect(color = "white"),
-          axis.line = element_line(colour = "grey")
+          axis.line = element_line(colour = "grey"),
+          text = element_text(family="Arial")
     )
-  
-  
-  
+
   gg <- ggiraph::girafe(ggobj = gg)
-
-  # print(gg)
-
 } 

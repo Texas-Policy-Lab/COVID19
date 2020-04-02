@@ -1,3 +1,4 @@
+#' https://www.nlc.org/program-initiative/covid-19-local-action-tracker
 update_timeline <- function() useMethod("update_timeline")
 
 update_timeline.country <- function(world,
@@ -88,10 +89,10 @@ update_timeline.county <- function(county,
     dplyr::slice(1) %>%
     dplyr::select(Date, countyName, stateName) %>%
     dplyr::mutate(event = "First confirmed", label = "First confirmed case reported", link = NA)
-
-  df <- df %>% 
-    dplyr::bind_rows(first_deaths) %>% 
+  
+  df <- df %>%
+    dplyr::bind_rows(first_deaths) %>%
     dplyr::bind_rows(first_confirmed)
-
+  
   return(df)
 }
