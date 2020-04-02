@@ -32,6 +32,17 @@ country_stats.deaths <- function(df, alpha) {
   do.call(stats, cls)
 }
 
+country_stats.recovered <- function(df, alpha) {
+  
+  cls <- list(y_lab = "# recovered",
+              y = "recovered",
+              tt_name = "Recovered")
+  
+  cls <- append(cls, country_stats(df = df, alpha = alpha))
+  
+  do.call(stats, cls)
+}
+
 widget.country_timeline_switch <- function() {
   shinyWidgets::switchInput(
     inputId = "country_show_timeline"
@@ -46,7 +57,7 @@ widget.country_ndays_slider <- function(world) {
                      max = max(world$ndays),
                      step = 1,
                      value = max(world$ndays))
-  
+
 }
 
 widget.country_picker <- function(world) {
@@ -94,7 +105,11 @@ tabBox.country <- function() {
                                          ggiraph::girafeOutput("confirmed_country_plot")),
                          shiny::tabPanel(value = "country_tab2",
                                          title = "Deaths",
-                                         ggiraph::girafeOutput("deaths_country_plot"))
+                                         ggiraph::girafeOutput("deaths_country_plot")),
+                         shiny::tabPanel(value = "country_tab3",
+                                         title = "Recovered",
+                                         ggiraph::girafeOutput("recovered_country_plot"))
+                         
   )
 }
 
@@ -149,13 +164,13 @@ country_stats.server <- function(input, output, session, world) {
       country_sub() %>% 
         dplyr::mutate(label = NA)
     }
-    
+
   })
-  
+
   country_alpha <- shiny::reactive({
     alpha <- ifelse(input$country_show_timeline, 1, 0)
   })
-  
+
   output$confirmed_country_plot <- ggiraph::renderGirafe({
 
     country_stats.confirmed(df = timeline_sub(),
@@ -169,10 +184,10 @@ country_stats.server <- function(input, output, session, world) {
                          alpha = country_alpha())
   })
 
-  output$tests_country_plot <- ggiraph::renderGirafe({
+  output$recovered_country_plot <- ggiraph::renderGirafe({
 
-    country_stats.tests(df = timeline_sub(),
-                        alpha = country_alpha())
+    country_stats.recovered(df = timeline_sub(),
+                            alpha = country_alpha())
   })
   
 }
