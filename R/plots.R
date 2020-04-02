@@ -47,7 +47,7 @@ stats.default <- function(df,
                          sep ="\n"),
          linetype = ""
     ) +
-    theme(plot.caption = element_text(hjust = 0, vjust = 0, size = 10),
+      theme(plot.caption = element_text(hjust = 0, vjust = 0, size = 10),
           axis.title = element_text(size = 16,
                                     margin(t = 0, r = 0, b = 0, l = 0, unit = "pt")),
           axis.title.y = element_text(margin(t = 0, r = 10, b = 0, l = 0, unit = "pt")),
