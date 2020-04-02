@@ -88,7 +88,7 @@ widget.state_picker2 <- function(county) {
     label = "States",
     choices = sapply(unique(county$stateName),
                      FUN = function(x) x,
-                     USE.NAMES = TRUE, simplify = FALSE), 
+                     USE.NAMES = TRUE, simplify = FALSE),
     options = list(
       `actions-box` = TRUE, 
       size = 10,
