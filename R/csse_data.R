@@ -48,6 +48,6 @@ csse_data.daily <- function(url = "https://raw.githubusercontent.com/CSSEGISandD
   dfs2 <- do.call("rbind.fill", dfs)
   
   return(dfs2)
-  
+
 }
 
